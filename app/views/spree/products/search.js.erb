@@ -1,0 +1,5 @@
+$("#list-product").html("<%= escape_javascript(render partial: 'listproduct', locals: { products: @products } ) %>").promise().done(function(){
+    
+    $(" #search-product-mobile  .search-animation").removeClass("active");
+    $(" #search-product  .search-animation").removeClass("active");
+});

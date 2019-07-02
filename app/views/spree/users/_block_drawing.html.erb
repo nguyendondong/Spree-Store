@@ -1,0 +1,32 @@
+<div class="block campaigns">
+  <div class="blocksubhead">
+    <%= image_tag "money.png", class: "icontitle", alt: Spree.t(:campaigns) %>
+    <span class="blocktitle">Yêu cầu thanh toán</span>
+  </div>
+  <div class="blockbody">
+    <%= form_tag('/send-withdraw-money', method: :post, class: "form-horizontal") do %>
+      <div class="form-group">
+        <label for="amount" class="col-sm-3 control-label">Số tiền muốn rút</label>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input type="text" name="amount" class="form-control" id="amount">
+            <span class="input-group-addon">VNĐ</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="reason" class="col-sm-3 control-label">Lý do rút</label>
+        <div class="col-sm-9">
+          <textarea rows="5" name="reason" class="form-control" id="reason"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-success">Gửi yêu cầu</button>
+          <button type="reset" class="btn btn-default">Hủy bỏ</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

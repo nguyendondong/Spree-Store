@@ -1,0 +1,36 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head data-hook="inside_head">
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+  <body class="boxed <%= body_class %>" data-hook="body">
+
+    <div id="wrapper" class="container">
+
+      <%= render :partial => 'spree/shared/header' %>
+
+      <div class="row" data-hook>
+
+        <%= breadcrumbs(@taxon) %>
+
+        <div id="content" class="columns col-sm-12 col-md-12">
+          <%= flash_messages %>
+          <%= yield %>
+        </div>
+
+        <%= yield :templates %>
+
+      </div>
+
+      <%= render :partial => 'spree/shared/footer' %>
+
+    </div>
+
+    <%= render :partial => 'spree/shared/google_analytics' %>
+    <script type='text/javascript'>(function () { var done = false;var script = document.createElement('script');script.async = true;script.type = 'text/javascript';script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript';document.getElementsByTagName('HEAD').item(0).appendChild(script);script.onreadystatechange = script.onload = function (e) {if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {var w = new PCWidget({ c: '901272c3-721e-4040-a6ef-21236a1b4940', f: true });done = true;}};})();</script>
+  </body>
+</html>

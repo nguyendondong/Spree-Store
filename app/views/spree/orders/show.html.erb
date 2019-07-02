@@ -1,0 +1,114 @@
+<div class="row">
+  <aside id="sidebar" class="col-md-4" data-hook="">
+    <div class="block additional-info">
+      <div class="blocksubhead">
+        <span class="blocktitle">Đơn hàng <%= @order.number %></span>
+      </div>
+      <div class="blockbody">
+        <div class="infobox">
+          <dl class="dl-horizontal">
+            <dt><%= Spree.t(:status) %></dt>
+            <dd><%= order_status(@order) %></dd>
+
+            <dt><%= Spree.t(:date_completed) %></dt>
+            <dd><%= pretty_time(@order.completed_at) if @order.completed_at %></dd>
+
+            <% if @order.paid? %>
+            <dt><%= Spree.t(:date_paid) %></dt>
+            <dd><%= pretty_time(@order.payments.completed.first.updated_at) if @order.payments.completed.present? %></dd>
+            <% end %>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div id="content" class="columns col-md-8" data-hook="">
+    <% if order_just_completed?(@order) %>
+      <div class="alert alert-success"><%= Spree.t(:thank_you_for_your_order) %></div>
+    <% end %>
+
+    <div class="block notifications">
+      <div class="blocksubhead">
+      <span class="blocktitle">Sản phẩm</span>
+      </div>
+      <div class="blockbody">
+
+        <div id="order" data-hook>
+
+          <%= render :partial => 'spree/shared/order_details', :locals => {:order => @order} %>
+
+        </div>
+
+      </div>
+    </div>
+
+    <p data-hook="links">
+      <% if @token %>
+        <%= link_to Spree.t(:back_to_store), spree.root_path, :class => "button" %>
+        <% unless order_just_completed?(@order) %>
+          <% if try_spree_current_user && respond_to?(:spree_account_path) %>
+            <%= link_to Spree.t(:my_account), spree_account_path, :class => "button" %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= link_to "Quay trở lại", user_root_path, class: "btn btn-success" %>
+      <% end %>
+    </p>
+
+      <!-- Google Code for Dong-Ho-X Conversion Page -->
+      <script type="text/javascript">
+        /* <![CDATA[ */
+        var google_conversion_id = 961568658;
+        var google_conversion_language = "en";
+        var google_conversion_format = "3";
+        var google_conversion_color = "ffffff";
+        var google_conversion_label = "W_ByCO3h1FwQkr_BygM";
+        var google_conversion_value = <%= @order.total %>;
+        var google_conversion_currency = "VND";
+        var google_remarketing_only = false;
+        /* ]]> */
+      </script>
+      <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+      </script>
+      <noscript>
+        <div style="display:inline;">
+          <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/961568658/?value=20.00&amp;currency_code=USD&amp;label=W_ByCO3h1FwQkr_BygM&amp;guid=ON&amp;script=0"/>
+        </div>
+      </noscript>
+
+      <!-- Facebook Conversion Code for Checkouts - DongHoX -->
+      <script>(function() {
+        var _fbq = window._fbq || (window._fbq = []);
+        if (!_fbq.loaded) {
+          var fbds = document.createElement('script');
+          fbds.async = true;
+          fbds.src = '//connect.facebook.net/en_US/fbds.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(fbds, s);
+          _fbq.loaded = true;
+        }
+      })();
+      window._fbq = window._fbq || [];
+      window._fbq.push(['track', '6026157142572', {'value':'<%= @order.total %>','currency':'VND'}]);
+    </script>
+    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6026157142572&amp;cd[value]=<%= @order.total %>&amp;cd[currency]=VND&amp;noscript=1" /></noscript>
+
+
+    <!-- Facebook Conversion Code for Dat Hang -->
+    <script>(function() {
+      var _fbq = window._fbq || (window._fbq = []);
+      if (!_fbq.loaded) {
+        var fbds = document.createElement('script');
+        fbds.async = true;
+        fbds.src = '//connect.facebook.net/en_US/fbds.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(fbds, s);
+        _fbq.loaded = true;
+      }
+    })();
+    window._fbq = window._fbq || [];
+    window._fbq.push(['track', '6022165191152', {'value':'<%= @order.total %>','currency':'VND'}]);
+  </script>
+  <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6022165191152&amp;cd[value]=<%= @order.total %>&amp;cd[currency]=VND&amp;noscript=1" /></noscript>
+  </div>
+</div>

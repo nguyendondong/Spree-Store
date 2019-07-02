@@ -1,0 +1,95 @@
+<div class="product-description-review-area pb-20">
+		    <div class="container">
+		        <div class="row">
+		            <div class="col-md-12">
+		                <div class="product-review-tab">
+		                    <!--Review And Description Tab Menu Start-->
+		                    <ul class="nav dec-and-review-menu">
+                              <li>
+                                <a class="active" data-toggle="tab" href="#description">Description</a>
+                              </li>
+                              <li>
+                                <a data-toggle="tab" href="#reviews">Reviews (1)</a>
+                              </li>
+                            </ul>
+		                    <!--Review And Description Tab Menu End-->
+		                    <!--Review And Description Tab Content Start-->
+		                    <div class="tab-content product-review-content-tab" id="myTabContent-4">
+                              <div class="tab-pane fade active show" id="description">
+                                  <div class="single-product-description">
+                                     <h2>Description</h2>
+                                        <%= product_description(@product).html_safe rescue Spree.t(:product_has_no_description) %>
+                                  </div>
+                              </div>
+                              <div class="tab-pane fade" id="reviews">
+                                  <div class="review-page-comment">
+                                    <h2>1 review for Sit voluptatem</h2>
+                                    <ul>
+                                        <li>
+                                            <div class="product-comment">
+                                                <%= image_tag("indecor/icon/author.png")%>
+                                                <div class="product-comment-content">
+                                                    <div class="product-reviews">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <p class="meta">
+                                                        <strong>admin</strong> - <span>November 22, 2018</span>
+                                                    <div class="description">
+                                                        <p>Good Product</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="review-form-wrapper">
+                                        <div class="review-form">
+                                            <span class="comment-reply-title">Add a review </span>
+                                            <form action="#">
+                                                <p class="comment-notes">
+                                                    <span id="email-notes">Your email address will not be published.</span>
+                                                     Required fields are marked
+                                                     <span class="required">*</span>
+                                                </p>
+                                                <div class="comment-form-rating">
+                                                    <label>Your rating</label>
+                                                    <div class="rating">
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="input-element">
+                                                    <div class="comment-form-comment">
+                                                        <label>Comment</label>
+                                                        <textarea name="message" cols="40" rows="8"></textarea>
+                                                    </div>
+                                                    <div class="review-comment-form-author">
+                                                        <label>Name </label>
+                                                        <input required="required" type="text">
+                                                    </div>
+                                                    <div class="review-comment-form-email">
+                                                        <label>Email </label>
+                                                        <input required="required" type="text">
+                                                    </div>
+                                                    <div class="comment-submit">
+                                                        <button type="submit" class="form-button">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+		                    <!--Review And Description Tab Content End-->
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>

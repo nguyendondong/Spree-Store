@@ -1,0 +1,111 @@
+<nav id="admin-menu" data-hook class="admin-menu-toolbar navbar navbar-expand-md">
+<div class="toggle">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+</div>
+<% unless (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('user')) %>
+<ul class="navbar-nav">
+        <%  if (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('sales_rep')) %>
+        <li class="tab-with-icon nav-item first"><a class=" nav-link fa fa-icon-th-large icon_link with-tip"
+                        href="/admin/leads"><span class='text'>Khách
+                                Hàng Tiềm Năng</span></a></li>
+        <!--don hang, blog -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-shopping-cart icon_link with-tip"
+                        href="/admin/orders"><span class='text'>Đơn Hàng</span></a></li>
+        <!-- san pham -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-th-large icon_link with-tip"
+                        href="/admin/products"><span class='text'>Sản
+                                Phẩm</span></a></li>
+        <% elsif  (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('manager'))%>
+        <li class="tab-with-icon nav-item first"><a class=" nav-link fa fa-icon-th-large icon_link with-tip"
+                        href="/admin/leads"><span class='text'>Khách
+                                Hàng Tiềm Năng</span></a></li>
+        <!--don hang, blog -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-shopping-cart icon_link with-tip"
+                        href="/admin/orders"><span class='text'>Đơn Hàng</span></a></li>
+        <!-- san pham -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-th-large icon_link with-tip"
+                        href="/admin/products"><span class='text'>Sản
+                                Phẩm</span></a></li>
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-rss icon_link with-tip"
+                        href="/admin/blog_entries"><span class='text'>Blog</span></a></li>
+        <% elsif  (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('blogger')) %>
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-rss icon_link with-tip"
+                        href="/admin/blog_entries"><span class='text'>Blog</span></a></li>
+        <% else %>
+        <li class="tab-with-icon nav-item first"><a class=" nav-link fa fa-users icon_link with-tip"
+                        href="/admin/leads"><span class='text'>Khách
+                                Hàng Tiềm Năng</span></a></li>
+        <!--don hang, blog -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-shopping-cart icon_link with-tip"
+                        href="/admin/orders"><span class='text'>Đơn Hàng</span></a></li>
+        <!-- san pham -->
+        <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-th-large icon_link with-tip"
+                        href="/admin/products"><span class='text'>Sản
+                                Phẩm</span></a></li>
+        <!-- bao cao -->
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-bar-chart icon_link with-tip"
+                        href="/admin/reports"><span class='text'>Báo
+                                Cáo</span></a></li>
+        <!-- cau hinh-->
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-wrench icon_link with-tip"
+                        href="/admin/general_settings/edit"><span class='text'>Cấu Hình</span></a></li>
+        <!-- khuyen mai -->
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-bullhorn icon_link with-tip"
+                        href="/admin/promotions"><span class='text'>Khuyến Mãi</span></a></li>
+        <!-- nguoi dung -->
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-user-plus icon_link with-tip"
+                        href="/admin/users"><span class='text'>Người
+                                Dùng</span></a></li>
+        <%# <li class="tab-with-icon nav-item"><a class="nav-link fa fa-icon-th-large icon_link with-tip"
+                             href="/admin/comments"><span class='text'>Bình Luận</span></a></li> %>
+        <%# <li class="tab-with-icon nav-item"><a class=" nav-link fa fa-icon-th-large icon_link with-tip"
+                        href="/admin/sale_performances"><span class='text'>Sale Performances</span></a></li> %>
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-rss icon_link with-tip"
+                        href="/admin/blog_entries"><span class='text'>Blog</span></a></li>
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-filter icon_link with-tip"
+                        href="/admin/taxonomies"><span class='text'><%=Spree.t(:taxonomies)%></span></a></li>
+        <li class="tab-with-icon nav-item"><a class="nav-link fa fa-database icon_link with-tip"
+                        href="/admin/option_types"><span class='text'>
+                                Option types</span></a></li>
+        <% end %>
+</ul>
+<% end %>
+</nav>
+
+<script>
+$(document).ready(function () {
+                   $(".fa-bars").click(function () {
+                           $("#admin-menu ul li").toggleClass("active");
+                   });
+
+                   $(".admin-menu-toolbar ul li").removeClass("selected");
+
+
+                   //site = window.location.pathname.indexOf('/', 7);
+                   //locat = site == -1 ? window.location.pathname : window.location.pathname.slice(0,
+                   //       site);
+                   // if (locat == "/admin")
+                   //        locat = "/admin/orders"
+                   // $("a[href$='" + locat + "']").parent().addClass("selected")
+
+
+
+                   site = window.location.pathname.split('?')[0];
+                   if (site == "/admin") {
+                           $("a[href$='/admin/orders']").parent().addClass("selected");
+                   } else {
+                           $('#admin-menu ul li a').each(function () {
+                                   if (site.includes($(this).attr("href"))) {
+                                           $(".admin-menu-toolbar ul li").removeClass(
+                                                   "selected");
+                                           $(this).parent().addClass("selected");
+                                           return false;
+                                   }
+                                   $("a[href$='/admin/general_settings/edit']").parent()
+                                           .addClass("selected");
+                           });
+                   }
+           });
+
+</script>
+

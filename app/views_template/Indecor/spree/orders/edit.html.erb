@@ -1,0 +1,55 @@
+<% @body_id = 'cart' %>
+<div data-hook="cart_container" class="container">
+  <h1><%= Spree.t(:shopping_cart) %></h1>
+
+  <% if @order.line_items.empty? %>
+
+    <div data-hook="empty_cart">
+      <p><%= Spree.t(:your_cart_is_empty) %></p>
+      <p><%= link_to Spree.t(:continue_shopping), products_path, :class => 'button continue' %></p>
+    </div>
+
+  <% else %>
+
+    <div data-hook="outside_cart_form">
+      <%= form_for @order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
+        <div data-hook="inside_cart_form">
+
+          <div data-hook="cart_items">
+            <%= render :partial => 'form', :locals => { :order_form => order_form } %>
+          </div>
+
+          <div class="links columns sixteen alpha omega" data-hook="cart_buttons">
+
+            <%#= link_to Spree.t(:continue_shopping), "/", :class => 'btn button gray', :id => 'return-button'%>
+             
+            <%= button_tag :class => 'cart-button', :id => 'checkout-link', :name => 'checkout' do %>
+              <%= Spree.t(:checkout) %>
+            <% end %>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="coupon-all">
+                    <div class="coupon2">
+                        <input class="button" name="update_cart" value="Update cart" type="submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 ml-auto">
+                <div class="cart-page-total">
+                    <h2>Cart totals</h2>
+                    <ul>
+                        <li>Subtotal <span><%= order_form.object.display_total %></span></li>
+                        <li>Total <span><%= order_form.object.display_total %></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+      <% end %>
+    </div>
+
+  <% end %>
+</div

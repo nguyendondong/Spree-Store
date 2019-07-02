@@ -1,0 +1,14 @@
+@import url("vendor/bootstrap/css/bootstrap.min.css");
+@import url("fonts/font-awesome-4.7.0/css/font-awesome.min.css");
+@import url("fonts/iconic/css/material-design-iconic-font.min.css");
+@import url("fonts/linearicons-v1.0.0/icon-font.min.css");
+@import url("vendor/animate/animate.css");
+@import url("vendor/css-hamburgers/hamburgers.min.css");
+@import url("vendor/animsition/css/animsition.min.css");
+@import url("vendor/select2/select2.min.css");
+@import url("vendor/daterangepicker/daterangepicker.css");
+@import url("vendor/slick/slick.css");
+@import url("vendor/MagnificPopup/magnific-popup.css");
+@import url("vendor/perfect-scrollbar/perfect-scrollbar.css");
+@import url("util.css");
+@import url("main.css");

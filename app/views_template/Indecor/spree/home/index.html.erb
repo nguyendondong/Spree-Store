@@ -1,0 +1,44 @@
+<% content_for :social_meta_data do %>
+  <% if current_store.social_image.present? %>
+  <meta property="og:image" content='<%= image_path current_store.social_image %>'>
+  <% end %>
+<% end %>
+<% content_for :slides do %>
+    <%= render :partial => 'spree/shared/slider' %>
+<% end %>
+
+<!--
+<div data-hook="homepage_products">
+  <%# cache([@current_store.code, cache_key_for_products]) do %>
+    <%#= render :partial => 'spree/shared/our_product', :locals => { :products => @products } %>
+  <%# end %>
+</div>
+-->
+
+<% content_for :feature do %>
+    <%= render :partial => 'spree/shared/feature' %>
+<% end %>
+
+<% content_for :our_collection do %>
+    <%= render :partial => 'spree/shared/our_collection' %>
+<% end %>
+
+<% content_for :deal_product do %>
+    <%= render :partial => 'spree/shared/deal_product' %>
+<% end %>
+
+<% content_for :list_product do %>
+    <%= render :partial => 'spree/shared/list_product' %>
+<% end %>
+
+<% content_for :about do %>
+    <%= render :partial => 'spree/shared/about' %>
+<% end %>
+
+<% content_for :brand do %>
+    <%= render :partial => 'spree/shared/brand' %>
+<% end %>
+
+<% content_for :blog do %>
+    <%= render :partial => 'spree/shared/blog' %>
+<% end %>

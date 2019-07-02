@@ -1,0 +1,36 @@
+<% address_id = address_type.chars.first %>
+<div class="inner" data-hook=<%="#{address_type}_inner" %>>
+  <div class="form-group" id=<%="#{address_id}firstname" %>>
+    <%= form.label :fullname, Spree.t(:full_name) + ":" %>
+    <%= form.text_field :firstname, :class => 'required form-control',:placeholder => 'Ghi đầy đủ tên họ. VD: Nguyễn Văn A', :value => "#{@firstname}" %>
+  </div>
+
+  <div class="form-group" id=<%="#{address_id}phone" %>>
+    <%= form.label :phone, Spree.t(:phone) + ":" %>
+    <%= form.text_field :phone, :class => 'required form-control',:placeholder => 'Ghi chính xác số điện thoại ', :value => "#{@phone}" %>
+  </div>
+
+  <div class="form-group" id=<%="#{address_id}city" %>>
+    <%= form.label :city, Spree.t(:city) + ":" %>
+    <%= form.collection_select(:state_id, Spree::State.all,
+                            :id, :name,
+                            {:include_blank => true},
+                            {:class => 'required form-control', :id => 'address-state'}) %>
+  </div>
+  <div class="form-group" id=<%="district" %>>
+    <%= form.label :district, Spree.t(:district) + ":" %>
+    <%= form.collection_select(:district_id, @districts,
+                            :id, :name,
+                            {:include_blank => true},
+                            {:class => 'required form-control', :id => 'address-district'}) %>
+
+  </div>
+  <div class="form-group" id=<%="#{address_id}address1" %>>
+    <%= form.label :address1, Spree.t(:street_address) + ":" %>
+    <%= form.text_field :address1, :class => 'required form-control',:placeholder => 'Ghi rõ số nhà, tên đường, thôn, xóm, ...', :value => "#{@address1}" %>
+  </div>
+  <%= form.hidden_field :city, :id => "address-city" %>
+  <%= form.hidden_field :zipcode, :value => "70000" %>
+  <%= form.hidden_field :lastname, :value => 'ABC' %>
+  <%= form.hidden_field :country_id, :value => '84' %>
+</div>

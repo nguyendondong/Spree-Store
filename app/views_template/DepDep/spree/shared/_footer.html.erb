@@ -1,0 +1,111 @@
+<div id="footer">
+
+	<!-- Container -->
+	<div class="container">
+
+		<div class="col-md-3">
+			<h3 class="headline footer">Giới thiệu</h3>
+			<span class="line"></span>
+			<div class="clearfix"></div>
+			<!-- <p class="margin-top-15">Chuyên bán lẻ phụ kiện chất lượng cao dành cho giới trẻ</p> -->
+			<ul class="footer-links">
+
+					<li>Công ty TNHH <%= current_store.name %></li>
+					<li>Văn phòng: Đường 30/4, p.Tân Thành, Q.Tân Phú, TP.HCM</li>
+					<li>Email: <%= current_store.mail_from_address %></li>
+					<li>ĐT: <%= current_store.phone %></li>
+			</ul>
+		</div>
+
+		<div class="col-md-3">
+
+			<!-- Headline -->
+			<h3 class="headline footer">Chính sách</h3>
+			<span class="line"></span>
+			<div class="clearfix"></div>
+
+			<ul class="footer-links">
+				<% Spree::Page.footer_links.each do |page| %>
+					<li><%= link_to page.title, page.link %></li>
+				<% end %>
+			</ul>
+
+		</div>
+
+		<div class="col-md-3">
+
+			<!-- Headline -->
+			<h3 class="headline footer">Liên hệ</h3>
+			<span class="line"></span>
+			<div class="clearfix"></div>
+			<ul class="footer-links">
+					<li>Điện Thoại: <%= current_store.phone %></li>
+			</ul>
+		</div>
+
+		<div class="col-md-3">
+
+			<!-- Headline -->
+			<h3 class="headline footer">Chứng nhận</h3>
+			<span class="line"></span>
+			<div class="clearfix"></div>
+			<a href="http://online.gov.vn/HomePage/CustomWebsiteDisplay.aspx?DocId=11342">
+				<%= image_tag "da-dang-ky-bo-cong-thuong.png", :class => "da-dang-ky" %>
+			</a>
+			<!-- <p>Cửa hàng chúng tôi thường xuyên có các chương trình khuyến mãi, giảm giá sốc. Đăng ký để nhận được thông tin về các chương trình khuyến mãi ngay hôm nay</p>
+			<form action="#" method="get">
+				<button class="newsletter-btn" type="submit">Đăng ký</button>
+				<input class="newsletter" type="text" placeholder="abc@gmail.com" value="">
+			</form> -->
+		</div>
+
+
+	</div>
+	<!-- Container / End -->
+
+</div>
+
+<div id="footer-bottom">
+	<!-- Container -->
+	<div class="container">
+		<div class="pull-left">© Copyright <%= Time.now.year %> by <%= current_store.name %>. All Rights Reserved.</div>
+		<div class="pull-right">
+			<ul class="payment-icons">
+				<li><%= image_tag "visa.png" %></li>
+				<li><%= image_tag "mastercard.png" %></li>
+			</ul>
+		</div>
+	</div>
+	<!-- Container / End -->
+</div>
+
+
+
+<script type="text/javascript">
+	var config = {'.chosen-select' : {},}
+	for (var selector in config) {
+		$(selector).chosen(config[selector]);
+	}
+</script>
+
+<% if request.url.include?("cart") %>
+	<style>
+	#footer-bottom{
+		background: #505050;
+   	 	color: #a8a8a8;
+   		padding: 17px 0 42px 0;
+	}
+	</style>
+<%end%>
+<% if request.url.include?("products") %>
+	<style>
+	@media screen and (max-width: 992px){
+		#footer-bottom{
+			background: #505050;
+   	 	color: #a8a8a8;
+   		padding: 17px 0 42px 0;
+	}
+	}
+	
+	</style>
+<%end%>

@@ -1,0 +1,13 @@
+#checkout-notes {
+	border: 2px solid;
+}
+.summary-note {
+	text-align: left;
+	padding-left: 8px;
+}
+.summary-note-label {
+	font-weight: bold;
+}
+fieldset#order_summary .thank-you-text{
+    margin-left: 13px;
+}

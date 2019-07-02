@@ -1,0 +1,47 @@
+<nav class="menu">
+  <ul data-hook="admin_order_tabs">
+    <% if can? :update, @order %>
+      <li<%== ' class="active"' if current == 'Order Details' %> data-hook='admin_order_tabs_order_details'>
+        <%= link_to_with_icon 'edit', Spree.t(:order_details), edit_admin_order_url(@order) %>
+      </li>
+    <% end %>
+
+    <% if can?(:update, @order) && checkout_steps.include?("address") %>
+      <li<%== ' class="active"' if current == 'Customer Details' %> data-hook='admin_order_tabs_customer_details'>
+        <%= link_to_with_icon 'user', Spree.t(:customer_details), admin_order_customer_url(@order) %>
+      </li>
+    <% end %>
+
+    <% if can? :index, Spree::Adjustment %>
+      <li<%== ' class="active"' if current == 'Adjustments' %> data-hook='admin_order_tabs_adjustments'>
+        <%= link_to_with_icon 'cogs', Spree.t(:adjustments), admin_order_adjustments_url(@order) %>
+      </li>
+    <% end %>
+
+    <% if can?(:index, Spree::Payment) %>
+      <li<%== ' class="active"' if current == 'Payments' %> data-hook='admin_order_tabs_payments'>
+        <%= link_to_with_icon 'credit-card', Spree.t(:payments), admin_order_payments_url(@order) %>
+      </li>
+    <% end %>
+
+    <% if (can? :create, Spree::ReturnAuthorization) || (can? :edit, Spree::ReturnAuthorization) %>
+      <% if @order.completed? %>
+        <% if @return_authorization.blank? %>
+          <li<%== ' class="active"' if current == 'Return Authorizations' %> data-hook='admin_order_tabs_return_authorizations'>
+            <%= link_to_with_icon 'share', Spree.t(:return_authorizations), new_admin_order_return_authorization_url(@order), :data => { :confirm => Spree.t(:are_you_sure) } %>
+          </li>
+        <% elsif @return_authorization.can_receive? %>
+          <li class="return-authorization-buttons">
+            <div class="title"><%= Spree.t(:return_authorizations) %></div>
+            <% if @return_authorization.can_receive? %>
+              <%= button_link_to Spree.t(:receive), fire_admin_order_return_authorization_url(@order, @return_authorization, :e => 'receive'), :method => :put, :data => { :confirm => Spree.t(:are_you_sure) }, :icon => 'download-alt' %>
+            <% end %>
+            <!--% if @return_authorization.can_cancel? %>-->
+              <!--%= button_link_to Spree.t('actions.cancel'), fire_admin_order_return_authorization_url(@order, @return_authorization, :e => 'cancel'), :method => :put, :data => { :confirm => Spree.t(:are_you_sure) }, :icon => 'remove' %>-->
+            <!--% end %>-->
+          </li>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+</nav>

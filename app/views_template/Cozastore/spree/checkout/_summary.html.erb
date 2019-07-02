@@ -1,0 +1,35 @@
+<div class="your-order">
+  <h3>Your order</h3>
+  <div class="your-order-table table-responsive">
+      <table class="table">
+          <thead>
+              <tr>
+                  <th class="cart-product-name">Product</th>
+                  <th class="cart-product-total">Total</th>
+              </tr>
+          </thead>
+          <tbody>
+          <% order.line_items.each do |line_item| -%>
+          <% variant = line_item.variant -%>
+              <tr class="cart_item">
+                <td class="cart-product-name"> <%= link_to "#{line_item.name} #{variant_name(variant)}", product_path(variant.product) %><strong class="product-quantity"> x <%= line_item.quantity %></strong></td>
+                <td class="cart-product-total"><span class="amount"><%= line_item.price %></span></td>
+              </tr>
+          <% end %>
+          </tbody>
+          <tfoot>
+              <tr class="cart-subtotal">
+                  <th>Cart Subtotal</th>
+                  <td><span class="amount"><%= order.display_item_total.to_html %></span></td>
+              </tr>
+              <tr class="order-total">
+                  <th>Order Total</th>
+                  <td><strong><span class="amount"><%= order.display_item_total.to_html %></span></strong></td>
+              </tr>
+          </tfoot>
+      </table>
+  </div>
+  <div class="summary-note"><span class='summary-note-label'>Phí vận chuyển:</span> 20K đối với các đơn hàng ở TP.HCM, 30K với các tỉnh còn lại. Miễn phí vận chuyển với các đơn hàng từ 500K trở lên </span></div>
+  <div class="summary-note"><span class='summary-note-label'>Thời gian nhận hàng:</span> TP.HCM nhận hàng trong vòng 24h, các tỉnh thành còn lại, từ 1-4 ngày làm việc.</div>
+  
+</div>

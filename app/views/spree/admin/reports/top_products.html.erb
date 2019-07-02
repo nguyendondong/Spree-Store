@@ -1,0 +1,181 @@
+<% content_for :page_title do %>
+  <span class="sbp-on-hand">Số Lượng Tồn: <strong>200</strong><span>
+  <span class="sbp-on-hand">- Giá Trị Tồn: <strong>200M</strong><span>
+
+<% end %>
+
+<% content_for :page_actions do %>
+  <div id="top-link">
+    <div class="menu-link">
+      <a href="/admin/reports">Tổng Quan</a>
+      <% @reports.each do |key, value| %>
+          <%= link_to value[:name], send("#{key}_admin_reports_url".to_sym)%>
+      <% end %>
+    </div>
+    <li><%= link_to_with_icon 'arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+  </div>
+<% end %>
+<div id="sales-bp-content">
+      <!-- content chart -->
+        <div class="chart-sales-bp">
+          <div class="chart-control control-bp">
+            <!-- select 1 -->
+            <select id="s-content">
+              <option value="1">Bán Chạy Nhất</option>
+              <option value="2">Doanh Thu Nhiều Nhất</option>
+              <option value="3">Giá Trị Tồn Nhiều Nhất</option>
+              <option value="4">Tồn Kho Nhiều Nhất</option>
+            </select>
+            <!-- select 2 -->
+            <select>
+              <option>Top 5</option>
+              <option>Top 10</option>
+              <option>Top 20</option>
+            </select>
+            <!-- select 3 -->
+            <select>
+              <option>Hôm Nay</option>
+              <option>7 ngày qua</option>
+              <option>30 Ngày qua</option>
+              <option>90 Ngày qua</option>
+            </select>
+            <!-- button -->
+            <button id="fill-chart" type="button">XEM</button>
+          </div>
+          <!-- div draw chart -->
+          <div id="chart-sales-bp"></div>
+          <div id="chart-type-products"></div>         
+        </div>
+      <!-- end content chart -->
+      
+      <!-- table content -->
+        <div class="table-sales-bp ">
+          <h3>Số Liệu Chi Tiết</h3>
+          <!-- table control -->
+          <div class="table-control control-bp">
+            <!-- select 1 -->
+            <select id="sbp-date-range">
+                <option value="tuyChinh">Tùy chỉnh</option>
+                <option value="homNay" selected>Hôm nay</option>
+                <option value="homQua">Hôm qua</option>
+                <option value="tuanQua">7 ngày qua</option>
+                <option value="thangQua">30 ngày qua</option>
+                <option value="quyQua">90 ngày qua</option>
+                <option value="namNay">Năm nay</option>
+            </select>
+            <!-- div pick date -->
+            <div class="date-range-filter field align-center">
+              <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+              <input class="datepicker datepicker-from">
+              <span class="range-divider">
+                <i class="fa fa-arrow-right"></i>
+              </span>
+              <input class="datepicker datepicker-to">            
+              <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+            </div>
+            <!-- select 3 -->
+            <select>
+              <option>Loại</option>
+              <option>Đồng Hồ Nam</option>
+              <option>Đồng Hồ Nữ</option>
+              <option>Đồng Hồ Cặp</option>
+            </select>
+            <!-- button -->
+            <button id="fill-table" type="button">XEM</button>
+          </div>
+          <!-- end table control -->
+          <!-- table -->
+          <table id="sales-bp-details" data-toggle="table"> 
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Tên</th>
+                    <th>Loại Sản Phẩm</th>
+                    <th>Giá Vốn</th>
+                    <th>Giá Bán</th>
+                    <th>Tồn Kho</th>
+                    <th>Bán Ra</th>
+                    <th>SL Cần Nhập</th>
+                    <th>Doanh Thu</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="sku">DHSK-011</td>
+                    <td class="title-product">
+                      <img src="https://donghox.webmely.com/spree/products/1702/mini/DHSK-011.jpg?1444384667">
+                      <a href="http://google.com">Đồng hồ LED Skmei Mặt Vuông Phong Cách Mới DHSK-011</a>
+                    </td> 
+                    <td class="type-product">Đồng hồ cặp</td>
+                    <td>200.000 đ</td>
+                    <td>250.000 đ</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>780.000 ₫</td>
+                </tr>
+                <tr>
+                    <td class="sku">DHSK-011</td>
+                    <td class="title-product">
+                      <img src="https://donghox.webmely.com/spree/products/1702/mini/DHSK-011.jpg?1444384667">
+                      <a href="http://google.com">Đồng hồ LED Skmei Mặt Vuông Phong Cách Mới DHSK-011</a>
+                    </td> 
+                    <td class="type-product">Đồng hồ cặp</td>
+                    <td>200.000 đ</td>
+                    <td>250.000 đ</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>780.000 ₫</td>
+                </tr>
+                <tr>
+                    <td class="sku">DHSK-011</td>
+                    <td class="title-product">
+                      <img src="https://donghox.webmely.com/spree/products/1702/mini/DHSK-011.jpg?1444384667">
+                      <a href="http://google.com">Đồng hồ LED Skmei Mặt Vuông Phong Cách Mới DHSK-011</a>
+                    </td> 
+                    <td class="type-product">Đồng hồ cặp</td>
+                    <td>200.000 đ</td>
+                    <td>250.000 đ</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>780.000 ₫</td>
+                </tr>
+                <tr>
+                    <td class="sku">DHSK-011</td>
+                    <td class="title-product">
+                      <img src="https://donghox.webmely.com/spree/products/1702/mini/DHSK-011.jpg?1444384667">
+                      <a href="http://google.com">Đồng hồ LED Skmei Mặt Vuông Phong Cách Mới DHSK-011</a>
+                    </td> 
+                    <td class="type-product">Đồng hồ cặp</td>
+                    <td>200.000 đ</td>
+                    <td>250.000 đ</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>780.000 ₫</td>
+                </tr>
+                <tr>
+                    <td class="sku">DHSK-011</td>
+                    <td class="title-product">
+                      <img src="https://donghox.webmely.com/spree/products/1702/mini/DHSK-011.jpg?1444384667">
+                      <a href="http://google.com">Đồng hồ LED Skmei Mặt Vuông Phong Cách Mới DHSK-011</a>
+                    </td> 
+                    <td class="type-product">Đồng hồ cặp</td>
+                    <td>200.000 đ</td>
+                    <td>250.000 đ</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>780.000 ₫</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      <!-- end table content -->
+</div>
+<!-- script of page -->
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<script src="/assets/spree/backend/topproduct.js"></script>

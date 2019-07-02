@@ -1,0 +1,11 @@
+<% if defined?(image) && image %>
+  <%= image_tag image.attachment.url(:product), :itemprop => "image", :class => "img-responsive" %>
+<% else %>
+  <% if @product.cover_image.present? && @product.cover_image.attachment.url(:product).present? %>
+    <%= image_tag @product.cover_image.attachment.url(:product), :class => "img-responsive" %>
+  <% elsif @product.images.first.present? && @product.images.first.attachment.url(:product).present? %>
+    <%= image_tag @product.images.first.attachment.url(:product), :class => "img-responsive" %>
+  <% else %>
+    <%= product_image(@product, :itemprop => "image") %>
+  <% end %>
+<% end %>

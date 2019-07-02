@@ -1,0 +1,14 @@
+<% if @slider.present? && @slider.slider_images.present? %>
+  <div class="slideshow slider">
+    <div id="home-slider">
+      <% @slider.slider_images.each do |image| %>
+        <%= image_tag image.image.url(:product), "data-href" => "#{image.url.present? ? image.url: ''}", :class => "#{image.url.present? ? 'link' : ''}" %>
+      <% end %>
+    </div>
+    <div id="home-slider-carousel-prev" class="prev"></div>
+    <div id="home-slider-carousel-next" class="next"></div>
+    <div class="wrap-pag">
+      <div id="home-slider-pagination" class="pagination"></div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,19 @@
+<div class="col-md-6 col-lg-7 p-b-30">
+    <div class="p-l-25 p-r-30 p-lr-0-lg">
+        <div class="wrap-slick3 flex-sb flex-w">
+            <div class="wrap-slick3-dots"></div>
+            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+            <div class="slick3 gallery-lb">
+                <% @product.images.each do |image|%>
+                <div class="item-slick3" data-thumb="<%= image.attachment.url %>">
+                    <div class="wrap-pic-w pos-relative">
+                        <%= image_tag image.attachment.url(:large), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+                        <%= link_to '<i class="fa fa-expand"></i>'.html_safe, (image.attachment.url(:large)), :class => 'flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04' %>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

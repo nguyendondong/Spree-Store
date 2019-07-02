@@ -1,0 +1,78 @@
+<div id="about-albums-competition">
+  <div class="tabs">
+    <div id="competition-rules">Thể lệ cuộc thi</div>
+    <div id="participants">Đối tượng tham gia</div>
+    <div id="award-structures">Cơ cấu giải thưởng</div>
+    <div id="competition-album">
+      <a href="/albums">Album dự thi</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="section1">
+      <div class="my-girl"></div>
+      <div class="event-title"></div>
+      <div class="join-now" id="join-competition" data-signed=<%= spree_current_user.present? ? true : false %> data-phone=<%= (spree_current_user.present? && spree_current_user.phone.present?) ? true : false %>>
+        <%= link_to "", my_albums_path %>
+      </div>
+      <div class="watches-1"></div>
+      <div class="image-gallery"></div>
+    </div>
+    <div class="shape-absolute-1"></div>
+    <div class="shape-absolute-2"></div>
+
+    <div class="section2">
+      <div class="symbol-absolute-1"></div>
+      <div id="competition-rules-content">
+        <h2>Thể lệ cuộc thi</h2>
+        <p>Với mỗi sản phẩm đã mua, bạn được đăng ký 1 album dự thi, không giới hạn số lượng album. Mỗi cuối tháng, donghox sẽ tổng hợp số lượng like album, album có nhiều lượt like nhất sẽ là người thắng giải.</p>
+        <p>Yêu cầu: hình chụp phải thể hiện rõ chiếc đồng hồ đang đeo.</p>
+        <p>Người tham dự vui lòng điền chính xác SDT đã sử dụng để mua hàng tại donghox.com. Chúng tôi sẽ dùng số điện thoại này để xác thực và trao giải.</p>
+      </div>
+      <div class="circle-dashed-1"></div>
+      <div class="watches-2"></div>
+    </div>
+
+    <div class="shape-absolute-3"></div>
+    <div class="shape-absolute-4"></div>
+
+    <div class="section3">
+      <div class="circle-dashed-2"></div>
+      <div class="watches-3"></div>
+      <div class="symbol-absolute-2"></div>
+      <div id="participants-content">
+        <h2>Đối tượng tham gia</h2>
+        <p>Tất cả các khách hàng đã từng mua sản phẩm tại donghox.com. Với mỗi sản phẩm đã mua, bạn được đăng ký 1 album dự thi, không giới hạn số lượng album.</p>
+      </div>
+    </div>
+
+    <div class="section4">
+      <div class="symbol-absolute-3"></div>
+      <div id="award-structures-content">
+        <h2>Cơ cấu giải thưởng</h2>
+        <h3>Giải của tháng (kết quả công bố vào cuối tháng):</h3>
+        <p>1 Giải nhất: voucher mua hàng trị giá 1.000.000 đ</p>
+        <p>5 giải khuyến khích: mỗi giải 1 voucher mua hàng trị giá 200.000 đ</p>
+        <h3>Giải của năm (kết quả công bố vào cuối năm):</h3>
+        <p>1 Giải nhất: Tiền mặt trị giá 5.000.000 đ</p>
+        <p>5 giải khuyến khích: mỗi giải 1 voucher mua hàng trị giá 1.000.000 đ</p>
+      </div>
+      <div class="circle-dashed-3"></div>
+      <div class="watches-4"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ask-to-update-phone-modal">
+  <div>
+    Bạn chưa nhập số điện thoại. Hãy cập nhật.
+  </div>
+  <div class="content">
+    <input class="phone" type="text" placeholder="Nhập số điện thoại">
+  </div>
+  <div class="error">
+  </div>
+  <div class="success">
+  </div>
+  <a class="update-phone">Cập nhật</a>
+</div>

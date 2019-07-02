@@ -1,0 +1,29 @@
+<%= render :partial => 'spree/admin/shared/configuration_slider_menu' %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @slider_image } %>
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:back_to_images_list), admin_slider_slider_images_url(@slider), :icon => 'arrow-left' %>
+  </li>
+<% end %>
+
+<%= form_for [:admin, @slider, @slider_image], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="edit_image">
+    <legend align="center"><%= @slider_image.image_file_name %></legend>
+    <div class="field alpha three columns align-center" data-hook="thumbnail">
+      <%= f.label Spree.t(:thumbnail) %>
+      <br/>
+      <%= link_to image_tag(@slider_image.image.url(:mini)), @slider_image.image.url(:product) %>
+    </div>
+    <div class="nine columns omega">
+      <%= render :partial => 'form', :locals => { :f => f } %>
+    </div>
+    <div class="clear"></div>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('actions.update'), 'refresh' %>
+      <span class="or">
+        <%= Spree.t(:or) %>
+      </span>
+      <%= link_to Spree.t(:back_to_images_list), admin_slider_slider_images_url(@slider), :class => "button" %>
+    </div>
+  </fieldset>
+<% end %>

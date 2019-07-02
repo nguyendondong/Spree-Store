@@ -1,0 +1,147 @@
+<script>
+var a
+$(document).ready(function (e) {
+
+  // Insert
+  $('#new_product_image').on('submit', function(e) {
+    e.preventDefault();
+    var $data = new FormData(this);
+    console.log($data)
+
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: $data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        $("#file_upload").val('');
+        var product = JSON.parse(data.product);
+        var has_variants = data.has_variants;
+        var options_text_for = data.options_text_for;
+        addTable(product, has_variants, options_text_for);
+        console.log(data)
+        a =data
+        console.log("Insert success");
+      },
+      error: function (data) {
+        console.log("Error");
+      }
+    });
+  });
+
+  $('#file_upload').on('change', function () {
+    $('#new_product_image').submit();
+  });
+
+  // Update
+  var $id = '';
+  $(document).on('click', '.update_image', function() {
+    $id = $(this).data('image-id');
+  });
+  $(document).on('submit', '#edit_product_image', function(e) {
+    e.preventDefault();
+    var $data = new FormData(this);
+    var $url = $(this).attr('action') + '/' + $id;
+
+    $.ajax({
+      type: 'POST',
+      url: $url,
+      data: $data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        console.log("Update success");
+        var $class = '.change_image_' + data.id;
+        var $imgUrl = '/spree/products/'+ data.id +'/mini/' + data.attachment_file_name;
+        
+        $($class).css({
+          'width': '48px !important',
+          'height': '48px !important',
+          'overflow': 'hidden !important',
+          'background': 'url('+ $imgUrl +') no-repeat'
+        });
+        $(".update_image").val('');
+      },
+      error: function (data) {
+        console.log("Error");
+      }
+    });
+  });
+
+  $(document).on('change', '.update_image', function () {
+    $('#edit_product_image').submit();
+  });
+});
+
+function addTable(product, has_variants, options_text_for) {
+  var url = 'http://donghox.com/admin/products/';
+  var html = '';
+  html += '<form accept-charset="UTF-8" action="/admin/products/' + product.slug + '/images" enctype="multipart/form-data" id="edit_product_image" method="post">';
+  html +=   '<div style="display:none">';
+  html +=     '<input name="utf8" type="hidden" value="✓">';
+  html +=     '<input name="_method" type="hidden" value="PUT">';
+  html +=     '<input name="authenticity_token" type="hidden" value="QQEFIu1pPBLMBnyENUop3SZBMBYb6Om4rG6yf4j5lsM=">';
+  html +=   '</div>';
+  html +=   '<input type="hidden" name="image[viewable_id]" value="' + product.variant_images[0].viewable_id + '">';
+  html +=   '<table class="index sortable" data-hook="images_table" data-sortable-link="'+ url + product.slug + '/images/update_positions">';
+  html +=     '<colgroup>';
+  html +=       '<col style="width: 5%">';
+  html +=       '<col style="width: 10%">';
+  if (has_variants) {
+    html +=     '<col style="width: 25%">';
+  }
+  html +=       '<col style="width: 45%">';
+  html +=       '<col style="width: 15%">';
+  html +=     '</colgroup>';
+  html +=     '<thead>';
+  html +=       '<tr data-hook="images_header">';
+  html +=         '<th colspan="2">HÌNH NHỎ</th>';
+  if (has_variants) {
+    html +=        '<th>VARIANTS</th>';
+  }
+  html +=         '<th>CHÚ THÍCH KHÁC</th>';
+  html +=         '<th class="actions"></th>';
+  html +=        '</tr>';
+  html +=     '</thead>';
+  html +=     '<tbody class="ui-sortable">';
+  $.each(product.variant_images, function(i, q) {
+    var $class = '';
+    if (i % 2 === 0) {
+      $class = 'odd';
+    }
+    else {
+      $class = 'even';
+    }
+    html += '<tr id="spree_image_' + q.id + '" data-hook="images_row" class="'+ $class +'">';
+    html +=   '<td class="no-border" style="width: 43px;"><span class="handle"></span></td>';
+    html +=   '<td>';
+    html +=     '<div class="change_image_' + q.id + '" style="background: url(/spree/products/' + q.id + '/mini/' + q.attachment_file_name + ') no-repeat">';
+    html +=       '<input type="file" name="image[attachment]" data-image-id="' + q.id + '" class="update_image">';
+    html +=     '</div>';
+    html +=   '</td>';
+    if (has_variants) {
+      html += '<td>' + options_text_for[i] + '</td>';
+    }
+    var $alt = '';
+    if (q.alt !== null) {
+      $alt =  q.alt;
+    }
+    else {
+      $alt =  '';
+    }
+    html +=   '<td>' + $alt + '</td>';
+    html +=   '<td class="actions">';
+    html +=     '<a class="fa fa-edit icon_link with-tip no-text" data-action="edit" href="' + url + product.slug + '/images/' + q.id + '/edit"></a>';
+    html +=     '<a class="delete-resource fa fa-trash icon_link with-tip no-text" data-action="remove" data-confirm="Bạn có chắn chắn không?" href="' + url + product.slug + '/images/' + q.id + '" url="' + url + product.slug + '/images/' + q.id + '"></a>';
+    html +=   '</td>';
+    html += '</tr>';
+  });
+  html +=     '</tbody>';
+  html +=   '</table>';
+  html += '</form>';
+  $('#image_list').html(html);
+}
+</script>

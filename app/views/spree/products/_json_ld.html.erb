@@ -1,0 +1,66 @@
+<% content_for :social_meta_data do %>
+  <meta property="og:title" content="<%= @product.name %>">
+  <meta property="og:description" content="<%= @product.meta_description.present? ? @product.meta_description : @product.name %>">
+  <meta property="og:url" content="http://<%= @domain_name %><%= product_path(@product) %>">
+  <meta property="og:image" content="http://<%= @domain_name %><%= @product.rep_image_url(:original) %>">
+  <meta property="og:type"   content="product" />
+  <meta property="product:brand"   content="<%= current_store.name %>" />
+  <meta property="product:category"   content="<%= @taxon.name if @taxon.present? %>" />
+  <meta property="product:availability"   content="instock" />
+  <meta property="product:condition"   content="new" />
+  <meta property="product:price:amount"   content="<%= @product.price %>" />
+  <meta property="product:price:currency"   content="<%= current_currency %>" />
+<% end %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "<%= @product.name %>",
+  "image": "<%= request.protocol + @domain_name + @product.rep_image_url(:original) %>",
+  "description": "<%= @product.meta_description.present? ? @product.meta_description : @product.name %>",
+  "sku": "<%= @product.sku %>",
+  "productID": "<%= @product.id %>",
+  "url": "<%= product_full_path(@product) %>",
+  "mpn": "<%= @product.id %>",
+  "brand": {
+    "@type": "Thing",
+    "name": "HOSI"
+  },
+  <% r = @product.reviews.first %>
+  <% if(r.present?) %>
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "<%= r.rating %>",
+      "bestRating": "5"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "<%= r.name %>"
+    }
+  },
+  <% end %>
+  <% if @product.reviews.count > 0 %>
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "<%= @product.avg_rating %>",
+    "reviewCount": "<%= @product.reviews.count %>",
+    "bestRating": "5"
+  },
+  <% end %>
+  "offers": {
+    "@type": "Offer",
+    "url": "<%= request.protocol + @domain_name %><%= product_path(@product) %>",
+    "priceCurrency": "<%= current_currency %>",
+    "price": "<%= @product.price %>",
+    "priceValidUntil": "2050-11-05",
+    "itemCondition": "NewCondition",
+    "availability": "InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "Cty TNHH HOSI"
+    }
+  }
+}
+</script>

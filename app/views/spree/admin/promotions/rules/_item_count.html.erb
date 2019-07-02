@@ -1,0 +1,6 @@
+<div class="field alpha four columns">
+  <%= select_tag "#{param_prefix}[preferred_operator]", options_for_select(Spree::Promotion::Rules::ItemCount::OPERATORS.map{|o| [Spree.t("item_count_rule.operators.#{o}"),o]}, promotion_rule.preferred_operator), {:class => 'select2 select_item_total fullwidth'} %>
+</div>
+<div class="field omega four columns">
+  <%= text_field_tag "#{param_prefix}[preferred_count]", promotion_rule.preferred_count, :class => 'fullwidth' %>
+</div>

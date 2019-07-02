@@ -1,0 +1,3 @@
+$('#list-review').append("<%= j render('spree/shared/review', review: @review) %>");
+$('input[type=radio].star').rating();
+$('#create-review')[0].reset();

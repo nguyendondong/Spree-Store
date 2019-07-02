@@ -1,0 +1,19 @@
+<div class="table-content table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="indecor-product-thumbnail">images</th>
+                <th class="cart-product-name">Product</th>
+                <th class="indecor-product-price">Unit Price</th>
+                <th class="indecor-product-quantity">Quantity</th>
+                <th class="indecor-product-subtotal">Total</th>
+                <th class="indecor-product-remove">remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <%= render partial: 'line_item', collection: order_form.object.line_items, locals: {order_form: order_form} %>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,65 @@
+<%
+  #paginated_products = @searcher.retrieve_products if params.key?(:keywords)
+  paginated_products ||= products
+%>
+
+<% content_for :head do %>
+  <% if paginated_products.respond_to?(:num_pages) %>
+    <%= rel_next_prev_link_tags paginated_products %>
+  <% end %>
+<% end %>
+
+<div data-hook="products_search_results_heading">
+  <% if products.empty? %>
+    <div data-hook="products_search_results_heading_no_results_found">
+      <%= Spree.t(:no_products_found) %>
+    </div>
+  <% elsif params.key?(:keywords) %>
+    <div data-hook="products_search_results_heading_results_found">
+      <h6 class="search-results-title"><%= Spree.t(:search_results, :keywords => h(params[:keywords])) %></h6>
+    </div>
+  <% end %>
+</div>
+
+<% if products.any? %>
+
+  <% products.each do |product| %>
+    <% url = product_path(product) %>
+
+      <div class="single-product-area col-sm-6 col-lg-4 d-inline-block">
+        <div class="product-img img-full">
+          <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+          <div class="product-action">
+              <ul>
+                  <li><%= link_to '<span class="icon_bag_alt"></span>'.html_safe, product_path(product) %></li>
+                  <!--
+                  <li><a href="wishlist.html" title="Add to Wish List"><span class=" icon_heart_alt "></span></a></li>
+                  <li><a href="compare.html" title="Compare this Product"><span class="icon_datareport"></span></a></li> -->
+              </ul>
+          </div>
+        </div>
+        <div class="product-content">
+          <div><%= link_to truncate(product.name, :length => 36), url, :class => 'info', :itemprop => "name", :title => product.name %>
+          </div>
+          <div class="product-price">
+            <span itemprop="offers">
+              <span class="now-price" itemprop="price"><%= display_price(product) %></span>
+              <% if product.before_sale_price.present? %>
+                <span class="before-sale-price" itemprop="price">
+                  <%= display_before_sale_price(product) %>
+                </span>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+  <% end %>
+  <% reset_cycle("classes") %>
+
+<% end %>
+
+<% if paginated_products.respond_to?(:num_pages) %>
+  <%= paginate paginated_products, :outer_window => 3 %>
+<% end %>

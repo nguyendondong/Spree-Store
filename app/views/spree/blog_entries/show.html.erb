@@ -1,0 +1,27 @@
+
+
+<div id="blog_entry_container">
+  <div class="row">
+    <div id="blog_entry_entry" class="col-md-9">
+
+      <h1><%= @blog_entry.title %></h1>
+      <% url = "http://"+ current_store.url + blog_entry_permalink(@blog_entry) %>
+      <!-- <div class="view-count"><%= Spree.t(:view_count) %>: <%= @blog_entry.view %></div> -->
+      <div class="fb-like" data-href="<%= url %>" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+      <div class="blog_entry_body">
+        <%== @blog_entry.body %>
+      </div>
+
+      <%= render :partial => 'spree/blog_entries/blog_entry_details', :locals => {:blog_entry => @blog_entry} %>
+    </div>
+
+    <%= render :partial => 'spree/blog_entries/comments', :locals => {:blog_entry => @blog_entry}  %>
+
+    <div class="col-md-3">
+    </div>
+  </div>
+</div>
+
+
+
+

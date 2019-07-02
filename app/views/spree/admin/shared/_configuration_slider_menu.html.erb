@@ -1,0 +1,12 @@
+<% content_for :sidebar_title do %>
+  <%= Spree.t(:configurations) %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <nav class="menu">
+    <ul class="sidebar" data-hook="admin_configurations_sidebar_menu">
+      <%= configurations_sidebar_menu_item Spree.t(:image), admin_slider_slider_images_path(@slider) %>
+    </ul>
+  </nav>
+<% end %>
+

@@ -1,0 +1,34 @@
+<tr class="volume_price fields">
+  <td>
+    <%= error_message_on(f.object, :range) %>
+    <%= f.number_field :range_start %>
+  </td>
+  <td>
+    <%= error_message_on(f.object, :range) %>
+    <%= f.number_field :range_end %>
+  </td>
+  <td class="hide">
+    <%= error_message_on(f.object, :discount_type) %>
+    <%= f.select :discount_type, options_for_select( [["#{Spree.t(:total_price)}",'price'],["#{Spree.t(:percent_discount)}",'percent'],["#{Spree.t(:price_discount)}",'dollar']], f.object.discount_type ), { inlcude_blank: true }, class: 'btn btn-primary' %>
+  </td>
+  <td class="hide">
+    <%= error_message_on(f.object, :name) %>
+    <%= f.text_field :name, :size => 10, class: "name" %>
+  </td>
+  <td class="hide">
+    <%= error_message_on(f.object, :range) %>
+    <%= f.text_field :range, :size => 10, class: "range" %>
+  </td>
+  <td>
+    <%= error_message_on(f.object, :amount) %>
+    <%= f.text_field :amount, :size => 10 %>
+  </td>
+  <td class="hide">
+    <%= error_message_on(f.object, :position) %>
+    <%= f.text_field :position, :size => 3 %>
+  </td>
+  <td class="actions">
+    <%= link_to_remove_fields '', f, class: 'no-text' %>
+  </td>
+</tr>
+

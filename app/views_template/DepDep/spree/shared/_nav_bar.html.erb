@@ -1,0 +1,91 @@
+<div class="col-md-9">
+	<div id="additional-menu">
+		<ul>
+			<% if spree_current_user %>
+			  
+        <li>
+          <%= link_to Spree.t(:account), "/account" %>
+        </li>
+        <li>
+          <%= link_to "Album ảnh", "/my-albums" %>
+        </li>
+        <li>
+			    <%= link_to Spree.t(:logout), spree_logout_path %>
+			  </li>
+			<% else %>
+			  <li>
+			    <%= link_to Spree.t(:login), spree_login_path %>
+			  </li>
+			  <li>
+			    <%= link_to Spree.t(:signup), spree_signup_path %>
+			  </li>
+			<% end %>
+			
+		</ul>
+	</div>
+</div>
+<div class="col-md-9">
+
+	<div id="cart">
+
+		<!-- Button -->
+		<div class="cart-btn">
+			<a href="/cart" class="button adc" data-total="<%= simple_current_order.present? ? (simple_current_order.display_total).to_s.gsub(/[$,]/,'').to_f : "0 VND"%>">
+				<%= simple_current_order.present? ? simple_current_order.display_total : "0 VND"%>
+			</a>
+
+		</div>
+
+		<div class="cart-list" style="display: none;">
+			<% if simple_current_order.present? %>
+
+				<div class="arrow"></div>
+
+					<div class="cart-amount" value="<%= simple_current_order.quantity %>">
+						<span><%= simple_current_order.quantity %> sản phẩm trong giỏ hàng</span>
+					</div>
+
+					<ul>
+						<% simple_current_order.line_items.each do |line_item| %>
+							<% variant = line_item.variant -%>
+							<li>
+								<% if variant.images.length == 0 %>
+									<%= link_to mini_image(variant.product), variant.product %>
+								<% else %>
+									<%= link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product %>
+								<% end %>
+								<%= link_to line_item.name, product_path(variant.product) %>
+								<span style="clear:both;text-align:center"><%= line_item.quantity %> x <%= line_item.single_money %></span>
+								<div class="clearfix"></div>
+							</li>
+
+						<% end %>
+					</ul>
+
+					<div class="cart-buttons button">
+						<%= form_for simple_current_order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
+						<%= button_tag :class => 'button checkout ', :id => 'checkout-link', :name => 'checkout' do %>
+									<%= Spree.t(:checkout) %>
+								<% end %>
+						<% end %>
+					</div>
+					<div class="clearfix">
+
+					</div>
+			<% end %>
+
+		</div>
+	</div>
+
+	<!-- Search -->
+	<nav class="top-search">
+			
+						<%= search_form_for  @search, :url => search_products_path	 , remote: true, :method => :get, :class => "form-inline", id: "search-product" do |f| %>
+							<%= f.text_field  :translations_name_cont, :placeholder => Spree.t(:search), :class=>"search-field form-control search-product", id: "q_name_cont"%>
+							<i class="fa fa-spinner fa-pulse search-animation"></i> 
+						<% end %>
+				
+	</nav>
+</div>
+
+

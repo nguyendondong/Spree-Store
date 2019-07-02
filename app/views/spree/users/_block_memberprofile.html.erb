@@ -1,0 +1,42 @@
+<div class="block memberprofile">
+  <div class="blocksubhead">
+    <%= image_tag "Target-Goal.png", class: "icontitle" %>
+    <span class="blocktitle">Thông tin cá nhân</span>
+  </div>
+  <div class="blockbody">
+    <!-- Form thay đổi thông tin -->
+    <%= form_for @user, :html => { :class => 'form-horizontal' } do |f|  %>
+    <div class="form-group">
+      <label for="phone" class="col-sm-2 control-label"> Nickname  </label>
+      <div class="col-sm-10">
+        <%= f.text_field :nickname, :class => "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email" class="col-sm-2 control-label">Email  </label>
+      <div class="col-sm-10">
+        <%= f.email_field :email, :class => "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phone" class="col-sm-2 control-label">Phone  </label>
+      <div class="col-sm-10">
+        <%= f.text_field :phone, :class => "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="avatar" class="col-sm-2 control-label">Avatar  </label>
+      <div class="col-sm-10">
+        <%= f.file_field :avatar %>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Lưu lại</button>
+        <%= link_to "Hủy bỏ", :back, :class =>"btn btn-default"%>
+      </div>
+    </div>
+    <% end %>
+    <!--/ Form thay đổi thông tin -->
+  </div>
+</div>

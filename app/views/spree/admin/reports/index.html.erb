@@ -1,0 +1,346 @@
+<% content_for :page_title do %>
+    <span><%= Spree.t(:listing_reports) %></span>
+    <div class="menu-link">
+        <a href="/admin/reports" class="selected">Tổng Quan</a>
+        <% @reports.each do |key, value| %>
+            <%= link_to value[:name], send("#{key}_admin_reports_url".to_sym)%>
+        <% end %>
+    </div>
+    <style>
+        h1.page-title{
+            display: flex;
+        }
+        body{
+            background-color: #E9F1F7;
+        }
+        #wrapper .layout_full .container-fluid >.row:first-child{
+            display: none;
+        }
+    </style>
+<% end %>
+
+    
+
+<div class="dashboard">
+  
+    <div class="row">
+      <div class="db-content">
+        <!-- form general -->
+        <form class="general">
+         <select>
+           <option value="0" selected>Ngày</option>
+           <option value="1">Tuần</option>
+           <option value="2">Tháng</option>
+           <option value="3">Quý</option>
+           <option value="4">Năm</option>
+         </select>
+        </form>
+        <!-- end form general -->
+
+        <div class="db-content-head">
+
+          <!-- box total sales -->
+          <div class="total-sale head-item">
+            <div class="head-item-title">
+              <h4>Doanh Thu Hôm Nay</h4>
+              <div class="total-value active">3.000.000 &#8363 </div>
+              <div class="total-value">9.000.000 &#8363 </div>
+              <div class="total-value">12.000.000 &#8363 </div>
+              <div class="total-value">20.000.000 &#8363 </div>
+              <div class="total-value">100.000.000 &#8363 </div>
+            </div>
+            <!-- list value -->
+            <div class="list-value">
+              <!-- item value day-->
+              <div class="item-value active">
+                <div>So với hôm qua
+                  <span class="down">5%</span>
+                </div>
+              </div>
+
+              <!-- item value week-->
+              <div class="item-value">
+                  <div>So với tuần trước
+                    <span class="down">5%</span>
+                  </div>
+              </div>
+
+              <!-- item value month-->
+              <div class="item-value">
+                  <div>So với tháng trước
+                    <span class="down">5%</span>
+                  </div>
+                  <div>So với tháng này năm trước
+                    <span class="sub-compare up">10%</span>
+                  </div>
+              </div>
+
+              <!-- item value quater-->
+              <div class="item-value">
+                  <div>So với quý trước
+                    <span class="down">5%</span>
+                  </div>
+                  <div>So với quý này năm trước
+                    <span class="sub-compare up">10%</span>
+                  </div>
+              </div>
+
+              <!-- item value year-->
+              <div class="item-value">
+                  <div>So với năm trước
+                    <span class="down">5%</span>
+                  </div>
+              </div>
+            </div>
+            <!-- end list value -->
+          </div>
+
+          <!-- box total order -->
+          <div class="total-order head-item">
+                <div class="head-item-title">
+                  <h4>Đơn Hàng Hôm Nay</h4>
+                  <div class="total-value active">30 </div>
+                  <div class="total-value">90 </div>
+                  <div class="total-value">120</div>
+                  <div class="total-value">200 </div>
+                  <div class="total-value">1000 </div>
+                </div>
+                <!-- list value -->
+                <div class="list-value">
+                  <!-- item value day-->
+                  <div class="item-value active">
+                    <div>So với hôm qua
+                      <span class="up">9%</span>
+                    </div>
+                  </div>
+    
+                  <!-- item value week-->
+                  <div class="item-value">
+                      <div>So với tuần trước
+                        <span class="down">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value month-->
+                  <div class="item-value">
+                      <div>So với tháng trước
+                        <span class="down">5%</span>
+                      </div>
+                      <div>So với tháng này năm trước
+                        <span class="sub-compare up">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value quater-->
+                  <div class="item-value">
+                      <div>So với quý trước
+                        <span class="down">5%</span>
+                      </div>
+                      <div>So với quý này năm trước
+                        <span class="sub-compare up">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value year-->
+                  <div class="item-value">
+                      <div>So với năm trước
+                        <span class="down">5%</span>
+                      </div>
+                  </div>
+                </div>
+                <!-- end list value -->
+          </div>
+
+          <!-- box total visit -->
+          <div class="total-visit head-item">
+                <div class="head-item-title">
+                  <h4>Lượt Xem Hôm Nay</h4>
+                  <div class="total-value active">30 </div>
+                  <div class="total-value">90 </div>
+                  <div class="total-value">120</div>
+                  <div class="total-value">200 </div>
+                  <div class="total-value">1000 </div>
+                </div>
+                <!-- list value -->
+                <div class="list-value">
+                  <!-- item value day-->
+                  <div class="item-value active">
+                    <div>So với hôm qua
+                      <span class="up">9%</span>
+                    </div>
+                  </div>
+    
+                  <!-- item value week-->
+                  <div class="item-value">
+                      <div>So với tuần trước
+                        <span class="down">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value month-->
+                  <div class="item-value">
+                      <div>So với tháng trước
+                        <span class="down">5%</span>
+                      </div>
+                      <div>So với tháng này năm trước
+                        <span class="sub-compare up">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value quater-->
+                  <div class="item-value">
+                      <div>So với quý trước
+                        <span class="down">5%</span>
+                      </div>
+                      <div>So với quý này năm trước
+                        <span class="sub-compare up">10%</span>
+                      </div>
+                  </div>
+    
+                  <!-- item value year-->
+                  <div class="item-value">
+                      <div>So với năm trước
+                        <span class="down">5%</span>
+                      </div>
+                  </div>
+                </div>
+                <!-- end list value -->
+          </div>
+
+
+        </div>
+
+
+
+        <form class="details">
+          <span>Dữ liệu so sánh tháng</span>
+          <select>
+           <option value="1">Tháng 1</option>
+           <option value="2">Tháng 2</option>
+           <option value="3">Tháng 3</option>
+           <option value="4">Tháng 4</option>
+           <option value="5">Tháng 5</option>
+           <option value="6">Tháng 6</option>
+           <option value="7">Tháng 7</option>
+           <option value="8">Tháng 8</option>
+           <option value="9">Tháng 9</option>
+           <option value="10">Tháng 10</option>
+           <option value="11">Tháng 11</option>
+           <option value="12">Tháng 12</option>
+         </select>
+         <select>
+           <option value="2017">2015</option>
+           <option value="2017">2016</option> 
+           <option value="2017">2017</option> 
+           <option value="2017">2018</option> 
+           <option value="2017">2019</option> 
+         </select>
+          <span>so với tháng</span>
+          <select>
+           <option value="1">Tháng 1</option>
+           <option value="2">Tháng 2</option>
+           <option value="3">Tháng 3</option>
+           <option value="4">Tháng 4</option>
+           <option value="5">Tháng 5</option>
+           <option value="6">Tháng 6</option>
+           <option value="7">Tháng 7</option>
+           <option value="8">Tháng 8</option>
+           <option value="9">Tháng 9</option>
+           <option value="10">Tháng 10</option>
+           <option value="11">Tháng 11</option>
+           <option value="12">Tháng 12</option>
+         </select>
+         <select>
+           <option value="2017">2015</option>
+           <option value="2017">2016</option> 
+           <option value="2017">2017</option> 
+           <option value="2017">2018</option> 
+           <option value="2017">2019</option> 
+         </select>
+         <button>Xem Dữ Liệu</button>
+       </form>
+
+
+
+        <div class="db-content-chart">
+          <div class="b-sales">
+            <div class="b-title">
+              <h3>Tổng Doanh Thu</h3>
+              <a href="">Xem chi tiết</a>
+              <button id="sales-btn">Mở rộng</button>
+            </div>
+            <div class="b-value">
+              <span class="value">2.000.000 đ</span>
+              <span class="up">5%</span>
+            </div>
+            <div id="sales-chart"></div>
+          </div>
+
+          <div class="b-total-order">
+            <div class="b-title">
+              <h3>Tổng Đơn Hàng</h3>
+              <a href="">Xem chi tiết</a>
+              <button id="oders-btn">Mở rộng</button>
+            </div>
+            <div class="b-value">
+                <span class="value">39</span>
+                <span class="down">5%</span>
+            </div>
+            <div id="total-order-chart"></div>
+          </div>
+          <div class="b-average-order-value">
+            <div class="b-title">
+              <h3>Doanh Thu Trung Bình Trên Đơn Hàng</h3>
+              <a href="">Xem chi tiết</a>
+              <button id="average-order-value-btn">Mở rộng</button>
+            </div>
+            <div class="b-value">
+                <span class="value">3.900.000 đ</span>
+                <span class="down">5%</span>
+            </div>
+            <div id="average-order-value-chart"></div>
+          </div>
+
+          <div class="b-online-store-sections">
+            <div class="b-title">
+              <h3>TỔNG LƯỢT TRUY CẬP CỬA HÀNG</h3>
+              <a href="">Xem chi tiết</a>
+              <button id="online-store-sections-btn">Mở rộng</button>
+            </div>
+            <div class="b-value">
+                <span class="value">30</span>
+                <span class="down">5%</span>
+            </div>
+            <div id="online-store-sections-chart"></div>
+          </div>
+          <div class="b-re-cus-rate">
+            <div class="b-title">
+              <h3>TỶ LỆ NGƯỜI DÙNG QUAY TRỞ LẠI</h3>
+              <a href="">Xem chi tiết</a>
+              <button id="re-cus-rate-btn">Mở rộng</button>
+            </div>
+            <div class="b-value">
+                <span class="value">30</span>
+                <span class="down">5%</span>
+            </div>
+            <div id="re-cus-rate-chart"></div>
+          </div>
+          <div class="b-conversion-rate">
+            <div class="b-title">
+              <h3>KHÔNG BIẾT DỊCH LÀ GÌ</h3>
+              <a href="">Xem chi tiết</a>
+            </div>
+            <div class="b-value">
+                <span class="value">5.12%</span>
+                <span class="up">5%</span>
+            </div>
+            <div id="re-cus-rate-chart"></div>
+          </div>
+          
+
+        </div>
+
+      </div>
+    </div>
+</div>
+<script src="/assets/spree/backend/dashboard.js"></script>

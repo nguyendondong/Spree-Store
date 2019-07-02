@@ -1,0 +1,18 @@
+<%= render :partial =>'spree/shared/top_bar' %>
+<div class="clearfix"></div>
+<div id="header" class="container" data-hook>
+	<% unless (mobile?) %>
+  <div class="four columns col-md-3">
+	<div id="logo">
+	 <%= link_to (image_tag current_store.logo(:medium), alt: current_store.name), "/" %>
+	</div>
+  </div>
+  <% end %>
+  <%= render :partial => 'spree/shared/nav_bar' %>
+</div>
+<%= render "spree/shared/slider" unless @disable_slider %>
+<%= render :partial => 'spree/shared/main_nav_bar' if store_menu? %>
+
+<% if @just_sign %>
+  <%#= render :partial => 'shared/invite_friends' %>
+<% end %>

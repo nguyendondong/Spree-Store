@@ -1,0 +1,241 @@
+
+<%
+  #paginated_products = @searcher.retrieve_products if params.key?(:keywords)
+  paginated_products ||= products
+%>
+
+<% content_for :head do %>
+<% if paginated_products.respond_to?(:num_pages) %>
+<%= rel_next_prev_link_tags paginated_products %>
+<% end %>
+<% end %>
+
+<div data-hook="products_search_results_heading">
+  <% if products.empty? %>
+  <div data-hook="products_search_results_heading_no_results_found">
+    
+  </div>
+  <% elsif params.key?(:keywords) %>
+  <div data-hook="products_search_results_heading_results_found">
+    <h6 class="search-results-title"><%= Spree.t(:search_results, :keywords => h(params[:keywords])) %></h6>
+  </div>
+  <% end %>
+</div>
+
+<div id="list-product">
+
+  <% if products.any? %>
+  <% products.each do |product| %>
+  <% url = product_path(product) %>
+  <div class="product col-md-4 col-xs-6">
+    <div class="product-image">
+      <div class="product-overlay"></div>
+      <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+      <% if product.price_based_on_volume_product.present? %>
+      <div class="volume-pricing fadeIn-right">
+        <div class="row">
+          <div class="col-xs-6">
+            <h5> Số lượng </h5>
+            <% product.price_based_on_volume_product.each do |info| %>
+            <p><%= info[:name] %></p>
+            <% end %>
+          </div>
+          <div class="col-xs-6">
+            <h5> Giá </h5>
+            <% product.price_based_on_volume_product_objs.each do |obj| %>
+            <p><%= display_price(obj) %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <!-- Modal -->
+      <div id="modal-<%= product.id%>" class="modal fade" role="dialog">
+        <div class="modal-dialog h-90">
+          <!-- Modal content-->
+          <div class="modal-content h-90" id="<%= product.id%>">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"> <%= product.name %> </h4>
+            </div>
+            <div class="modal-body">
+              <div class="modal-fixed-block">
+                <!-- fixed-block -->
+                <button type="button" class="btn modal-btn-block btn-choose">
+                  <b><%= Spree.t(:choose) %></b>
+                </button>
+                <% if check_variant(product, current_currency) %>
+                <div class="alert-added-to-cart">
+                  <div class="cart-item">
+                    <div class="item-image">
+                      <%= image_tag product.images.first.attachment.url(:small) , :itemprop => "image" , onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" if product.images.present?   %>
+                    </div>
+                    <div class="item-content">
+                      <p><%= product.name %></p>
+                      <p>
+                        <span class="price new-price"
+                          data-price="<%= (product.display_price).to_s.gsub(/[$,]/,'').to_f %>"><%= product.display_price %></span>
+                        <% if product.before_sale_price.present? %>
+                        <span class="regular-price">
+                          <%= display_before_sale_price(product) %>
+                        </span>
+                        <% end %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="quantity-variant">
+                    <div id="productvariants" class="col-sm-12">
+                      <h4 class="productsectiontitle text-left ">
+                        <%= Spree.t(:select) + " #{product.option_types.first.presentation}:" %></h4>
+                      <ul>
+                        <% product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+                        <li variant-id="<%= variant.id %>">
+                          <div class="variant cart-variant">
+                            <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                            <label data-variant="<%= variant.id %>" for="variant_id_<%= variant.id %>v"
+                              <% if index == 0 %> class="active" <% end %>>
+                              <%= variant_options variant %>
+                            </label>
+                          </div>
+
+                          <% if variant_price variant %>
+                          <span class="price diff"><%= variant_price variant %></span>
+                          <% end %>
+
+                          <% unless variant.can_supply? %>
+                          <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+                          <% end %>
+                        </li>
+                        <% end%>
+                      </ul>
+                    </div>
+                    <div class="col-sm-12 quantity">
+                      <div class="input-group btn-group">
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-success btn-number" data-type="minus"
+                            data-field="">
+                            <span class="glyphicon glyphicon-minus"></span>
+                          </button>
+                        </span>
+                        <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity2', :value => product.quantity_multiples_product, :step => product.quantity_multiples_product, :min => product.quantity_multiples_product %>
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
+                            data-field="">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div> <!-- aa -->
+                  </div> <!-- aa -->
+                </div>
+                <% else %>
+                <div class="alert-added-to-cart">
+                  <div class="cart-item">
+                    <div class="item-image">
+                      <%= image_tag product.images.first.attachment.url(:small), :itemprop => "image" , onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" if product.images.present? %>
+                    </div>
+                    <div class="item-content">
+                      <p><%= product.name %></p>
+                      <p>
+                        <span class="price new-price"
+                          data-price="<%= (product.display_price).to_s.gsub(/[$,]/,'').to_f %>"><%= product.display_price %></span>
+                        <% if product.before_sale_price.present? %>
+                        <span class="regular-price">
+                          <%= display_before_sale_price(product) %>
+                        </span>
+                        <% end %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="quantity-variant">
+                    <div id="productvariants" class="col-sm-12">
+                      <ul data-variant="<%=product.master.id%>">
+                        <%= hidden_field_tag "variant_id", product.master.id %>
+                      </ul>
+                    </div>
+                    <div class="col-sm-12 quantity">
+                      <div class="input-group btn-group">
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-success btn-number" data-type="minus"
+                            data-field="">
+                            <span class="glyphicon glyphicon-minus"></span>
+                          </button>
+                        </span>
+                        <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity2', :value => product.quantity_multiples_product, :step => product.quantity_multiples_product, :min => product.quantity_multiples_product %>
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
+                            data-field="">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div> <!-- aa -->
+                  </div> <!-- aa -->
+                </div>
+                <% end %>
+              </div> <!-- end of fixed-block -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="hide close-modal" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="product-info text-center">
+      <div>
+        <%= link_to truncate(product.name, :length => 30), url, :class => 'info', :itemprop => "name", :title => product.name %>
+      </div>
+      
+      <div class="price">
+        <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <span class="price selling" itemprop="price">
+            <% if product.lowest_discounted_volume_price_obj.present? %>
+            <%= display_price(product.lowest_discounted_volume_price_obj) + (" ") + ("-") %>
+            <% end %>
+            <%= display_price(product) %>
+          </span>
+          <% if product.before_sale_price.present? %>
+          <span class="before-sale-price" itemprop="price">
+            <%= display_before_sale_price(product) %>
+          </span>
+          <% end %>
+        </span>
+      </div>
+      <% if product.stock_items.pluck(:count_on_hand).sum <= 0 %>
+          <% unless product.has_preorder?(current_store) %>
+            <label class ="sold-out"> Hết Hàng </label>
+          <% end %>
+      <%end%>
+
+    </div>
+    <div class="product-hover">
+      <a href="<%= url %>" class="product-button">
+        <p><i class="fa fa-eye"></i> Xem chi tiết</p>
+      </a>
+      <% if product.stock_items.pluck(:count_on_hand).sum >0  %>
+      <a href="#" class="product-button top2 " data-toggle="modal" data-target="#modal-<%= product.id%>"
+      id-modal="<%= product.id%>">
+      <p><i class="fa fa-shopping-cart "></i> Thêm vào giỏ hàng</p>
+    </a>
+      <%else%>
+        <% if product.has_preorder?(current_store) %>
+          <a href="#" class="product-button top2 " data-toggle="modal" data-target="#modal-<%= product.id%>"
+          id-modal="<%= product.id%>">
+          <p><i class="fa fa-shopping-cart "></i> Thêm vào giỏ hàng</p>
+        </a>
+        <% end %>
+    <%end%>
+    </div>
+  </div>
+  <% end %>
+  <% reset_cycle("classes") %>
+
+  <% end %>
+
+  <% if paginated_products.respond_to?(:num_pages) %>
+  <%= paginate paginated_products, :window => 1, :outer_window => 0  %>
+  <% end %>
+</div>
+
+<%= render :partial => 'spree/shared/quick_cart', :formats => :js %>

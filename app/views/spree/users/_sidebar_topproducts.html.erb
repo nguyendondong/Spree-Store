@@ -1,0 +1,33 @@
+<div class="block topproducts">
+  <div class="blocksubhead">
+    <%= image_tag "products.png", class: "icontitle" %>
+    <span class="blocktitle">Top sản phẩm</span>
+  </div>
+  <div class="blockbody">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="column-name">Tên sản phẩm</th>
+          <th class="column-quantity">SL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referred_products.limit(5).each_with_index do |product, index| %>
+          <tr id="product-<%= product.id %>">
+            <td class="column-name" data-title="Tên sản phẩm">
+              <%= link_to product.try(:name), product_path(product) %>
+            </td>
+            <td class="column-quantity" data-title="Số lượng">
+              <%= product[:count]%>
+            </td>
+          </tr>
+        <% end %>
+        <% unless @referred_products.present? %>
+        <tr>
+          <td colspan="2"><%= Spree.t(:you_have_no_referred_orders_yet) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

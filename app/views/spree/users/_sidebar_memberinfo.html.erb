@@ -1,0 +1,32 @@
+<div class="block memberinfo">
+  <div class="blockbody">
+    <div class="infobox clearfix">
+      <div class="avatar">
+        <%= image_tag @user.avatar.url(:medium), alt: @user.nickname %>
+        
+      </div>
+      <div class="account">
+        <p class="ellipsis"><span class="name"><%= spree_current_user.display_name %></span></p>
+        <% unless @user.phone.blank? %>
+        <p>Số ĐT: <strong><%= @user.phone %></strong>
+          <%= link_to edit_account_path do %>
+          <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+        </p>
+        <% end%>
+        <% payment_success = 0 %>
+        <% if @referred_orders != nil %>
+          <% @referred_orders.each do |referred_order| %>
+            <% payment_success += referred_order.total if referred_order.paid? %>
+          <% end %>
+        <% end %>
+        <p>Hiện có: <span class="money"> <%= Spree::Money.new(payment_success * 20 / 100) %> 
+          <a href="payment.html" title="Rút tiền">
+            <%= image_tag "money.png"%>
+          </a></span>
+        </p>
+        <%= link_to "Thay đổi thông tin cá nhân", edit_account_path, class: "editinfo" %>
+      </div>
+    </div>
+  </div>
+</div>

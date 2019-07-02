@@ -1,0 +1,16 @@
+<% if Spree::Config[:customer_care].split(",").length > 0 %>
+  <div id="customer-care">
+    <div class="phones">
+      <% Spree::Config[:customer_care].split(",").each_with_index do |phone, index| %>
+        <div class="phone">
+          <span>CSKH<%= index + 1 %>: </span>
+          <%= phone %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="image">
+      <%= image_tag "live-support.png" %>
+    </div>
+  </div>
+<% end %>

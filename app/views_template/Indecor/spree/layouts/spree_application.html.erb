@@ -1,0 +1,31 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head>
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+
+    <body>
+        <div class="wrapper wrapper-box">
+            <%= render :partial => 'spree/shared/navbar' %>
+            <%= render :partial => 'spree/shared/search' %>
+            <%= yield :slides %>
+            <%= yield :feature %>
+            <%= yield :our_collection %>
+            <%= yield %>
+            <%#= yield :deal_product %>
+            <%= yield :list_product %>
+            <%#= yield :about %>
+            <%#= yield :brand %>
+            <%= yield :blog %>
+            
+            <%= render :partial => 'spree/shared/footer' %>
+        </div>
+        <%= javascript_include_tag 'spree/frontend/indecor/all' %>
+
+        <%#= render :partial => 'spree/shared/js' %>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<% if @ref_url && @appFBId %>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script>
+    FB.init({
+      appId:'<%= @appFBId %>',
+      cookie:true,
+      status:true,
+      xfbml:true
+    });
+
+    function InviteF()
+    {
+//    FB.ui({
+//      method: 'apprequests',
+//      message: 'Welcome to 2my4edge',
+//        to: [ 100000378966268, 556542867 ]
+//      },
+//      function(response) {
+//        console.log(response);
+//     });
+
+      FB.ui(
+        {
+          method : 'send',
+          link   : "<%= @ref_url %>"
+        },
+        function (response) {
+          // If response is null the user canceled the dialog
+          if (response != null) {
+//            logResponse(response);
+          }
+        }
+      );
+    }
+  </script>
+
+  <div id="ask-to-invite-modal">
+    <%= image_tag "invite-friend-bg.png" %>
+    <a class="cancel-invite"><%= t("cancel_invite") %></a>
+    <a class="accept-invite"><%= t("accept_invite") %></a>
+  </div>
+<% end %>

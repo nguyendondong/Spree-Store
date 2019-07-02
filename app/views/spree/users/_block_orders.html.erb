@@ -1,0 +1,221 @@
+<div class="block orders">
+  <div class="blocksubhead">
+    <%= image_tag "orders.png", class: "icontitle", alt: Spree.t(:referred_orders) %>
+    <span class="blocktitle"><%= Spree.t(:referred_orders) %></span>
+
+    <div class="action-manager">
+      <a class="filter-btn active">
+        <%= image_tag "flash.png" %>
+      </a>
+    </div>
+  </div>
+  <div class="blockbody">
+    <div class="filter-order active">
+      <form accept-charset="UTF-8" action="/referred-orders" method="get" id="referred-orders-form-filter" >
+        <div class="row">
+          <div class="col-md-4">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="fromDate"><%= Spree.t(:start) %></label>
+                  <%= text_field_tag 'start_date', params[:start_date], placeholder: "Vui lòng chọn", class: "datepicker datepicker-from form-control datetype" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="toDate"><%= Spree.t(:end) %></label>
+                  <%= text_field_tag 'end_date', params[:end_date], placeholder: "Vui lòng chọn", class: "datepicker datepicker-to form-control datetype" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="campaign">Chiến dịch</label>
+              <%= select_tag 'camp_id', options_for_select(@user.campaigns.collect{ |c| [c.name, c.id] },params[:camp_id]) , :class => "chosen-select form-control", multiple: true %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="campaign">Trạng thái</label>
+              <% select_list = [["Tất cả",""],["Đặt hàng","1"],["Sẵn sàng","2"],["Đang ship","3"],["Ship thành công","4"],["Trả về","5"],["Hủy","6"]] %>
+              <%= select_tag 'status', options_for_select(select_list,params[:status]) , :class => "chosen-select form-control", multiple: false %>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="submit">Submit</label>
+              <button class="btn btn-primary btn-block" type="submit">
+                <i class="fa fa-search"></i>
+                Kết quả
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <% if @referred_orders.present? %>
+    <div id="no-more-tables">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="column-date"><%= Spree.t(:date) %></th>
+            <th class="text-center">Mã đơn hàng</th>
+            <th class="column-money"><%= Spree.t(:total) %></th>
+            <th class="column-status">Trạng thái</th>
+            <th class="column-bonus"><%= Spree.t(:commission) %></th>
+            <th class="column-camp">Mã chiến dịch</th>
+            <th class="column-action">Chi tiết</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders_quantity = 0 %>
+          <% payment_success = 0 %>
+          <% total_revenue = 0 %>
+          <% @referred_orders.each do |referred_order| %>
+            <% orders_quantity += 1 %>
+            <% payment_success += referred_order.total if referred_order.paid? %>
+            <% total_revenue += referred_order.total %>
+
+            <% case order_status(referred_order)
+            when "Đặt hàng"
+              label_class = "label-warning"
+            when "Sẵn sàng"
+              label_class = "label-info"
+            when "Đang ship"
+              label_class = "label-primary"
+            when "Ship thành công"
+              label_class = "label-success"
+            when "Hủy"
+              label_class = "label-danger"
+            when "Trả về"
+              label_class = "label-default"
+            else
+              label_class = "label-default"
+            end %>
+
+          <tr id="order-1">
+            <td class="column-date" data-title="<%= Spree.t(:date) %>">
+              <%= referred_order.created_at.strftime("%d-%m-%Y") %>
+            </td>
+            <td class="text-center" data-title="Mã đơn hàng">
+              <strong><%= "#{referred_order.number}" %></strong>
+            </td>
+            <td class="column-money" data-title="<%= Spree.t(:total) %>">
+              <%= Spree::Money.new(referred_order.total, { currency: Spree::Config[:currency] }) %>
+            </td>
+            <td class="column-status" data-title="Trạng thái">
+              <span class="label <%= label_class %>">
+                <%= order_status(referred_order) %>
+              </span>
+            </td>
+            <td class="column-bonus" data-title="<%= Spree.t(:commission) %>">
+              <%= Spree::Money.new(referred_order.paid? ? referred_order.total * 20 / 100 : 0) %>
+            </td>
+            <td class="column-camp" data-title="Chiến dịch">
+              <% if (referred_order.campaign_id) %>
+                <%= link_to referred_order.campaign_id, "?camp_id=#{referred_order.campaign_id}", title: referred_order.campaign_name %>
+              <% end %> &nbsp;
+            </td>
+            <td class="column-action" data-title="Chi tiết">
+              <%= link_to 'Xem', order_path(referred_order), :target => "_blank" %>
+              <!--a data-toggle="modal" data-target="#orderDetail">Xem</a>-->
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr class="total">
+            <th>
+              <%= I18n.t(:total, :scope => 'activerecord.attributes.spree/order') %>
+              <span class="badge"><%= @referred_orders.count %></span>
+            </th>
+            <th></th>
+            <th class="column-money" data-title="<%= Spree.t(:sales_total)%>"><%= Spree::Money.new(total_revenue) %></th>
+            <th class="text-center" data-title="<%= Spree.t("shipped_successfully")%>"><%= Spree::Money.new(payment_success) %></th>
+            <th class="column-money" data-title="Tổng hoa hồng"><%= Spree::Money.new(payment_success * 20 / 100) %></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <% else %>
+      <p><%= Spree.t(:you_have_no_referred_orders_yet) %></p>
+    <% end %>
+
+  </div>
+</div>
+
+
+
+<!-- Order Details -->
+<div class="modal fade" id="orderDetail" tabindex="-1" role="dialog" aria-labelledby="Detail">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="Detail">Chi tiết Hóa đơn #200</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Ngày lập</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">12/10/2015</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Trạng thái</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">Đặt hàng</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Sản phẩm</label>
+            <div class="col-sm-10">
+              <div id="product-1" class="product-item clearfix">
+                <div class="product-thumb">
+                  <img src="http://vietfriend.info/template/donghoX//data/images/DZ-009-1.jpg" title="sản phẩm"/>
+                </div>
+                <div class="product-info">
+                  <div class="product-name">Đồng hồ thông minh smartWatch</div>
+                  <div class="product-quantity">Số lượng: <strong>3</strong></div>
+                  <div>Giá bán: <strong>990.000₫</strong></div>
+                </div>
+              </div>
+              <div id="product-1" class="product-item clearfix">
+                <div class="product-thumb">
+                  <img src="http://vietfriend.info/template/donghoX//data/images/DZ-009-1.jpg" title="sản phẩm"/>
+                </div>
+                <div class="product-info">
+                  <div class="product-name">Đồng hồ thông minh smartWatch</div>
+                  <div class="product-quantity">Số lượng: <strong>3</strong></div>
+                  <div>Giá bán: <strong>990.000₫</strong></div>
+                </div>
+              </div>
+              <div id="product-1" class="product-item clearfix">
+                <div class="product-thumb">
+                  <img src="http://vietfriend.info/template/donghoX//data/images/DZ-009-1.jpg" title="sản phẩm"/>
+                </div>
+                <div class="product-info">
+                  <div class="product-name">Đồng hồ thông minh smartWatch</div>
+                  <div class="product-quantity">Số lượng: <strong>3</strong></div>
+                  <div>Giá bán: <strong>990.000₫</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Tổng giá tiền</label>
+            <div class="col-sm-10">
+              <p class="form-control-static"><strong>3.000.000₫</strong></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

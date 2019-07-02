@@ -1,0 +1,19 @@
+<% @album.photos.each do |photo| %>
+  <li class="photo" data-id="<%= photo.id %>">
+    <div class="image-container-outer">
+      <div class="image-container">
+        <a class="image-photo">
+          <img src="<%= photo.image_url(:medium) %>" />
+        </a>
+        <div class="delete">
+          <%= image_tag "remove.png" %>
+        </div>
+        <% if @album.cover_photo_id == photo.id %>
+          <div class="cover-photo"><%= Spree.t("albums.cover_photo") %></div>
+        <% else %>
+          <div class="select-cover-photo"><%= Spree.t("albums.set_cover") %></div>
+        <% end %>
+      </div>
+    </div>
+  </li>
+<% end %>

@@ -1,0 +1,136 @@
+<% s_or_b = type.chars.first %>
+
+<div id="<%= type %>" data-hook="address_fields">
+  <div class="field <%= "#{type}-row" %>">
+    <%= label_tag :search, Spree.t(:first_name_or_phone_search), :class => "columns two alpha" %>
+    <%= text_field_tag :search, nil, :class => 'columns four omega', :autocomplete => "off",:placeholder => Spree.t(:three_character), class: "d-inline-block" %>
+    <i class="fa fa-refresh fa-spin fa-3x fa-fw" id="ani-search-lead"></i>
+  </div>
+  <%= content_tag(:ul,:style => 'position: absolute; left: 46%;width: 280px; z-index: 5;box-shadow: 0px 0px 16px 0px #00000080;border-radius: 5px;' ,:class => 'list-group columns four omega', :id => 'searchResult') do %>
+  <% end %>
+
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :firstname, Spree.t(:first_name), :class => "columns two alpha" %>
+    <%= f.text_field :firstname, :class => 'columns four omega', class: "d-inline-block" %>
+  </div>
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :sex, Spree.t(:sex), :class => "columns two alpha" %>
+    <%= f.select :sex, [ Spree.t(:Male), Spree.t(:Female), Spree.t(:Another)],{}, {:class => 'columns four omega admin-sex'} %>
+  </div>
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :phone, Spree.t(:phone), :class => "columns two alpha" %>
+    <%= f.phone_field :phone, :class => 'columns four omega', class: "d-inline-block" %>
+  </div>
+
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :alternative_phone, Spree.t(:alternative_phone), :class => "columns two alpha" %>
+    <%= f.phone_field :alternative_phone, :class => 'columns four omega', class: "d-inline-block" %>
+  </div>
+
+  <% if Spree::Config[:company] %>
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :company, Spree.t(:company), :class => "columns two alpha" %>
+    <%= f.text_field :company, :class => 'columns four omega', class: "d-inline-block" %>
+  </div>
+  <% end %>
+
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :address1, Spree.t(:street_address), :class => "columns two alpha" %>
+    <%= f.text_field :address1, :class => 'columns four omega', class: "d-inline-block" %>
+  </div>
+
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :city, Spree.t(:city), :class => "columns two alpha" %>
+    <span id="<%= s_or_b %>state" , class="columns three">
+      <% country = Spree::Country.find_by_iso("VN") %>
+      <!--<#%= f.text_field :state_name,
+            :style => "display: #{country.states.empty? ? 'block' : 'none' };",
+           :disabled => !country.states.empty?, :class => ' state_name' %>-->
+      <%= f.collection_select :state_id, country.states.sort, :id, :name, {:include_blank => true}, {:class => 'select2 ', :style => "display: #{country.states.empty? ? 'none' : 'block' };", :disabled => country.states.empty?} %>
+    </span>
+  </div>
+
+  <% f.object.state = country.states.first unless f.object.state.present? %>
+  <div class="field <%= "#{type}-row" %>">
+    <%= f.label :district, Spree.t(:district), :class => "columns two alpha" %>
+    <span id="<%= s_or_b %>state" , class="columns three">
+      <%= f.collection_select :district_id, f.object.state.districts.sort, :id, :name, {:include_blank => true}, {:class => 'select2 fullwidth', :style => "display: #{f.object.state.districts.empty? ? 'none' : 'block' };", :disabled => f.object.state.districts.empty? } %>
+    </span>
+  </div>
+
+  <%= f.hidden_field :state_name %>
+  <%= f.hidden_field :district_name %>
+  <%= f.hidden_field :city, :id => "address-city" %>
+  <%= f.hidden_field :zipcode, :value => "70000" %>
+  <%= f.hidden_field :lastname, :value => 'ABC' %>
+  <%= f.hidden_field :country_id, :value => '84' %>
+</div>
+
+
+<!-- Xuan Tai> -->
+  <script>
+    $(document).ready(function (){
+      $('#order_bill_address_attributes_state_name').val($('#order_bill_address_attributes_state_id').children("option:selected").text())
+      $('#order_bill_address_attributes_district_name').val($('#order_bill_address_attributes_district_id').children("option:selected").text())
+
+      $('#order_bill_address_attributes_state_id').change(function (){
+        $('#order_bill_address_attributes_state_name').val($('#order_bill_address_attributes_state_id').children("option:selected").text())
+      })
+
+      $('#order_bill_address_attributes_district_id').change(function (){
+        $('#order_bill_address_attributes_district_name').val($('#order_bill_address_attributes_district_id').children("option:selected").text())
+      })
+    })
+  </script>
+<!-- End Xuan Tai -->
+
+
+<script>
+  $(document).ready(function () {
+    /* change city auto change option for district in bill */
+    $("#user_bill_address_attributes_state_id").on("change", function (e) {
+      var state_id, city_name;
+      $('#user_bill_address_attributes_district_id').prop("disabled", true);
+      $('#user_bill_address_attributes_district_id').parents().first().find('div span:eq(0)').text("")
+      state_id = $(this).val();
+      name = $("#address-district").attr("name");
+      city_name = $("#user_bill_address_attributes_state_id option:selected").text();
+      return $.ajax({
+        type: "GET",
+        url: "/districts",
+        dataType: "text",
+        data: "state_id=" + state_id,
+        error: function (xhr, status) {
+          return console.log(status);
+        },
+        success: function (html) {
+          $("#user_bill_address_attributes_district_id").html(html);
+          $('#user_bill_address_attributes_district_id').prop("disabled", false);
+        }
+      });
+    });
+
+    /* change city auto change option for district in shipping */
+    $("#user_ship_address_attributes_state_id").on("change", function (e) {
+      var state_id, city_name;
+      $('#user_ship_address_attributes_district_id').prop("disabled", true);
+      $('#user_bill_address_attributes_district_id').parents().first().find('div span:eq(0)').text("")
+      state_id = $(this).val();
+      name = $("#address-district").attr("name");
+      city_name = $("#user_ship_address_attributes_state_id option:selected").text();
+      return $.ajax({
+        type: "GET",
+        url: "/districts",
+        dataType: "text",
+        data: "state_id=" + state_id,
+        error: function (xhr, status) {
+          return console.log(status);
+        },
+        success: function (html) {
+          $("#user_ship_address_attributes_district_id").html(html);
+          $('#user_ship_address_attributes_district_id').prop("disabled", false);
+        }
+      });
+    });
+  })
+</script>

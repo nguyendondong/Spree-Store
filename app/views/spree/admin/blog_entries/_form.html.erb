@@ -1,0 +1,136 @@
+
+<div class="row">
+  <div class="alpha ten columns">
+
+    <%= form.field_container :title do %>
+      <%= form.label :title, Spree.t(:title) %> <span class="required">*</span><br />
+      <%= form.text_field :title, :class => 'fullwidth title' %>
+      <%= form.error_message_on :title %>
+    <% end %>
+
+    <%= form.field_container :permalink do %>
+      <%= form.label :permalink, Spree.t(:permalink) %> <span class="required">*</span><br />
+      <%= form.text_field :permalink, :class => 'fullwidth' %>
+      <%= form.error_message_on :permalink %>
+    <% end %>
+
+    <%= form.field_container :category_list do %>
+      <%= form.label :category_list, Spree.t(:category_list)  %><br />
+      <%= form.text_field :category_list, :class => 'fullwidth' %>
+    <% end %>
+
+    <%= form.field_container :product_category do %>
+      <%= form.label :product_category, Spree.t(:product_category)  %><br />
+      <%= form.text_field :taxon_ids, :class => 'fullwidth', :value => @blog_entry.taxon_ids.join(',') %>
+    <% end %>
+
+    <%= form.field_container :tag_list do %>
+      <%= form.label :tag_list, Spree.t(:tag_list) %><br />
+      <%= form.text_field :tag_list, :class => 'fullwidth' %>
+    <% end %>
+
+    <% unless Rails.env.test? %>
+      <script>
+        $("#blog_entry_tag_list").select2({tags: <%= Spree::BlogEntry.tag_counts_on(:tags).map{|t| t.name }.to_json.html_safe %> });
+        $("#blog_entry_category_list").select2({tags: <%= Spree::BlogEntry.tag_counts_on(:categories).map{|t| t.name }.to_json.html_safe %> });
+      </script>
+    <% end %>
+
+
+    <div class="columns five alpha">
+      <%= form.field_container :published_at do %>
+        <%= form.label :published_at, Spree.t(:published_at) %><br />
+        <%= form.error_message_on :published_at %>
+        <% if @blog_entry.published_at? %>
+          <% published_at = l(@blog_entry.published_at, :format => Spree.t('date_picker.format')) %>
+        <% else %>
+          <% published_at = nil %>
+        <% end %>
+        <%= form.text_field :published_at, :value => published_at, :class => 'datepicker' %>
+      <% end %>
+    </div>
+
+    <div class="columns five omega">
+      <%= form.field_container :visible do %>
+        <%= form.label :visible, Spree.t(:visible) %><br />
+        <%= form.check_box :visible %>
+        <%= form.error_message_on :visible %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="omega six columns">
+
+    <%= form.field_container :author_id do %>
+      <%= form.label :author_id, Spree.t(:author_id) %><br />
+      <%= form.select :author_id, Spree.user_class.joins(:spree_roles).where("#{Spree::Role.table_name}.name" => "blogger").collect {|u| [u.email, u.id]}, {:include_blank => true}, :class => 'select2' %>
+    <% end %>
+
+    <%= form.field_container :store_id do %>
+      <%= form.label :author, Spree.t(:store) %><br />
+      <%= form.select :store_id, Spree::Store.all.collect {|s| [s.name, s.id]}, {:include_blank => true}, :class => 'select2' %>
+    <% end %>
+
+    <%= field_set_tag Spree.t(:blog_entry_featured_image) do %>
+      <% @blog_entry.build_blog_entry_image unless @blog_entry.blog_entry_image %>
+
+      <%= form.fields_for :blog_entry_image do |blog_entry_image_field| %>
+        <%= form.field_container :blog_entry_image_attachment do %>
+          <% unless @blog_entry.blog_entry_image.new_record? %>
+            <div class="blog_entry_image_thumbnail">
+              <%= link_to image_tag(@blog_entry.blog_entry_image.attachment.url(:mini)), @blog_entry.blog_entry_image.attachment.url(:large) %>
+              <%= @blog_entry.blog_entry_image.attachment_file_name %><br/>
+            </div>
+          <% end %>
+          <%= blog_entry_image_field.file_field :attachment %>
+        <% end %>
+
+        <%= form.field_container :blog_entry_image_alt do %>
+          <%= blog_entry_image_field.label :alt, Spree.t(:alt_text) %><br/>
+          <%= blog_entry_image_field.text_field :alt %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+  </div>
+</div>
+
+<%= form.field_container :body do %>
+  <%= form.label :body, Spree.t(:body) %>
+  <%= form.text_area :body, {:class => 'fullwidth'} %>
+  <%= form.error_message_on :body %>
+<% end %>
+
+<%= form.field_container :summary do %>
+  <%= form.label :summary %><br />
+  <%= form.text_area :summary, {:cols => 60, :rows => 4, :class => 'fullwidth', :id => 'blog_entry_summary'} %>
+  <%= form.error_message_on :summary %>
+<% end %>
+
+<script>
+  $(function() {
+    var ids = ['blog_entry_body', 'blog_entry_summary'];
+    for (var key in ids) {
+      if ($('#' + ids[key]).length > 0) {
+        CKEDITOR.replace(ids[key]);
+      }
+    }
+  });
+</script>
+
+<% unless Rails.env.test? %>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $(".insert-image").click(function(event){
+      event.preventDefault();
+      var image_url = $(this).attr("data-url");
+      var image_tag="<img src='"+ image_url + "'>";
+      var doctarget = CKEDITOR.instances.editable;
+      CKEDITOR.instances['blog_entry'].insertHtml(image_tag);
+      //doctarget.insertHtml(image_tag);
+      return false;
+    })
+  })
+  </script>
+<% end %>

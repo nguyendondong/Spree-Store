@@ -1,0 +1,22 @@
+<div data-hook="admin_image_form_fields">
+  <div class="four columns alpha">
+    <field data-hook="file">
+      <%= f.label Spree.t(:filename) %>
+      <br/>
+      <%= f.file_field :image %>
+      <%= f.hidden_field :slider_id, :value => @slider.id %>
+    </field>
+  </div>
+  <div class="field omega five columns" data-hook="alt_text">
+    <%= f.label Spree.t(:alt_text) %>
+    <br/>
+    <%= f.text_field :alt, :class => 'fullwidth' %>
+  </div>
+  <div class="nine columns alpha">
+    <%= f.label "Url" %>
+    <br/>
+    <%= f.text_field :url, :class => 'fullwidth' %>
+  </div>
+</div>
+<div class="clear"></div>
+

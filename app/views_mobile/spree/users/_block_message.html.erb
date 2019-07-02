@@ -1,0 +1,35 @@
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "ffac250a-dc25-4e98-92c1-2bf28e0e6651", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+<div class="block message">
+  <div class="blockbody">
+    <p><strong>Dễ dàng kiếm tiền cùng DongHoX bằng cách chia sẻ (share) link bên dưới!</strong></p>
+    <p>Với mỗi đơn hàng giới thiệu thành công, bạn sẽ nhận được mức hoa hồng là 20%. Tiền hoa hồng sẽ được thanh toán cho bạn vào đầu tháng bằng chuyển khoản hoặc nạp card điện thoại. Mức thanh toán tối thiểu là 500K.</p>
+    <p><strong><u>Lưu ý:</u> Đơn hàng được tính là thành công khi được giao đến tay khách hàng.</strong></p>
+
+    <% url = "http://#{current_store.url}/?ref_id=#{@user.id}" %>
+    <p><strong><u><%= Spree.t(:sharing_link) %>:</u></strong>  <input type="text" class="selected_input" onClick="this.setSelectionRange(0, this.value.length)" value="<%= url %>"></p>
+
+    <div>
+      <span class='st_facebook_large' displayText='Facebook' st_url="<%= url %>"></span>
+      <span class="st_plusone_large" displayText='Google+' st_url="<%= url %>"></span>
+      <span class='st_email_large' displayText='Email' st_url="<%= url %>"></span>
+    </div>
+  </div>
+</div>
+<% if @user.phone.blank? %>
+<div class="alert alert-info" role="alert">
+  <div style="padding-bottom: 10px;">Vui lòng cập nhật <strong>số điện thoại chính xác</strong> để chúng tôi có thể liên lạc và thanh toán phí hoa hồng cho bạn</div>
+  <%= form_for @user, :html => {class: "form-inline"} do |f| %>
+  <div class="input-group">
+    <%= f.text_field :phone, :class => 'required form-control', :placeholder => "Nhập số điện thoại ..." %>
+    <span class="input-group-btn">
+      <button class="btn btn-success" type="submit">
+        <span class="glyphicon glyphicon-floppy-disk"></span> <%= Spree.t(:update); %>
+      </button>
+    </span>
+  </div>
+  <% end %>
+</div>
+<% end %>

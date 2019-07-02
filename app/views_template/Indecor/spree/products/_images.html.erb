@@ -1,0 +1,25 @@
+<div class="col-md-12 col-lg-6">
+    <div class="product-details-left">
+        <div class="product-details-images slider-lg-image-1">
+            <% @product.images.each do |image|%>
+                <div class="lg-image">
+                    <div class="easyzoom easyzoom--overlay">
+                        <%= link_to image.attachment.url(:large)  do %>
+                            <%= image_tag image.attachment.url(:large), :itemprop => "image", "data-zoom-image" => image.attachment.url(:large), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+                        <%  end %>
+                        <%= link_to '<i class="fa fa-expand"></i>'.html_safe, (image.attachment.url(:large)), :class => 'popup-img venobox', :"data-gall" => "myGallery" %> 
+                    </div>
+                </div>    
+            <% end %>
+        </div>
+        <div class="product-details-thumbs slider-thumbs-1">
+            <% @product.images.each do |i|%>
+                <div class="sm-image">
+                <%= image_tag(i.attachment.url) %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    <!--Product Details Left -->
+</div>
+

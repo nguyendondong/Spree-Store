@@ -1,0 +1,47 @@
+<ul class="albums-list">
+  <% @albums.each do |album| %>
+    <li class="album">
+      <a href="<%= album_path(album) %>">
+        <img class="cover-image" src="<%= album.cover_photo.present? ? album.cover_photo.image_url(:default_cover) : "http://placehold.it/310x210" %>"/>
+      </a>
+      <a class="album-name" href="<%= album_path(album) %>"><%= album.name %></a>
+
+      <div class="likes-views">
+        <div>
+          <div class="number">
+            <%= album.like_count %>
+          </div>
+          <div class="image">
+            <%= image_tag ("like-icon.png") %>
+          </div>
+        </div>
+        <div>
+          <div class="number">
+            |
+            <%= album.views %>
+          </div>
+          <div class="image">
+            <%= image_tag ("view-icon.png") %>
+          </div>
+        </div>
+      </div>
+
+      <% if @index.blank? %>
+        <div class="options">
+          <a href="<%= edit_album_path(album) %>"><%= image_tag("edit-icon.png") %></a>
+
+          <%= link_to(image_tag("remove.png"), album, :method => :delete, "data-confirm" => Spree.t("albums.delete")) %>
+        </div>
+      <% end %>
+
+    </li>
+  <% end %>
+
+  <% if @index.blank? %>
+    <li class="album">
+      <a class="new-album" href="<%= new_album_path %>">
+        <%= Spree.t("albums.new") %>
+      </a>
+    </li>
+  <% end %>
+</ul>

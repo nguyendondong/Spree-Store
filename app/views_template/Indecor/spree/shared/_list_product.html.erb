@@ -1,0 +1,135 @@
+<div class="list-product-area pt-80 pb-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>New Arrivals</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+                        <% @products.each_slice(3) do |group|%>
+                            <div class="list-slider-group">
+                                <!--Single List Product Start-->
+                                <% group.each do |product| %>
+                                <% url = product_path(product) %>
+
+                                <div class="single-list-product mb-50">
+                                    <div class="product-img img-full">
+                                        <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4><%= link_to truncate(product.name, :length => 36), url, :class => 'info', :itemprop => "name", :title => product.name %></h4>
+                                        <div class="product-price">
+                                            <span class="now-price"><%= display_price(product) %></span>
+                                            <% if product.before_sale_price.present? %>
+                                            <span class="regular-price"><%= display_before_sale_price(product) %></span>
+                                            <% end %>
+                                        </div>
+                                        <%= link_to Spree.t(:product_details), product_path(product), class: 'add-cart-btn' %>
+                                    </div>
+                                </div>
+
+                                <% end %>
+                                <!--Single List Product End-->
+                            </div>
+                        <% end %>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>Best Seller</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+                            <% @products.top_score(5).each_slice(3) do |group|%>
+                            <div class="list-slider-group">
+                                <!--Single List Product Start-->
+                                <% group.each do |product| %>
+                                <% url = product_path(product) %>
+
+                                <div class="single-list-product mb-50">
+                                    <div class="product-img img-full">
+                                        <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4><%= link_to truncate(product.name, :length => 36), url, :class => 'info', :itemprop => "name", :title => product.name %></h4>
+                                        <div class="product-price">
+                                            <span class="now-price"><%= display_price(product) %></span>
+                                            <% if product.before_sale_price.present? %>
+                                            <span class="regular-price"><%= display_before_sale_price(product) %></span>
+                                            <% end %>
+                                        </div>
+                                        <%= link_to Spree.t(:product_details), product_path(product), class: 'add-cart-btn' %>
+                                    </div>
+                                </div>
+
+                                <% end %>
+                                <!--Single List Product End-->
+                            </div>
+                            <% end %>              
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>Most view</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+                        <% @products.order("updated_at desc").each_slice(3) do |group|%>
+                            <div class="list-slider-group">
+                                <!--Single List Product Start-->
+                                <% group.each do |product| %>
+                                <% url = product_path(product) %>
+
+                                <div class="single-list-product mb-50">
+                                    <div class="product-img img-full">
+                                        <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4><%= link_to truncate(product.name, :length => 36), url, :class => 'info', :itemprop => "name", :title => product.name %></h4>
+                                        <div class="product-price">
+                                            <span class="now-price"><%= display_price(product) %></span>
+                                            <% if product.before_sale_price.present? %>
+                                            <span class="regular-price"><%= display_before_sale_price(product) %></span>
+                                            <% end %>
+                                        </div>
+                                        <%= link_to Spree.t(:product_details), product_path(product), class: 'add-cart-btn' %>
+                                    </div>
+                                </div>
+
+                                <% end %>
+                                <!--Single List Product End-->
+                            </div>
+                        <% end %>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

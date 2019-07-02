@@ -1,0 +1,69 @@
+<div id="checkout" class="container" data-hook>
+
+  <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+
+<!--   <div class="row" data-hook="checkout_header">
+    <div class="columns thirteen omega" data-hook="checkout_progress"><%= checkout_progress %></div>
+  </div> -->
+  <h3 class="form-checkout-title">Thông Tin Thanh Toán</h3>
+  <div data-hook="checkout_content">
+    <%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
+      <%#= form.hidden_field :state_lock_version %>
+      <%= render @order.state, :form => form %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+Spree.current_order_id = "<%= @order.number %>"
+Spree.current_order_token = "<%= @order.guest_token %>"
+</script>
+<!-- Google Code for Remarketing Tag -->
+<script type="text/javascript">
+  var google_tag_params = {
+  ecomm_prodid: '<%= @order.number %>',
+  ecomm_pagetype: 'cart',
+  ecomm_totalvalue: '<%= @order.item_total %>'
+  };
+</script>
+<script type="text/javascript">
+  /* <![CDATA[ */
+  var google_conversion_id = 961568658;
+  var google_custom_params = window.google_tag_params;
+  var google_remarketing_only = true;
+  /* ]]> */
+  </script>
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+  <noscript>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/961568658/?value=0&amp;guid=ON&amp;script=0"/>
+  </div>
+</noscript>
+<% if @state_id.present? && @district_id.present? %>
+  <script>
+    $(document).ready(function() {
+      var $state = <%= @state_id %>;
+      var $district = <%= @district_id %>;
+      $('#address-state').val($state);
+
+      $.ajax({
+        type: "GET",
+        url: "/districts",
+        dataType: "text",
+        data: "state_id=" + $state + "&name=" + name,
+        error: function(xhr, status) {
+          return console.log(status);
+        },
+        success: function(html) {
+          $("#address-district").html(html);
+          $('#address-district').val($district);
+          if($("#buy_at_shop").is(':checked')) {
+            $("#address-district").val("Quận 11");
+          }
+        }
+      });
+    });
+  </script>
+<% end %>
+

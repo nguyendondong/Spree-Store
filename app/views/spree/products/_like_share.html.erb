@@ -1,0 +1,3 @@
+<% url = "http://donghox.com" + product_path(@product) %>
+<% url += "?ref_id=#{spree_current_user.id}" if spree_current_user.present? %>
+<div class="fb-like" data-href="<%= url %>" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>

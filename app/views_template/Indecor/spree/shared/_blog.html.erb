@@ -1,0 +1,24 @@
+<div class="blog-area pt-10 pb-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!--Section Title 2 Start-->
+                <div class="section-title2">
+                    <h2>from our blogs</h2>
+                </div>
+                <!--Section Title 2 End-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="blog-slider owl-carousel">
+                <% if current_store.blog_entries.visible.page(@pagination_page).per(@pagination_per_page).present? %>
+                    <% current_store.blog_entries.visible.page(@pagination_page).per(@pagination_per_page).each do |blog_entry| %>
+                        <%= render :partial => 'spree/shared/blog_entry', :locals => {:blog_entry => blog_entry} %>
+                    <% end %>
+                <% else %>
+                    <p id="no_entries"><%= Spree.t(:no_blog_entries) %></p>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

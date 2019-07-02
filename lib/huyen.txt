@@ -1,0 +1,893 @@
+01. THÀNH PHỐ HÀ NỘI
+1A01 Quận Ba Đình
+1A02 Quận Hoàn Kiếm
+1A03 Quận Hai Bà Trưng
+1A04 Quận Đống Đa
+1A05 Quận Tây Hồ
+1A06 Quận Cầu Giấy
+1A07 Quận Thanh Xuân
+1A08 Quận Hoàng Mai
+1A09 Quận Long Biên
+1A10 Huyện Từ Liêm
+1A11 Huyện Thanh Trì
+1A12 Huyện Gia Lâm
+1A13 Huyện Đông Anh
+1A14 Huyện Sóc Sơn
+1B15 Quận Hà Đông
+1B16 Thị xã Sơn Tây
+1B17 Huyện Ba Vì
+1B18 Huyện Phúc Thọ
+1B19 Huyện Thạch Thất
+1B20 Huyện Quốc Oai
+1B21 Huyện Chương Mỹ
+1B22 Huyện Đan Phượng
+1B23 Huyện Hoài Đức
+1B24 Huyện Thanh Oai
+1B25 Huyện Mỹ Đức
+1B26 Huyện Ứng Hoà
+1B27 Huyện Thường Tín
+1B28 Huyện Phú Xuyên
+1B29 Huyện Mê Linh
+ 
+02. THÀNH PHỐ HỒ CHÍ MINH
+0200 Sở Giáo dục và Đào tạo
+0201 Quận 1
+0202 Quận 2
+0203 Quận 3
+0204 Quận 4
+0205 Quận 5
+0206 Quận 6
+0207 Quận 7
+0208 Quận 8
+0209 Quận 9
+0210 Quận 10
+0211 Quận 11
+0212 Quận 12
+0213 Quận Gò Vấp
+0214 Quận Tân Bình
+0215 Quận Tân Phú
+0216 Quận Bình Thạnh
+0217 Quận Phú Nhuận
+0218 Quận Thủ Đức
+0219 Quận Bình Tân
+0220 Huyện Bình Chánh
+0221 Huyện Củ Chi
+0222 Huyện Hóc Môn
+0223 Huyện Nhà Bè
+0224 Huyện Cần Giờ
+ 
+03. THÀNH PHỐ HẢI PHÒNG
+0300 Sở Giáo dục và Đào tạo
+0301 Quận Hồng Bàng
+0302 Quận Lê Chân
+0303 Quận Ngô Quyền
+0304 Quận Kiến An
+0305 Quận Hải An
+0306 Quận Đồ Sơn
+0307 Huyện An Lão
+0308 Huyện Kiến Thụy
+0309 Huyện Thủy Nguyên
+0310 Huyện An Dương
+0311 Huyện Tiên Lãng
+0312 Huyện Vĩnh Bảo
+0313 Huyện Cát Hải
+0314 Huyện Bạch Long Vĩ
+0315 Quận Dương Kinh
+ 
+04. THÀNH PHỐ ĐÀ NẴNG
+0400 Sở Giáo dục và Đào tạo
+0401 Quận Hải Châu
+0402 Quận Thanh Khê
+0403 Quận Sơn Trà
+0404 Quận Ngũ Hành Sơn
+0405 Quận Liên Chiểu
+0406 Huyện Hoà Vang
+0407 Quận Cẩm Lệ
+ 
+ 
+05. TỈNH HÀ GIANG
+0500 Sở Giáo dục và Đào tạo
+0501 Thành phố Hà Giang
+0502 Huyện Đồng Văn
+0503 Huyện Mèo Vạc
+0504 Huyện Yên Minh
+0505 Huyện Quản Bạ
+0506 Huyện Vị Xuyên
+0507 Huyện Bắc Mê
+0508 Huyện Hoàng Su Phì
+0509 Huyện Xín Mần
+0510 Huyện Bắc Quang
+0511 Huyện Quang Bình
+ 
+06. TỈNH CAO BẰNG
+0600 Sở Giáo dục và Đào tạo
+0601 Thị xã Cao Bằng
+0602 Huyện Bảo Lạc
+0603 Huyện Thông Nông
+0604 Huyện Hà Quảng
+0605 Huyện Trà Lĩnh
+0606 Huyện Trùng Khánh
+0607 Huyện Nguyên Bình
+0608 Huyện Hoà An
+0609 Huyện Quảng Uyên
+0610 Huyện Thạch An   
+0611 Huyện Hạ Lang
+0612 Huyện Bảo Lâm
+0613 Huyện Phục Hoà
+ 
+07. TỈNH LAI CHÂU
+0700 Sở Giáo dục và Đào tạo
+0701 Thị xã Lai Châu
+0702 Huyện Tam Đường
+0703 Huyện Phong Thổ
+0704 Huyện Sìn Hồ
+0705 Huyện Mường Tè
+0706 Huyện Than Uyên
+0707 Huyện Tân Uyên
+0708 Huyện Nậm Nhùn
+ 
+08. TỈNH LÀO CAI
+0800 Sở Giáo dục và Đào tạo
+0801 Thành phố Lào Cai
+0802 Huyện Xi Ma Cai
+0803 Huyện Bát Xát
+0804 Huyện Bảo Thắng
+0805 Huyện Sa Pa
+0806 Huyện Văn Bàn
+0807 Huyện Bảo Yên
+0808 Huyện Bắc Hà
+0809 Huyện Mường Khương
+ 
+09. TỈNH TUYÊN QUANG
+0900 Sở Giáo dục và Đào tạo
+0901 Th. phố Tuyên Quang
+0902 Huyện Lâm Bình
+0903 Huyện Na Hang
+0904 Huyện Chiêm Hoá
+0905 Huyện Hàm Yên
+0906 Huyện Yên Sơn
+0907 Huyện Sơn Dương
+ 
+10. TỈNH LẠNG SƠN
+1000 Sở Giáo dục và Đào tạo
+1001 Thành phố Lạng Sơn
+1002 Huyện Tràng Định
+1003 Huyện Bình Gia
+1004 Huyện Văn Lãng
+1005 Huyện Bắc Sơn
+1006 Huyện Văn Quan
+1007 Huyện Cao Lộc
+1008 Huyện Lộc Bình
+1009 Huyện Chi Lăng
+1010 Huyện Đình Lập
+1011 Huyện Hữu Lũng
+ 
+11. TỈNH BẮC KẠN
+1100 Sở Giáo dục và Đào tạo
+1101     Thị xã Bắc Kạn
+1102 Huyện Chợ Đồn
+1103 Huyện Bạch Thông
+1104 Huyện Na Rì
+1105 Huyện Ngân Sơn
+1106 Huyện Ba Bể
+1107 Huyện Chợ Mới
+1108 Huyện Pác Nặm
+ 
+12. TỈNH THÁI NGUYÊN
+1200 Sở Giáo dục và Đào tạo
+1201 TP.Thái Nguyên
+1202 Thị xã Sông Công
+1203 Huyện Định Hoá
+1204 Huyện Phú Lương
+1205 Huyện Võ Nhai
+1206 Huyện Đại Từ
+1207 Huyện Đồng Hỷ
+1208 Huyện Phú Bình
+1209 Huyện Phổ Yên
+ 
+13. TỈNH YÊN BÁI
+1300 Sở Giáo dục và Đào tạo
+1301 Thành phố Yên Bái
+1302 Thị xã Nghĩa Lộ
+1303 Huyện Văn Yên
+1304 Huyện Yên Bình
+1305 Huyện Mù Cang Chải
+1306 Huyện Văn Chấn
+1307 Huyện Trấn Yên
+1308 Huyện Trạm Tấu
+1309 Huyện Lục Yên
+ 
+14. TỈNH SƠN LA
+1400 Sở Giáo dục và Đào tạo
+1401 Thành phố Sơn La
+1402 Huyện Quỳnh Nhai
+1403 Huyện Mường La
+1404 Huyện Thuận Châu
+1405 Huyện Bắc Yên
+1406 Huyện Phù Yên
+1407 Huyện Mai Sơn
+1408 Huyện Yên Châu
+1409 Huyện Sông Mã
+1410 Huyện Mộc Châu
+1411 Huyện Sốp Cộp
+1412 Huyện Vân Hồ
+ 
+15. TỈNH PHÚ THỌ
+1500 Sở Giáo dục và Đào tạo
+1501 TP. Việt Trì
+1502 Thị xã Phú Thọ
+1503 Huyện Đoan Hùng
+1504 Huyện Thanh Ba
+1505 Huyện Hạ Hoà
+1506 Huyện Cẩm Khê
+1507 Huyện Yên Lập
+1508 Huyện Thanh Sơn
+1509 Huyện Phù Ninh
+1510 Huyện Lâm Thao
+1511 Huyện Tam Nông
+1512 Huyện Thanh Thủy
+1513 Huyện Tân Sơn
+ 
+16. TỈNH VĨNH PHÚC
+1600 Sở Giáo dục và Đào tạo
+1601 Thành phố Vĩnh Yên
+1602 Huyện Tam Dương
+1603 Huyện Lập Thạch
+1604 Huyện Vĩnh Tường
+1605 Huyện Yên Lạc
+1606 Huyện Bình Xuyên
+1607 Huyện Sông Lô
+1608 Thị xã Phúc Yên
+1609 Huyện Tam Đảo
+ 
+17. TỈNH QUẢNG NINH
+1700 Sở Giáo dục và Đào tạo
+1701 Thành phố Hạ Long
+1702 Thành phố Cẩm Phả
+1703 Thành phố Uông Bí
+1704 Thành phố Móng Cái
+1705 Huyện Bình Liêu
+1706 Huyện Đầm Hà
+1707 Huyện Hải Hà
+1708 Huyện Tiên Yên
+1709 Huyện Ba Chẽ
+1710 Huyện Đông Triều
+1711 Huyện Yên Hưng
+1712 Huyện Hoành Bồ
+1713 Huyện Vân Đồn
+1714 Huyện Cô Tô
+ 
+18. TỈNH BẮC GIANG
+1800 Sở Giáo dục và Đào tạo
+1801 Thành phố Bắc Giang
+1802 Huyện Yên Thế
+1803 Huyện Lục Ngạn
+1804 Huyện Sơn Động
+1805 Huyện Lục Nam
+1806 Huyện Tân Yên
+1807 Huyện Hiệp Hoà
+1808 Huyện Lạng Giang
+1809 Huyện Việt Yên
+1810 Huyện Yên Dũng
+ 
+19. TỈNH BẮC NINH
+1900 Sở Giáo dục và Đào tạo
+1901 Thành phố Bắc Ninh
+1902 Huyện Yên Phong
+1903 Huyện Quế Võ
+1904 Huyện Tiên Du
+1905 Thị xã Từ Sơn
+1906 Huyện Thuận Thành
+1907 Huyện Gia Bình
+1908 Huyện Lương Tài
+ 
+21. TỈNH HẢI DƯƠNG
+2100 Sở Giáo dục và Đào tạo
+2101 Thành phố Hải Dương
+2102 Thị xã Chí Linh
+2103 Huyện Nam Sách
+2104 Huyện Kinh Môn
+2105 Huyện Gia Lộc
+2106 Huyện Tứ Kỳ
+2107 Huyện Thanh Miện
+2108 Huyện Ninh Giang
+2109 Huyện Cẩm Giàng
+2110 Huyện Thanh Hà
+2111 Huyện Kim Thành
+2112 Huyện Bình Giang
+ 
+22. TỈNH HƯNG YÊN
+2200 Sở Giáo dục và Đào tạo
+2201 Thành phố Hưng Yên
+2202 Huyện Kim Động
+2203 Huyện Ân Thi
+2204 Huyện Khoái Châu
+2205 Huyện Yên Mỹ
+2206 Huyện Tiên Lữ
+2207 Huyện Phù Cừ
+2208 Huyện Mỹ Hào
+2209 Huyện Văn Lâm
+2210 Huyện Văn Giang
+ 
+23. TỈNH HÒA BÌNH
+2300 Sở Giáo dục và Đào tạo
+2301 Thành phố Hoà Bình
+2302 Huyện Đà Bắc
+2303 Huyện Mai Châu
+2304 Huyện Tân Lạc
+2305 Huyện Lạc Sơn
+2306 Huyện Kỳ Sơn
+2307 Huyện Lư­ơng Sơn
+2308 Huyện Kim Bôi
+2309 Huyện Lạc Thuỷ
+2310 Huyện Yên Thuỷ
+2311 Huyện Cao Phong
+ 
+24. TỈNH HÀ NAM
+2400 Sở Giáo dục và Đào tạo
+2401 Thành phố Phủ Lý
+2402 Huyện Duy Tiên
+2403 Huyện Kim Bảng
+2404 Huyện Lý Nhân
+2405 Huyện Thanh Liêm
+2406 Huyện Bình Lục
+ 
+25. TỈNH NAM ĐỊNH
+2500 Sở Giáo dục và Đào tạo
+2501 Thành phố Nam Định
+2502 Huyện Mỹ Lộc
+2503 Huyện Xuân Trường
+2504 Huyện Giao Thủy
+2505 Huyện Ý Yên
+2506 Huyện Vụ Bản
+2507 Huyện Nam Trực
+2508 Huyện Trực Ninh
+2509 Huyện Nghĩa Hưng
+2510 Huyện Hải Hậu
+ 
+26. TỈNH THÁI BÌNH
+2600 Sở Giáo dục và Đào tạo
+2601 Thành phố Thái Bình
+2602 Huyện Quỳnh Phụ
+2603 Huyện Hưng Hà
+2604 Huyện Đông Hưng
+2605 Huyện Vũ Thư
+2606 Huyện Kiến Xương
+2607 Huyện Tiền Hải
+2608 Huyện Thái Thuỵ
+ 
+27. TỈNH NINH BÌNH
+2700 Sở Giáo dục và Đào tạo
+2701 Thành phố Ninh Bình
+2702 Thị xã Tam Điệp
+2703 Huyện Nho Quan
+2704 Huyện Gia Viễn
+2705 Huyện Hoa Lư
+2706 Huyện Yên Mô     
+2707 Huyện Kim Sơn    
+2708 Huyện Yên Khánh
+ 
+28. TỈNH THANH HÓA
+2800 Sở Giáo dục và Đào tạo
+2801 Thành phố Thanh Hoá
+2802 Thị xã Bỉm Sơn
+2803 Thị xã Sầm Sơn
+2804 Huyện Quan Hoá
+2805 Huyện Quan Sơn
+2806 Huyện Mường Lát
+2807 Huyện Bá Thước
+2808 Huyện Thường Xuân
+2809 Huyện Như Xuân
+2810 Huyện Như Thanh
+2811 Huyện Lang Chánh
+2812 Huyện Ngọc Lặc
+2813 Huyện Thạch Thành
+2814 Huyện Cẩm Thủy
+2815 Huyện Thọ Xuân
+2816 Huyện Vĩnh Lộc
+2817 Huyện Thiệu Hoá
+2818 Huyện Triệu Sơn
+2819 Huyện Nông Cống
+2820 Huyện Đông Sơn
+2821 Huyện Hà Trung
+2822 Huyện Hoằng Hoá
+2823 Huyện Nga Sơn
+2824 Huyện Hậu Lộc
+2825 Huyện Quảng Xương
+2826 Huyện Tĩnh Gia
+2827 Huyện Yên Định
+ 
+29. TỈNH NGHỆ AN
+2900 Sở Giáo dục và Đào tạo
+2901 Thành phố Vinh
+2902 Thị xã Cửa Lò
+2903 Huyện Quỳ Châu
+2904 Huyện Quỳ Hợp
+2905 Huyện Nghĩa Đàn
+2906 Huyện Quỳnh Lưu
+2907 Huyện Kỳ Sơn
+2908 Huyện Tương Dương
+2909 Huyện Con Cuông
+2910 Huyện Tân Kỳ
+2911 Huyện Yên Thành
+2912 Huyện Diễn Châu
+2913 Huyện Anh Sơn
+2914 Huyện Đô Lương
+2915 Huyện Thanh Chương
+2916 Huyện Nghi Lộc
+2917 Huyện Nam Đàn
+2918 Huyện Hưng Nguyên
+2919 Huyện Quế Phong
+2920 Thị xã Thái Hòa
+2921 Thị xã Hoàng Mai
+ 
+30. TỈNH HÀ TĨNH
+3000 Sở Giáo dục và Đào tạo
+3001 Thành phố Hà Tĩnh
+3002 Thị xã Hồng Lĩnh
+3003 Huyện Hương Sơn
+3004 Huyện Đức Thọ
+3005 Huyện Nghi Xuân
+3006 Huyện Can Lộc
+3007 Huyện Hương Khê
+3008 Huyện Thạch Hà
+3009 Huyện Cẩm Xuyên
+3010 Huyện Kỳ Anh
+3011 Huyện Vũ Quang
+3012 Huyện Lộc Hà
+ 
+31. TỈNH QUẢNG BÌNH
+3100 Sở Giáo dục và Đào tạo
+3101 Thành phố Đồng Hới
+3102 Huyện Tuyên Hoá
+3103 Huyện Minh Hoá
+3104 Huyện Quảng Trạch
+3105 Huyện Bố Trạch
+3106 Huyện Quảng Ninh
+3107 Huyện Lệ Thuỷ
+ 
+ 
+32. TỈNH QUẢNG TRỊ
+3200 Sở Giáo dục và Đào tạo
+3201 Thành phố Đông Hà
+3202 Thị xã Quảng Trị
+3203 Huyện Vĩnh Linh
+3204 Huyện Gio Linh
+3205 Huyện Cam Lộ
+3206 Huyện Triệu Phong
+3207 Huyện Hải Lăng
+3208 Huyện Hướng Hóa
+3209 Huyện Đăk Rông
+3210 Huyện đảo Cồn Cỏ
+ 
+33. TỈNH THỪA THIÊN HUẾ
+3300 Sở Giáo dục và Đào tạo
+3301 Thành phố Huế
+3302 Huyện Phong Điền
+3303 Huyện Quảng Điền
+3304 Huyện Hương Trà
+3305 Huyện Phú Vang
+3306 Huyện Hương Thủy
+3307 Huyện Phú Lộc
+3308 Huyện Nam Đông
+3309 Huyện A Lưới
+ 
+34. TỈNH QUẢNG NAM
+3400 Sở Giáo dục và Đào tạo
+3401 Thành phố Tam Kỳ
+3402 Thành phố Hội An
+3403 Huyện Duy Xuyên
+3404 Huyện Điện Bàn
+3405 Huyện Đại Lộc
+3406 Huyện Quế Sơn
+3407 Huyện Hiệp Đức
+3408 Huyện Thăng Bình
+3409 Huyện Núi Thành
+3410 Huyện Tiên Phước
+3411 Huyện Bắc Trà My
+3412 Huyện Đông Giang
+3413 Huyện Nam Giang
+3414 Huyện Phước Sơn
+3415 Huyện Nam Trà My
+3416 Huyện Tây Giang
+3417 Huyện Phú Ninh
+3418 Huyện Nông Sơn
+ 
+35. TỈNH QUẢNG NGÃI
+3500 Sở Giáo dục và Đào tạo
+3501 Thành phố Quảng Ngãi
+3502 Huyện Lý Sơn
+3503 Huyện Bình Sơn
+3504 Huyện Trà Bồng
+3505 Huyện Sơn Tịnh
+3506 Huyện Sơn Hà
+3507 Huyện Tư Nghĩa
+3508 Huyện Nghĩa Hành
+3509 Huyện Minh Long
+3510 Huyện Mộ Đức
+3511 Huyện Đức Phổ
+3512 Huyện Ba Tơ
+3513 Huyện Sơn Tây
+3514 Huyện Tây Trà
+ 
+36. TỈNH KON TUM
+3600 Sở Giáo dục và Đào tạo
+3601 Thành phố KonTum
+3602 Huyện Đăk Glei
+3603 Huyện Ngọc Hồi
+3604 Huyện Đăk Tô
+3605 Huyện Sa Thầy
+3606 Huyện Kon Plong
+3607 Huyện Đăk Hà
+3608 Huyện Kon Rẫy
+3609 Huyện Tu Mơ Rông
+ 
+37. TỈNH BÌNH ĐỊNH
+ 3700 Sở Giáo dục và Đào tạo
+3701 Thành phố Quy Nhơn
+3702 Huyện An Lão
+3703 Huyện Hoài Ân
+3704 Huyện Hoài Nhơn
+3705 Huyện Phù Mỹ
+3706 Huyện Phù Cát
+3707 Huyện Vĩnh Thạnh
+3708 Huyện Tây Sơn
+3709 Huyện Vân Canh   
+3710 Huyện An Nhơn    
+3711 Huyện Tuy Phước
+ 
+38. TỈNH GIA LAI
+3800 Sở Giáo dục và Đào tạo
+3801 Thành phố Pleiku
+3802 Huyện Chư Păh
+3803 Huyện Mang Yang
+3804 Huyện Kbang
+3805 Thị xã An Khê       
+3806 Huyện Kông Chro
+3807 Huyện Đức Cơ
+3808 Huyện Chư Prông
+3809 Huyện Chư Sê
+3810 Thị xã Ayunpa
+3811 Huyện Krông Pa
+3812 Huyện Ia Grai
+3813 Huyện Đăk Đoa
+3814 Huyện Ia Pa
+3815 Huyện Đăk Pơ
+3816 Huyện Phú Thiện
+3817 Huyện Chư Pưh
+ 
+39. TỈNH PHÚ YÊN
+3900 Sở Giáo dục và Đào tạo
+3901 Thành phố Tuy Hoà
+3902 Huyện Đồng Xuân
+3903 Thị xã Sông Cầu
+3904 Huyện Tuy An
+3905 Huyện Sơn Hoà
+3906 Huyện Sông Hinh
+3907 Huyện Đông Hoà
+3908 Huyện Phú Hoà
+3909 Huyện Tây Hoà
+ 
+40. TỈNH ĐĂK LĂK
+4001 Thành phố Buôn Ma Thuột
+4002 Huyện Ea H Leo
+4003 Huyện Krông Buk
+4004 Huyện Krông Năng
+4005 Huyện Ea Súp
+4006 Huyện Cư M’gar
+4007 Huyện Krông Pắc
+4008 Huyện Ea Kar
+4009 Huyện M'Đrăk
+4010 Huyện Krông Ana
+4011 Huyện Krông Bông
+4012 Huyện Lăk
+4013 Huyện Buôn Đôn
+4014 Huyện Cư Kuin
+4015 Thị xã Buôn Hồ
+ 
+41. TỈNH KHÁNH HÒA
+4100 Sở Giáo dục và Đào tạo
+4101 Thành phố Nha Trang
+4102 Huyện Vạn Ninh
+4103 Huyện Ninh Hoà
+4104 Huyện Diên Khánh
+4105 Huyện Khánh Vĩnh
+4106 Thị xã Cam Ranh
+4107 Huyện Khánh Sơn
+4108 Huyện đảo Trường Sa
+4109 Huyện Cam Lâm
+ 
+42. TỈNH LÂM ĐỒNG
+4200 Sở Giáo dục và Đào tạo
+4201 Thành phố Đà Lạt
+4202 Thị xã Bảo Lộc
+4203 Huyện Đức Trọng
+4204 Huyện Di Linh
+4205 Huyện Đơn Dương
+4206 Huyện Lạc Dương
+4207 Huyện Đạ Huoai
+4208 Huyện Đạ Tẻh
+4209 Huyện Cát Tiên
+4210 Huyện Lâm Hà
+4211 Huyện Bảo Lâm
+4212 Huyện Đam Rông
+ 
+43. TỈNH BÌNH PHƯỚC
+4300 Sở Giáo dục và Đào tạo
+4301 Thị xã Đồng Xoài
+4302 Huyện Đồng Phú
+4303 Huyện Chơn Thành
+4304 Huyện Bình Long
+4305 Huyện Lộc Ninh
+4306 Huyện Bù Đốp
+4307 Huyện Phước Long
+4308 Huyện Bù Đăng
+4309 Huyện Hớn Quản
+4310 Huyện Bù Gia Mập
+ 
+44. TỈNH BÌNH DƯƠNG
+4400 Sở Giáo dục và Đào tạo
+4401 Thành phố Thủ Dầu Một
+4402 Huyện Bến Cát
+4403 Huyện Tân Uyên
+4404 Huyện Thuận An
+4405 Huyện Dĩ An
+4406 Huyện Phú Giáo
+4407 Huyện Dầu Tiếng
+ 
+ 
+45. TỈNH NINH THUẬN
+4500 Sở Giáo dục và Đào tạo
+4501 Thành phố Phan Rang -Tháp Chàm
+4502 Huyện Ninh Sơn
+ 4503 Huyện Ninh Hải
+4504 Huyện Ninh Phước
+ 
+4505 Huyện Bác Ái
+4506 Huyện Thuận Bắc
+4507 Huyện Thuận Nam
+ 
+ 
+46. TỈNH TÂY NINH
+4600 Sở Giáo dục và Đào tạo
+4601 Thị xã Tây Ninh
+4602 Huyện Tân Biên
+4603 Huyện Tân Châu
+4604 H. Dương Minh Châu
+4605 Huyện Châu Thành
+4606 Huyện Hòa Thành
+4607 Huyện Bến Cầu
+4608 Huyện Gò Dầu
+4609 Huyện Trảng Bàng
+ 
+47. TỈNH BÌNH THUẬN
+4700 Sở Giáo dục và Đào tạo
+4701 Thành phố Phan Thiết
+4702 Huyện Tuy Phong
+4703 Huyện Bắc Bình
+4704 H. Hàm Thuận Bắc
+4705 H. Hàm Thuận Nam
+4706 Huyện Hàm Tân
+4707 Huyện Đức Linh
+4708 Huyện Tánh Linh
+4709 Huyện đảo Phú Quý
+4710 Thị xã La Gi
+ 
+48. TỈNH ĐỒNG NAI
+4800 Sở Giáo dục và Đào tạo
+4801 Thành phố Biên Hoà
+4802 Huyện Vĩnh Cửu
+4803 Huyện Tân Phú
+4804 Huyện Định Quán
+4805 Huyện Thống Nhất
+4806 Thị xã Long Khánh
+4807 Huyện Xuân Lộc
+4808 Huyện Long Thành
+4809 Huyện Nhơn Trạch
+4810 Huyện Trảng Bom
+4811 Huyện Cẩm Mỹ
+ 
+49. TỈNH LONG AN
+4900 Sở Giáo dục và Đào tạo
+4901 Thành phố Tân An
+4902 Huyện Vĩnh Hưng
+4903 Huyện Mộc Hoá
+4904 Huyện Tân Thạnh
+4905 Huyện Thạnh Hoá
+4906 Huyện Đức Huệ
+4907 Huyện Đức Hoà
+4908 Huyện Bến Lức
+4909 Huyện Thủ Thừa
+4910 Huyện Châu Thành
+4911 Huyện Tân Trụ
+4912 Huyện Cần Đước
+4913 Huyện Cần Giuộc
+4914 Huyện Tân Hưng
+4915 Thị xã Kiến Tường
+ 
+50. TỈNH ĐỒNG THÁP
+5000 Sở Giáo dục và Đào tạo
+5001 Thành phố Cao Lãnh
+5002 Thị xã Sa Đéc
+5003 Huyện Tân Hồng
+5004 Huyện Hồng Ngự
+5005 Huyện Tam Nông
+5006 Huyện Thanh Bình
+5007 Huyện Cao Lãnh
+5008 Huyện Lấp Vò
+5009 Huyện Tháp Mười
+5010 Huyện Lai Vung
+5011 Huyện Châu Thành
+5012 Thị xã Hồng Ngự
+ 
+51. TỈNH AN GIANG
+5100 Sở Giáo dục và Đào tạo
+5101 Thành phố Long Xuyên
+5102 Thị xã Châu Đốc
+5103 Huyện An Phú
+5104 Huyện Tân Châu
+5105 Huyện Phú Tân
+5106 Huyện Tịnh Biên
+5107 Huyện Tri Tôn
+5108 Huyện Châu Phú
+5109 Huyện Chợ Mới
+5110 Huyện Châu Thành
+5111 Huyện Thoại Sơn
+ 
+52. TỈNH BÀ RỊA – VŨNG TÀU
+5200 Sở Giáo dục và Đào tạo
+5201 Thành phố Vũng Tàu
+5202 Thị xã Bà Rịa
+5203 Huyện Xuyên Mộc
+5204 Huyện Long Điền
+5205 Huyện Côn Đảo
+5206 Huyện Tân Thành
+5207 Huyện Châu Đức
+5208 Huyện Đất Đỏ
+ 
+53. TỈNH TIỀN GIANG
+5300 Sở Giáo dục Đào tạo
+5301 Thành phố Mỹ Tho
+5302 Thị xã Gò Công
+5303 Huyện Cái Bè
+5304 Huyện Cai Lậy
+5305 Huyện Châu Thành
+5306 Huyện Chợ Gạo
+5307 Huyện Gò Công Tây
+5308 Huyện Gò Công Đông
+5309 Huyện Tân Phước
+5310 Huyện Tân Phú Đông
+ 
+ 
+54. TỈNH KIÊN GIANG
+5400 Sở Giáo dục và Đào tạo
+5401 Thành phố Rạch Giá
+5402 Thị xã Hà Tiên
+5403 Huyện Kiên Lương
+5404 Huyện Hòn Đất
+5405 Huyện Tân Hiệp
+5406 Huyện Châu Thành
+5407 Huyện Giồng Riềng
+5408 Huyện Gò Quao
+5409 Huyện An Biên
+5410 Huyện An Minh
+5411 Huyện Vĩnh Thuận
+5412 Huyện đảo Phú Quốc
+5413 Huyện Kiên Hải
+5414 Huyện U Minh Thượng
+5415 Huyện Giang Thành
+ 
+55. THÀNH PHỐ CẦN THƠ
+5500 Sở Giáo dục và Đào tạo
+5501 Quận Ninh Kiều
+5502 Quận Bình Thuỷ
+5503 Quận Cái Răng
+5504 Quận Ô Môn
+5505 Huyện Phong Điền
+5506 Huyện Cờ Đỏ
+5507 Huyện Vĩnh Thạnh
+5508 Quận Thốt Nốt
+5509 Huyện Thới Lai
+ 
+56. TỈNH BẾN TRE
+5600 Sở Giáo dục và Đào tạo
+5601 Thành phố Bến Tre
+5602 Huyện Châu Thành
+5603 Huyện Chợ Lách
+5604 Huyện Mỏ Cày Bắc
+5605 Huyện Giồng Trôm
+5606 Huyện Bình Đại
+5607 Huyện Ba Tri
+5608 Huyện Thạnh Phú
+5609 Huyện Mỏ Cày Nam
+ 
+57. TỈNH VĨNH LONG
+5700 Sở Giáo dục và Đào tạo
+5701 Thành phố Vĩnh Long
+5702 Huyện Long Hồ
+5703 Huyện Mang Thít
+5704 Huyện Bình Minh
+5705 Huyện Tam Bình
+5706 Huyện Trà Ôn
+5707 Huyện Vũng Liêm
+5708 Huyện Bình Tân
+ 
+58. TỈNH TRÀ VINH
+5800 Sở Giáo dục và Đào tạo
+5801 Thành phố Trà Vinh
+5802 Huyện Càng Long
+5803 Huyện Cầu Kè
+5804 Huyện Tiểu Cần
+5805 Huyện Châu Thành
+5806 Huyện Trà Cú
+5807 Huyện Cầu Ngang
+5808 Huyện Duyên Hải
+ 
+59. TỈNH SÓC TRĂNG
+5900 Sở Giáo dục và Đào tạo
+5901 Thành phố Sóc Trăng
+5902 Huyện Kế Sách
+5903 Huyện Mỹ Tú
+5904 Huyện Mỹ Xuyên
+5905 Huyện Thạnh Trị
+5906 Huyện Long Phú
+5907 Thị xã Vĩnh Châu
+5908 Huyện Cù Lao Dung
+5909 Huyện Ngã Năm
+5910 Huyện Châu Thành
+5911 Huyện Trần Đề
+ 
+60. TỈNH BẠC LIÊU
+6000 Sở Giáo dục và Đào tạo
+6001 Thành phố Bạc Liêu
+6002 Huyện Vĩnh Lợi
+6003 Huyện Hồng Dân
+6004 Huyện Giá Rai
+6005 Huyện Phước Long
+6006 Huyện Đông Hải
+6007 Huyện Hoà Bình
+ 
+61. TỈNH CÀ MAU
+6100 Sở Giáo dục và Đào tạo
+6101 Thành phố Cà Mau
+6102 Huyện Thới Bình
+6103 Huyện U Minh
+6104 Huyện Trần Văn Thời
+6105 Huyện Cái Nước
+6106 Huyện Đầm Dơi
+6107 Huyện Ngọc Hiển
+6108 Huyện Năm Căn
+6109 Huyện Phú Tân
+ 
+62. TỈNH ĐIỆN BIÊN
+6200 Sở Giáo dục và Đào tạo
+6201 TP. Điện Biên Phủ
+6202 Thị xã Mường Lay
+6203 Huyện Điện Biên
+6204 Huyện Tuần Giáo
+6205 Huyện Mường Chà
+6206 Huyện Tủa Chùa
+6207 Huyện Điện Biên Đông
+6208 Huyện Mường Nhé
+6209 Huyện Mường Ảng
+ 
+63. TỈNH ĐĂK NÔNG
+6300 Sở Giáo dục và Đào tạo
+6301 Thị xã Gia Nghĩa
+6302 Huyện Đắk R’Lấp
+6303 Huyện Đắk Mil
+6304 Huyện Cư Jút
+6305 Huyện Đắk Song
+6306 Huyện Krông Nô
+6307 Huyện Đắk GLong
+6308 Huyện Tuy Đức
+ 
+64. TỈNH HẬU GIANG
+6400 Sở Giáo dục và Đào tạo
+6401 Thành phố Vị Thanh
+6402 Huyện Vị Thuỷ
+6403 Huyện Long Mỹ
+6404 Huyện Phụng Hiệp
+6405 Huyện Châu Thành
+6406 Huyện Châu Thành A
+6407 Thị xã Ngã Bảy

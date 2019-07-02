@@ -1,0 +1,21 @@
+<div class="slider-area">
+    <div class="hero-slider owl-carousel">
+        <!--Single Slider Start-->
+        <% @products.each do |product| %>
+            <% if product.featured_item == true %>
+            <div class="single-slider img-responsive" style="background-image: url(<%= product.images.first.attachment.url %>); margin-left: 10%;">
+                <div class="hero-slider-content">
+                    <h1> <%= product.description.truncate(100).gsub!(/(<[^>]*>)|\n|\t/s) {" "} %></h1>
+                    <h2><%= product.name %></h2>
+                    <div class="slider-btn">
+                        <a href="#">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <% else %>
+            <h1></h1>
+            <% end %>
+        <% end %>
+        <!--Single Slider End-->
+    </div>
+</div>

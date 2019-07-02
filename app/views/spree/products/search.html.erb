@@ -1,0 +1,46 @@
+
+<% content_for :social_meta_data do %>
+  <% if current_store.social_image.present? %>
+  <meta property="og:image" content='<%= image_path current_store.social_image %>'>
+  <% else %>
+    <% if @show_default_image %>
+    <meta property="og:image" content='<%= image_path 'dong-ho-hot.png' %>'>
+    <% end %>
+  <% end %>
+<% end %>
+<% content_for :sidebar do %>
+  <div data-hook="homepage_sidebar_navigation">
+    <%= render :partial => 'spree/shared/taxonomies' %>
+    <p class="clearfix"></p>
+
+  </div>
+
+<% end %>
+
+<div data-hook="homepage_products">
+  <%# cache([@current_store.code, cache_key_for_products]) do %>
+    <%= render :partial => 'spree/shared/products', :locals => { :products => @products } %>
+  <%# end %>
+</div>
+
+<!-- Google Code for Remarketing Tag -->
+<script type="text/javascript">
+  var google_tag_params = {
+  ecomm_prodid: '<%= 999999999 %>',
+  ecomm_pagetype: 'home'
+  };
+</script>
+<script type="text/javascript">
+  /* <![CDATA[ */
+  var google_conversion_id = 961568658;
+  var google_custom_params = window.google_tag_params;
+  var google_remarketing_only = true;
+  /* ]]> */
+  </script>
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+  <noscript>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/961568658/?value=0&amp;guid=ON&amp;script=0"/>
+  </div>
+</noscript>

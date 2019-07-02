@@ -1,0 +1,24 @@
+<script>            
+              $('#product-thumbnails li').on('click', function(){
+                link_image_url = $('#main-image img').attr('data-zoom-image');
+                img_name = $(this).find('img').attr('alt')
+                imageEditor.loadImageFromURL(link_image_url, 'img_name')
+              })
+         // Image editor
+         var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
+             includeUI: {
+                 loadImage: {
+                     path: "<%= @product.images.first.attachment.url(:original) %>",
+                     name: 'SampleImage'
+                 },
+                 initMenu: 'filter',
+                 menuBarPosition: 'bottom'
+             },
+             cssMaxWidth: 1000,
+             cssMaxHeight: 1000
+         });
+
+         window.onresize = function() {
+             imageEditor.ui.resizeEditor();
+         }
+        </script>

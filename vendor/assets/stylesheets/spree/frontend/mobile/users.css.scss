@@ -1,0 +1,40 @@
+#referred-orders-form-filter{
+  margin-bottom: 10px;
+  .date-range-filter{
+    label{
+      float: left;
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+    .referred-orders-date-range-fields{
+      input.datepicker, span.range-divider{
+        float: left;
+        margin-right: 5px;
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
+.referred-orders{
+  .total{
+    background-color: #d9d9db;
+  }
+}
+
+.users-info{
+  div{
+    span{
+      font-weight: bold;
+    }
+  }
+}
+
+#ui-datepicker-div{
+  z-index: 6 !important;
+  .ui-datepicker-calendar{
+    thead{
+      font-size: 10px;
+    }
+  }
+}

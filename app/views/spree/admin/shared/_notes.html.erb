@@ -1,0 +1,18 @@
+<%= link_to Spree.t(:note), "##{target.id}-notes", :title => Spree.t(:note), :no_text => true, :class => "fa fa-edit icon_link with-tip no-text notes button" %>
+<div style="display:none">
+  <div id="<%= target.id %>-notes" style="width: 600px; height: 300px;">
+    <%= form_for Spree::Note.new(), :url=>admin_notes_path(), :remote => true, :class => "new-note-form" do |f| %>
+      <%= f.text_field :content, :style => "width: 400px;" %>
+      <%= f.hidden_field :notable_id, :value => target.id %>
+      <%= f.hidden_field :notable_type, :value => note_type %>
+      <%= f.submit Spree.t(:note), :class => "button create-note" %>
+    
+    <br/>
+    <div class="note-list">
+    <% target.notes.each do |note| %>
+      <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+    <% end %>
+    </end>
+    <% end %>
+  </div>
+</div>

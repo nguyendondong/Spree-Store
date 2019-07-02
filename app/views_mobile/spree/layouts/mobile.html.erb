@@ -1,0 +1,75 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head data-hook="inside_head">
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+  <body class="boxed <%= body_class %> mobile-body" data-hook="body">
+  <button id="contact-btn" class="conta-open"><i class="fa fa-phone" aria-hidden="true"></i></button>
+<div id="contact-gr">
+  <div class="contact-bg"></div>
+  <button id="contact-btn" class="conta-close"><i class="fa fa-times" aria-hidden="true"></i></i></button>
+  <a href="tel:+84981805506" class="pulse">
+    <i class="fa fa-phone" aria-hidden="true"></i>
+    <span>Gọi cho chúng tôi</span>
+  </a>
+  <a href="https://www.facebook.com/Dong-ho-X-Teen-249467635263830/" class="face-btn">
+    <i class="fa fa-facebook" aria-hidden="true"></i>
+    <span>Nhắn tin qua facebook</span>
+  </a>
+  <a href="http://zalo.me/0983379782" class="zalo-button">
+      <%= image_tag 'Logo_Zalo.png',:style => "width: 20px; height: 20px; cursor: pointer"%>
+      <span>Nhắn tin qua zalo</span>
+  </a>
+ 
+</div>
+
+
+<script>
+  $(document).ready(()=>{
+    $("#contact-btn").click(()=>{
+      $("#contact-gr").addClass("active");
+      $("#contact-gr >a").addClass("active").css("pointer-events", "unset");
+      $("#contact-gr >a >span").addClass("active");
+    })
+    $("#contact-btn.conta-close").click(()=>{
+      $("#contact-gr >a").removeClass("active").css("pointer-events", "none");
+      $("#contact-gr").removeClass("active");
+      $("#contact-gr >a >span").removeClass("active");
+    })
+    $("#contact-gr .contact-bg").click(()=>{
+      $("#contact-gr >a").removeClass("active").css("pointer-events", "none");
+      $("#contact-gr").removeClass("active")
+    })
+  });
+</script>
+    <div id="wrapper">
+
+      <%= render :partial => 'spree/shared/mobile_header' %>
+
+      <div class="row container" data-hook>
+
+        <%= breadcrumbs(@taxon) %>
+
+        <div id="content">
+          <%= flash_messages %>
+          <%= yield %>
+        </div>
+
+        <%= yield :templates %>
+
+      </div>
+
+      <%= render :partial => 'spree/shared/mobile_footer' %>
+
+    </div>
+
+    <%= render :partial => 'spree/shared/google_analytics' %>
+    <script type='text/javascript'>(function () { var done = false;var script = document.createElement('script');script.async = true;script.type = 'text/javascript';script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript';document.getElementsByTagName('HEAD').item(0).appendChild(script);script.onreadystatechange = script.onload = function (e) {if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {var w = new PCWidget({ c: '901272c3-721e-4040-a6ef-21236a1b4940', f: true });done = true;}};})();</script>
+  </body>
+</html>
+
+

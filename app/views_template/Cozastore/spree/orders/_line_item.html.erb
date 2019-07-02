@@ -1,0 +1,44 @@
+<% variant = line_item.variant -%>
+<%= order_form.fields_for :line_items, line_item do |item_form| -%>
+  <tr class="table_row line-item">
+    <td class="column-1" data-hook="cart_item_image">
+            <% if variant.images.length == 0 %>
+                <%= link_to product_image(variant.product), variant.product, :id => "delete_#{dom_id(line_item)}", :class => "delete how-itemcart1 delete-item" %>
+                <%#= product_image(variant.product) %>
+            <% else %>
+                <%#= image_tag(variant.images.first.attachment.url(:product))%>
+                <%= link_to image_tag(variant.images.first.attachment.url(:product)), variant.product, :id => "delete_#{dom_id(line_item)}" %>
+            <% end %>
+    </td>
+    <td class="column-2" data-hook="cart_item_description">
+      <h4><%= link_to line_item.name, product_path(variant.product) %></h4>
+      <%= variant.options_text %>
+      <% if line_item.insufficient_stock? %>
+        <span class="out-of-stock">
+          <%= Spree.t(:out_of_stock) %>&nbsp;&nbsp;<br />
+        </span>
+      <% end %>
+      
+    </td>
+    <td class="column-3" data-hook="cart_item_price">
+      <%= line_item.single_money.to_html %>
+    </td>
+    <td class="column-4" data-hook="cart_item_quantity">
+        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                <i class="fs-16 zmdi zmdi-minus"></i>
+            </div>
+            <%= item_form.number_field :quantity, :min => 1, :class => "mtext-104 cl3 txt-center num-product line_item_quantity", :size => 5 %>
+
+            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                <i class="fs-16 zmdi zmdi-plus"></i>
+            </div>
+        </div>
+    </td>
+    <td class="column-5" data-hook="cart_item_total">
+      <%= line_item.display_amount.to_html unless line_item.quantity.nil? %>
+    </td>
+  </tr>
+<% end -%>
+
+

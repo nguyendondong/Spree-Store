@@ -1,0 +1,38 @@
+<%# no need for thumbnails unless there is more than one image %>
+<% if (@product.images + @product.variant_images).uniq.size > 1 %>
+  <ul id="product-thumbnails" class="inline" data-hook>
+    <% @product.images.each do |i| %>
+      <li class='thumb tmb-all tmb-<%= i.viewable.id %>'>
+        <%= link_to(image_tag(i.attachment.url(:mini), "data-zoom_image" => i.attachment.url(:original), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image_x48.png'"), i.attachment.url(:product)) %>
+      </li>
+    <% end %>
+
+    <% if @product.has_variants? %>
+      <% @product.variant_images.each do |i| %>
+        <% next if @product.images.include?(i) %>
+        <li class='thumb vtmb tmb-<%= i.viewable.id %>'>
+          <%= link_to(image_tag(i.attachment.url(:mini), "data-zoom_image" => i.attachment.url(:original), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image_x48.png'"), i.attachment.url(:product)) %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @product.price_based_on_volume_product.present? %>
+<table class="table text-center">
+    <thead>
+      <tr>
+        <th>Số lượng</th>
+        <th>Giá</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @product.price_based_on_volume_product.each do |info| %>
+      <tr>
+        <td><%= info[:name] %></td>
+        <td><%= info[:amount] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+<% end %>

@@ -1,0 +1,43 @@
+<% if products.any? %>
+<% products.each do |product| %>
+ <% cache product do %>
+<% url = product_path(product) %>
+<div class="product">
+
+    <div class="product-image image-search">
+        
+        <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+            <div class="product-info text-center">
+        <div>
+            <%= link_to truncate(product.name, :length => 30), url, :class => 'info', :itemprop => "name", :title => product.name %>
+        </div>
+        <div class="price">
+            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <span class="price selling" itemprop="price">
+                    <% if product.lowest_discounted_volume_price_obj.present? %>
+                    <%= display_price(product.lowest_discounted_volume_price_obj) + (" ") + ("-") %>
+                    <% end %>
+                    <%= display_price(product) %>
+                </span>
+                <% if product.before_sale_price.present? %>
+                <span class="before-sale-price" itemprop="price">
+                    <%= display_before_sale_price(product) %>
+                </span>
+                <% end %>
+            </span>
+        </div>
+    </div>
+    </div>
+
+
+</div>
+<% end %> 
+<% end %>
+<% reset_cycle("classes") %>
+
+<% else %>
+<h3 style="color: red;"><%= Spree.t(:noresult) %></h3>
+
+<% end %>
+
+

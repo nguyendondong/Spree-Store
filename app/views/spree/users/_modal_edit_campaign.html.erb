@@ -1,0 +1,77 @@
+<!-- Modal -->
+<div class="modal fade" id="campaignDetail_<%= campaign.id %>" tabindex="-1" role="dialog" aria-labelledby="Detail">
+  <%= form_for campaign, :url => "/campaigns/#{campaign.id}", method: :put, html: { :class => "form-horizontal" } do |f|%>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="Detail">Chiến dịch: <%= campaign.name %></h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Tên chiến dịch</label>
+          <div class="col-sm-10">
+            <%= f.text_field :name, :class => "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">URL</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" value="?ref_id=<%= @user.id %>&amp;camp_id=<%= campaign.id %>" disabled="">
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Ngày tạo</label>
+          <div class="col-sm-10">
+            <%= f.text_field :created_at, :class => "form-control", disabled: true %>
+          </div>
+        </div>
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Trạng thái</label>
+          <div class="col-sm-10">
+            <%= f.select :active, options_for_select([['Đang hoạt động', 1],['Dừng hoạt động', 0]], :selected => f.object.active ? 1 : 0), {}, { :class => 'form-control switch-active' } %>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label"><%= Spree.t(:sales_total)%></label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" value="<%= Spree::Money.new(campaign.ordered_total, { currency: Spree::Config[:currency] }) %>" disabled="">
+          </div>
+        </div>
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label"><%= Spree.t("shipped_successfully")%></label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" value="<%= Spree::Money.new(campaign.successful_total, { currency: Spree::Config[:currency] }) %>" disabled="">
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Ghi chú</label>
+          <div class="col-sm-10">
+            <%= f.text_area :description, :class => "form-control", rows: 3 %>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu lại
+        </button>
+        <% if check_del(campaign.id) %>
+          <%= link_to "/campaigns/#{campaign.id}", method: "DELETE", "data-confirm" => "Nếu xóa chiến dịch này thì các đơn hàng thuộc chiến dịch sẽ tự động bị xóa theo.\nCó chắc chắn sẽ xóa???", class: "btn btn-danger", target: "_parent"  do%>
+          <i class="fa fa-trash white"></i> Xóa
+          <% end %>
+        <% end %>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i> Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <% end %>
+</div>

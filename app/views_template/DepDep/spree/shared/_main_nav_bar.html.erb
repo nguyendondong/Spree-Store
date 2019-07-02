@@ -1,0 +1,182 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+  integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+<div class="container site-menu">
+  <div class="header">
+    <!-- <button href="#menu" class="menu-trigger">
+      <i class="fa fa-bars"></i>
+    </button> -->
+    <nav class="navbar sidebarNavigation top-search-responsive" data-sidebarClass="navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header nav-flex">
+          <button type="button" class="navbar-toggle left-navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <%= search_form_for  @search, url: "/products/search" , remote: true, :method => :get, :class => "form-inline", id: "search-product-mobile" do |f| %>
+          <%= f.text_field  :translations_name_cont, :placeholder => Spree.t(:search), :class=>"search-field form-control search-mobile", id: "q_name_cont" %>
+          <i class="fa fa-spinner fa-pulse search-animation"></i>
+          <% end %>
+          <div id="cart-responsive">
+            <a href="/cart" class="btn cart">
+              <i class="fa fa-shopping-cart"></i>
+              <span class="count">
+                <% if simple_current_order.present?  %>
+                <%=simple_current_order.quantity%>
+                <%else%>
+                 0
+                <% end %>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+            <% if spree_current_user.present? %>
+            <li class="active">
+              <%= link_to account_path, class: (current_spree_page?(account_path) || current_spree_page?(edit_account_path)) ? "topitem active" : "topitem" do %>
+              <span>Hi <%= spree_current_user.display_name %>
+                <% if(Notification.unread(spree_current_user).size > 0) %><span
+                  class="numbernotif"><%= Notification.unread(spree_current_user).size %></span><%end%></span>
+              <% end%>
+            </li>
+
+            <!-- <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Page 1-1</a></li>
+              </ul>
+            </li> -->
+
+            <li>
+              <%= link_to referred_orders_path, class: current_spree_page?(referred_orders_path) ? "topitem active" : "topitem" do %>
+              <span> <i class="fa fa-leanpub"></i> Đơn hàng</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to my_campaigns_path, class: current_spree_page?(my_campaigns_path) ? "topitem active" : "topitem" do %>
+              <span> <i class="fa fa-bar-chart "></i> Chiến dịch</span>
+              <% end%>
+            </li>
+            <li>
+              <%= link_to withdraw_money_path, class: current_spree_page?(withdraw_money_path) ? "topitem active" : "topitem" do %>
+              <span><i class="fa fa-money"></i>Thanh toán</span>
+              <% end%>
+            </li>
+            <% end %>
+            <hr />
+            <% @current_store.taxons.each do |taxon| %>
+            <li>
+              <% if taxon.children.any? %>
+              <%= taxons_tree1(taxon, taxon) %>
+              <hr />
+              <% end %>
+            </li>
+            <% end %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if spree_current_user.present? %>
+            <li><%= link_to '<i class="fa fa-sign-out"></i> Log Out'.html_safe, spree_logout_path %></li>
+            <% else %>
+            <li><%= link_to '<i class="fa fa-sign-in"></i> Sign Up'.html_safe, spree_signup_path %></li>
+            <li><%= link_to '<i class="fa fa-sign-in"></i> Login'.html_safe, spree_login_path %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--
+    <nav class="top-search-responsive">
+      <%= form_tag spree.products_path, :method => :get, :class => "form-inline", :id => "search-form" do %>
+        <%= search_field_tag :keywords, params[:keywords], :placeholder => Spree.t(:search), :class=>"search-field form-control" %>
+        <button type="submit"><i class="fa fa-search"></i></button>
+      <% end %>
+    </nav>
+    <div id="cart-responsive">
+      <a href="/cart" class="btn cart">
+        <i class="fa fa-shopping-cart"></i>
+        <span>
+        <% if simple_current_order.present?  %>
+        <%=simple_current_order.quantity%>
+        <%else%>
+          0
+        <% end %>
+        </span>
+      </a>
+    </div>
+  </div> -->
+    <%#= render :partial => 'spree/shared/member_nav_bar' if store_menu? %>
+  </div>
+  <nav id="navigation">
+    <ul class="menu js-enabled arrows" id="responsive">
+      <li><a href="/" class="homepage current">Home</a></li>
+      <#%= yield :sidebar %>
+    </ul>
+  </nav>
+</div>
+<script>
+  window.onload = function () {
+    if (window.jQuery) {
+      $(document).ready(function () {
+        $(".sidebarNavigation .navbar-collapse")
+          .hide()
+          .clone()
+          .appendTo("body")
+          .removeAttr("class")
+          .addClass("sideMenu")
+          .show();
+        $("body").append("<div class='overlay'></div>");
+
+        $(".navbar-toggle").on("click", function () {
+          $(".sideMenu").addClass(
+            $(".sidebarNavigation").attr("data-sidebarClass")
+          );
+          $(".sideMenu, .overlay").toggleClass("open");
+          $(".overlay").on("click", function () {
+            $(this).removeClass("open");
+            $(".sideMenu").removeClass("open");
+          });
+        });
+
+        $(".sideMenu li:not(.dropdown) a").on('click', function () {
+          $(".sideMenu, .overlay").removeClass("open");
+        });
+
+        /*on resize*/
+        $(window).resize(function () {
+          if ($(".navbar-toggle").is(":hidden")) {
+            $(".sideMenu, .overlay").hide();
+          } else {
+            $(".sideMenu, .overlay").show();
+          }
+        });
+
+      });
+    } else {
+      console.log("sidebarNavigation Requires jQuery");
+    }
+  };
+   
+  var quantity_moment = parseInt($("#cart-responsive .cart .count").text());
+  console.log(" so luong dau ")
+       console.log(quantity_moment)
+  $(document).on('click', '.btn-choose, .btn-checkout', function () {
+    $(document).ready(function () {
+       quantity = parseInt($('#' + product_id + ' #quantity2').val());
+       console.log(" so luong them ")
+       console.log(quantity)
+       total = quantity + quantity_moment;
+       console.log(" so luong sau khi cong   ")
+       console.log(total)
+      $("#cart-responsive .cart .count").text(total);
+       quantity_moment =total;
+       console.log(" so luong sau ")
+       console.log(quantity_moment)
+    })
+  })
+</script>

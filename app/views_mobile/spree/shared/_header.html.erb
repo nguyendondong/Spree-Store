@@ -1,0 +1,14 @@
+<div class="clearfix"></div>
+<div id="header" class="container" data-hook>
+	<%= render :partial => 'spree/shared/menu'%>
+
+  
+  <%#= render :partial => 'spree/shared/main_nav_bar' if store_menu? %>
+  
+</div>
+<%#= render :partial => 'spree/shared/announcements' if store_menu? %>
+<%= render "spree/shared/slider" unless @disable_slider %>
+
+<% if @just_sign %>
+  <%= render :partial => 'shared/invite_friends' %>
+<% end %>

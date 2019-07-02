@@ -1,0 +1,13 @@
+<% if staff? %>
+	<%= label_tag Spree.t(:buy_at_shop)%>
+	<%= check_box_tag :buy_at_shop %>
+<% end %>
+<div class="columns alpha nine" data-hook="billing_fieldset_wrapper">
+  <fieldset id="billing" data-hook>
+    <%= form.fields_for :bill_address do |bill_form| %>
+      <%= render :partial => 'spree/address/form', :locals => { :form => bill_form, :address_type => 'billing', :address => @order.bill_address } %>
+    <% end %>
+  </fieldset>
+</div>
+
+<%= submit_tag Spree.t(:complete) + " >>", :class => 'continue button primary' %>

@@ -1,0 +1,18 @@
+<meta charset="utf-8">
+<title><%= title %></title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="fb:app_id" content="1557606587807429"/>
+
+<%= yield :social_meta_data %>
+<%== meta_data_tags %>
+<%= canonical_tag(current_store.url) %>
+<%= favicon_link_tag 'cozastore/icons/favicon.png' %>
+<%= stylesheet_link_tag 'spree/frontend/cozastore/cozastore' %>
+<%= stylesheet_link_tag 'spree/frontend/cozastore/util' %>
+<%= stylesheet_link_tag 'spree/frontend/cozastore/main' %>
+<style id="theia-sticky-sidebar-stylesheet-TSS">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>
+<%= csrf_meta_tags %>
+<!--[if lt IE 9]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+<![endif]-->

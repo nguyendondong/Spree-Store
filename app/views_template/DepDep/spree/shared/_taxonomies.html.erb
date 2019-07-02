@@ -1,0 +1,59 @@
+<% max_level = Spree::Config[:max_level_in_taxons_menu] || 1 %>
+<nav id="categories" class="sidebar-item" data-hook>
+  <%# taxons = @store.taxons %>
+  <% cache [@current_store.code, @current_store.updated_at, I18n.locale, max_level, mobile_device?] do %>
+    <% @current_store.taxons.each do |taxon| %>
+      <% if taxon.children.any? %>
+        <div data-root-id="<%= taxon.taxonomy.id%>" data-parent-id="<%= taxon.id%>" >
+          <%= taxons_tree(taxon, taxon, max_level) %>
+        </div>
+     <% end %>
+    <% end %>
+  <% end %>
+</nav>
+
+
+<script>
+<% if is_admin? %>
+  $('.list-group').append('<a class="bg-primary list-group-item text-center btn-add-taxon" href="javascript:void(0)"> + </a> ');
+  var htmlTemplate = "<div class='list-group-item'> <p  contenteditable='true' class='add-taxon'>Input name ...</p> </div>"
+  $('body').on('click', '.btn-add-taxon', function(e){
+    $( htmlTemplate ).insertBefore( $(e.target) );
+  })
+<% end %>
+
+ $('body').on('keydown', '.add-taxon', function(e){
+  $target = $(e.target)
+  $rootElement = $target.closest(".list-group").parent()
+  if (e.keyCode == 13) {
+    var rootId = $rootElement.data("root-id")
+    var parentId = $rootElement.data("parent-id")
+    var childIndex = $rootElement.find('a').size() - 1
+    var url = "/api/taxonomies/"+rootId+"/taxons"
+    $.ajax({
+      type: "POST",
+      url: url,
+      dataType: "JSON",
+      data: {
+        taxon:{
+          name: $target.text(),
+          parent_id: parentId,
+          child_index: childIndex,
+        }
+      },
+      success: function(response) {
+        console.log(response)
+          html = '<a class="list-group-item" href="/t/'+ response.permalink +'"> '+response.name +'</a>'
+          $target.parent().replaceWith( html );
+      }
+    })
+    return false;
+  }
+ })
+
+
+$('body').on('click','.add-taxon', function(){
+  $('.add-taxon').text('')
+});
+
+</script>

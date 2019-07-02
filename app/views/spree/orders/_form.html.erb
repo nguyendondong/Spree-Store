@@ -1,0 +1,41 @@
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+
+
+<div id="cart-detail" class="">
+    <div class="row row-cart-items">
+      <div class="text-center col-lg-9 col-md-8 shopping-cart-left">
+        <div>
+          <%= render partial: 'line_item', collection: order_form.object.line_items, locals: {order_form: order_form} %>
+        </div>
+      </div>
+
+      <div class="cart-total col-lg-3 col-md-4 shopping-cart-right">
+        <div class="box-price-subtotal">
+            <% if @order.adjustments.exists? || @order.line_item_adjustments.exists? || @order.shipment_adjustments.exists? %>
+            <div class="cart-subtotal">
+                <span><%= Spree.t(:subtotal, :count => @order.line_items.sum(:quantity)) %>:</span>
+                <strong><%= order_form.object.display_item_total %></strong>
+            </div>
+            <div class="adjustment">
+                <%= render "spree/orders/adjustments" %>
+            </div>
+            <% end %>
+        </div>
+        <div class="box-price-total">
+            <span><%= Spree.t(:Sum) %>:</span>
+            <strong><%= order_form.object.display_total %></strong>
+        </div>
+
+        <!-- button checkout -->
+        <div class="links columns sixteen alpha omega button-checkout" data-hook="cart_buttons">
+
+          <%#= link_to Spree.t(:continue_shopping), "/", :class => 'btn button gray', :id => 'return-button'%>
+
+          <%= button_tag :class => 'btn button color cart-btns proceed', :id => 'checkout-link', :name => 'checkout' do %>
+          <%= Spree.t(:checkout) %>
+          <% end %>
+        </div>
+        <!-- end button checkout -->
+      </div>
+    </div>
+</div>

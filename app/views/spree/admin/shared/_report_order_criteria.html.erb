@@ -1,0 +1,44 @@
+<form>
+    <div id="date-range">
+      <div class="form-range">
+        <div class="list-date-range">
+          <label>Giới hạn thời gian</label>
+          <select  id="d_time_report_gteq"  name="d[time_report_gteq]">
+          <option value="0">Tùy chỉnh</option>
+           <% today = Date.today.strftime("%d/%m/%Y")%>
+          <option value="<%= today %>" selected>Hôm nay</option>
+           <% day_ago = 1.day.ago.to_date.strftime("%d/%m/%Y")%>
+          <option value="<%=day_ago %>">Hôm qua</option>
+           <% seven_day_ago = 1.week.ago.to_date.strftime("%d/%m/%Y")%>
+          <option value=" <%=seven_day_ago %>">7 ngày qua</option>
+          <% month_ago = 1.month.ago.to_date.strftime("%d/%m/%Y")%>
+          <option value="<%=month_ago %>"> 1 tháng qua</option>
+          <% three_month_ago = 3.month.ago.to_date.strftime("%d/%m/%Y")%>
+          <option value="<%=three_month_ago %>">3 tháng qua</option>
+          <% year_ago = 1.year.ago.to_date.strftime("%d/%m/%Y")%>
+          <option value="<%=year_ago %>">Năm nay</option>
+          </select>
+          <div class="date-range-filter field align-center">
+            <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+            <input type="text" class="datepicker datepicker-from">
+            <span class="range-divider">
+              <i class="fa fa-arrow-right"></i>
+            </span>
+            <input type="text" class="datepicker datepicker-to">            
+            <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+          </div>
+        </div>
+      </div>
+      <div class="gr-filter">
+        <label>Nhóm</label>
+        <select id="groupFilter">
+          <option selected value="hours">Giờ</option>
+          <option value="day">Ngày</option>
+          <option value="week">Tuần</option>
+          <option value="month">Tháng</option>
+          <option value="quater">Quý</option>
+        </select>
+      </div> 
+    </div>
+    
+</form>

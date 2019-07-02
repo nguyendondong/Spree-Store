@@ -1,0 +1,85 @@
+<div class="breadcrumb-area pb-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-bg">
+                    <ul class="breadcrumb-menu">
+                        <li><a href="/">Home</a></li>
+                        <li>Login Register</li>
+                    </ul>
+                    <h2>Login Register</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if flash[:alert] %>
+<div class="flash errors"><%= flash[:alert] %></div>
+<% end %>
+<% @body_id = 'login' %>
+
+<div class="login-register-area pb-50">
+    <div class="container">
+        <div class="row">
+            <!--Login Form Start-->
+            <div class="col-md-6 col-12">
+                <div class="customer-login-register">
+                    <div class="form-login-title">
+                        <h2>Login</h2>
+                    </div>
+                    <div class="login-form">
+                        <%= form_for Spree::User.new, :as => :spree_user, :url => spree.admin_create_new_session_path do |f| %>
+                            <div id="password-credentials">
+                                <div class="form-fild">
+                                    <p><%= f.label :email, Spree.t(:email) %><span class="required">*</span></p>
+                                    <%= f.email_field :email, :class => 'form-control', :tabindex => 1 %>
+                                </div>
+                                <div class="form-fild">
+                                    <p><%= f.label :password, Spree.t(:password) %><span class="required">*</span></p>
+                                    <%= f.password_field :password, :class => 'form-control', :tabindex => 1 %>
+                                </div>
+                                <div class="login-submit">
+                                    <%= f.submit Spree.t(:login), :class => 'form-button', :tabindex => 4 %>
+                                </div>
+                                <span>
+                                    Không thể đăng nhập tài khoản? <%= link_to Spree.t(:forgot_password), spree.recover_password_path %>
+                                </span>
+                            </div>
+                        <% end %>
+                    </div>
+                    
+                </div>
+            </div>
+            <!--Login Form End-->
+            <!--Register Form Start-->
+            <div class="col-md-6 col-12">
+                <div class="customer-login-register register-pt-0">
+                    <div class="form-register-title">
+                        <h2>Register</h2>
+                    </div>
+                    <div class="register-form config-2">
+                        <%= form_for resource, :as => :spree_user, :url => spree.registration_path(@user) do |f| %>
+                            <div class="form-fild">
+                                <p><%= f.label :email, Spree.t(:email) %><span class="required">*</span></label></p>
+                                <%= f.email_field :email, :class => 'form-control', :tabindex => 1 %>
+                            </div>
+                            <div class="form-fild">
+                                <p><%= f.label :password, Spree.t(:password) %><span class="required">*</span></label></p>
+                                <%= f.password_field :password, :class => 'form-control', :tabindex => 1 %>
+                            </div>
+                            <div class="form-fild">
+                                <p><%= f.label :password_confirmation, Spree.t(:confirm_password) %><span class="required">*</span></label></p>
+                                <%= f.password_field :password_confirmation, :class => 'form-control', :tabindex => 1 %>
+                            </div>
+                            <div class="register-submit">
+                                <%= f.submit "Đăng ký", :class => 'form-button', :tabindex => 4 %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <!--Register Form End-->
+        </div>
+    </div>
+</div>

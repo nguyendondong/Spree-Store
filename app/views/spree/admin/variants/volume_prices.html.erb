@@ -1,0 +1,54 @@
+<%= render 'spree/admin/shared/product_sub_menu' %>
+<%= render partial: 'spree/admin/shared/product_tabs', locals: { current: Spree.t(:volume_pricing) } %>
+<%= render "spree/shared/error_messages", :target => @variant %>
+
+<%= form_for(@variant, :url => admin_product_variant_path(@product, @variant), :html => { :method => :put }) do |f| %>
+  <h3><%= Spree.t(:volume_prices) %></h3>
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Giá trị đầu</th>
+        <th>Giá trị cuối</th>
+        <th class="hide"><%= Spree.t(:discount_type) %></th>
+        <th class="hide"><%= Spree.t(:name) %></th>
+        
+        <th class="hide"><%= Spree.t(:range) %></th>
+        <th><%= Spree.t(:amount) %></th>
+        <th class="hide"><%= Spree.t(:position) %></th>
+        <th class="actions"></th>
+      </tr>
+    </thead>
+    <tbody id="volume_prices">
+      <%= f.fields_for :volume_prices do |vp_form| %>
+        <%= render 'volume_price_fields', :f => vp_form %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to_add_fields Spree.t(:add_volume_price), "tbody#volume_prices", {:class => 'new_volume_price_row'} %>
+  <br/><br/>
+
+  <%= render 'spree/admin/shared/edit_resource_links' %>
+<% end %>
+
+<script>
+$("body").on("keyup", ".first-value, .last-value", function(e){
+    $element = $(e.target)
+    $tr_tag = $element.closest('.volume_price')
+    $des_td = $tr_tag.find('.range')
+    first_value = $tr_tag.find('.first-value').val()
+    last_value =  $tr_tag.find('.last-value').val()
+    $des_td.val("(" + first_value + ".." + last_value + ")");
+});
+
+$("body").on("keyup", ".first-value, .last-value", function(e){
+    $(this).parent().children('td:nth-child(4)').val("(" + $(".first-value").val() + ".." + $(".last-value").val() + ")");
+    $element = $(e.target)
+    $tr_tag = $element.closest('.volume_price')
+    $des_td = $tr_tag.find('.name')
+    first_value = $tr_tag.find('.first-value').val()
+    last_value =  $tr_tag.find('.last-value').val()
+    $des_td.val(first_value + "-" + last_value);
+});
+
+
+</script>

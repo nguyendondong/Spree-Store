@@ -1,0 +1,35 @@
+<div class="address vcard">
+  <div class="fn">
+    <span class="type"><%= Spree.t(:full_name) %>: </span>
+    <%= address.firstname %>
+  </div>
+  <div class="adr">
+    <div class="street-address">
+      <div class="street-address-line">
+        <%= address.address1 if address.address1.present? %>
+      </div>
+      <% unless address.address2.blank? %>
+        <div class="street-address-line">
+          <%= address.address2 %>
+        </div>
+      <% end %>
+    </div>
+    <div class="local">
+      <span class="locality"><%= address.district.name if address.district.present? %></span>
+      <span class="region"><%= address.city if address.city.present? %></span>
+
+    </div>
+  </div>
+  <% unless address.phone.blank? %>
+    <div class="tel">
+      <span class="type"><%= Spree.t(:phone) %>: </span>
+      <%= address.phone %>
+    </div>
+  <% end %>
+  <% unless address.alternative_phone.blank? %>
+    <div class="alternative-phone tel">
+      <span class="type"><%= Spree.t(:alternative_phone) %></span>
+      <%= address.alternative_phone %>
+    </div>
+  <% end %>
+</div>

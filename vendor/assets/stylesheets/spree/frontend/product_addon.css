@@ -1,0 +1,137 @@
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media only screen and (min-width: 768px) {
+	#cart-form {
+		right: 20px;
+	}
+
+}
+@media only screen and (max-width: 767px) {
+	#cart-form {
+		width: 100%;
+		right: 0px;
+		bottom: 0px;
+		max-width: none!important;
+	}
+	#cart-form #add-to-cart-button{
+		margin-top: 0px!important;
+	}
+	#main-image{
+		display: flex;
+		justify-content: center;
+	}
+	#main-image img{
+		width: 100%;
+		height: 100%;
+	}
+	ul#product-thumbnails{
+		display: flex;
+		justify-content: center;
+	}
+	ul#product-thumbnails li{
+		width: 80px;
+		height: 80px;
+		margin-right: 10px;
+	}
+	ul img{
+		width: 100%;
+	}
+}
+#cart-form {
+	z-index: 10;
+	position: fixed;
+	background: rgb(37, 35, 35);
+	opacity: 0.8;
+	color: #fff;
+	padding: 10px;
+	max-width: 400px;
+	width: 100%;
+}
+#cart-form h6 {
+	color: #fff;
+	font-weight: bold;
+}
+#product-variants ul {
+	padding: 10px;
+}
+ul#product-thumbnails {
+  padding-left: 0px;
+}
+#product-description>form>#add-to-cart-button {
+	clear: both;
+	padding: 12px 20px;
+	margin-bottom: 10px;
+}
+#product-description>form>#productvariants .variant label {
+	border: 1px solid #3ACF87;
+}
+#add-to-cart-button {
+	float: left;
+	/* width: 192px; */
+	padding: 4px 10px !important;
+	max-width: 100% !important;
+	margin-left: 10px;
+	color: #fff;
+}
+#cart-form .col-xs-6>#product-price {
+	float: left !important;
+}
+#cart-form .add-to-cart {
+	float: right;
+	margin-top: 15px;
+}
+#cart-form #add-to-cart-button{
+	margin-top: 10px;
+}
+#cart-form #product-price {
+  float: right;
+}
+#cart-form #product-price h4 {
+	margin: 0;
+}
+#cart-form #product-price .price {
+	float: right;
+}
+.quantity-right-plus{
+	border-top-left-radius: 0px!important;
+    border-bottom-left-radius: 0px!important;
+}
+.quantity-left-plus{
+	border-top-right-radius: 0px!important;
+	border-bottom-right-radius: 0px!important;
+}
+#productvariants ul {
+	padding: 0;
+}
+#productvariants .variant label {
+	width: auto;
+	height: 25px;
+	background-color: #fff;
+	border-radius: 30px;
+	color: #333;
+	line-height: 25px;
+	font-weight: normal;
+	cursor: pointer !important;
+	padding: 0px 10px;
+}
+#productvariants .variant input[type=radio] {
+	display: none;
+}
+#productvariants .variant input[type=radio]:checked + label {
+	background-color: #3ACF87;
+	color: #fff;
+}
+
+#productvariants ul>li {
+	float: left;
+	margin: 1px 3px;
+}
+@media only screen and (max-width: 399px) {
+	#cart-form .add-to-cart #add-to-cart-button {
+		width: 150px;
+	}
+}

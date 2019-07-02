@@ -1,0 +1,106 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:promotions) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <div data-hook="admin_promotions_index_search">
+    <%= search_form_for [:admin, @search] do |f| %>
+      <div class="five columns">
+        <div class="field">
+          <%= f.text_field :name_cont, tabindex: 1, placeholder: Spree.t(:name)%>
+        </div>
+      </div>
+
+      <div class="five columns">
+        <div class="field">
+          <%= f.text_field :code_cont, tabindex: 1, placeholder: Spree.t(:code) %>
+        </div>
+      </div>
+
+      <div class="five columns">
+        <div class="field">
+          <%= f.text_field :path_cont, tabindex: 1, placeholder: Spree.t(:path) %>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="actions filter-actions">
+        <div data-hook="admin_promotions_index_search_buttons">
+          <%= button Spree.t(:filter_results), 'search' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <li>
+    <%= button_link_to Spree.t(:new_promotion), spree.new_admin_promotion_path, :icon => 'plus' %>
+  </li>
+  <style>
+    #content-header .block-table .page-actions {
+      display: flex;
+      line-height: unset;
+      justify-content: space-between;
+    }
+    #content-header .block-table .page-actions >div >form{
+      display: flex !important;
+    }
+    #content-header .block-table .page-actions .actions.filter-actions{
+      margin-left: 15px;
+    }
+    #content-header .block-table .page-actions .five >div{
+      padding: 0;
+      margin-left: 15px;
+    }
+  </style>
+<% end %>
+
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:search) %>
+<% end %>
+<%= paginate @promotions %>
+
+<% if @promotions.any? %>
+  <table class="index">
+    <colgroup>
+      <col style="width: 20%">
+      <col style="width: 10%">
+      <col style="width: 30%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:code) %></th>
+        <th><%= Spree.t(:description) %></th>
+        <th><%= Spree.t(:usage_limit) %></th>
+        <th><%= Spree.t(:promotion_uses) %></th>
+        <th><%= Spree.t(:expiration) %></th>
+        <th class="actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @promotions.each do |promotion| %>
+        <tr id="<%= spree_dom_id promotion %>" class="<%= cycle('odd', 'even')%>">
+          <td><%= promotion.name %></td>
+          <td class="align-center"><%= promotion.code %></td>
+          <td><%= promotion.description %></td>
+          <td class="align-center"><%= promotion.usage_limit.nil? ? "∞" : promotion.usage_limit  %></td>
+          <td class="align-center"><%= Spree.t(:current_promotion_usage, :count => promotion.credits_count) %></td>
+          <td class="align-center"><%= promotion.expires_at.to_date.to_s(:short_date) if promotion.expires_at %></td>
+          <td class="actions">
+            <%= link_to_edit promotion, :no_text => true %>
+            <%= link_to_delete promotion, :no_text => true %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alpha twelve columns no-objects-found">
+    <%= Spree.t(:no_resource_found, resource: I18n.t(:other, scope: 'activerecord.models.spree/promotion')) %>,
+    <%= link_to Spree.t(:add_one), spree.new_admin_promotion_path %>!
+  </div>
+<% end %>

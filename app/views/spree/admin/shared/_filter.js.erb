@@ -1,0 +1,27 @@
+<script type="text/javascript">
+  myApp = angular.module("myApp",[]);
+  myApp.controller('FilterByCell',['$scope','$http',function($scope,$http){
+    $scope.orders = null;
+
+    $scope.getOrders = function(obj){
+      var udata = {
+          'q[completed_at_gt]' : $('#q_completed_at_gt').val(),
+          'q[completed_at_lt]': $('#q_completed_at_lt').val(),
+          'q[approver_id_eq]' : (typeof obj.target.attributes.approver_id_eq!=='undefined')?obj.target.attributes.approver_id_eq.value:'',
+          'q[shipment_state_eq]' : (typeof obj.target.attributes.shipment_state_eq!=='undefined')?obj.target.attributes.shipment_state_eq.value:'',
+          'q[payment_state_eq]' : (typeof obj.target.attributes.payment_state_eq!=='undefined')?obj.target.attributes.payment_state_eq.value:'' ,
+          'q[state_eq]' : (typeof obj.target.attributes.state_eq!=='undefined')?obj.target.attributes.state_eq.value:''
+            };
+      $http({
+        url: '/admin/orders.json', 
+        method: "GET",
+        params: udata,
+        headers: {'Content-Type': 'application/json'}
+     }).success(function(data){ 
+          console.log(data);
+          $scope.orders = data;
+        });
+     return false; 
+    };
+  }])
+</script>

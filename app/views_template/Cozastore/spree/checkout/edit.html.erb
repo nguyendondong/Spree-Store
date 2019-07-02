@@ -1,0 +1,63 @@
+<div id="checkout" class="p-t-100" data-hook>
+    <div class="container p-b-100">
+        <div class="row">
+            <div class="col-12">
+                <div class="coupon-accordion">
+                    <% unless spree_current_user %>
+                    <!--Accordion Start-->
+                    <h3>Returning customer? <span id="showlogin">Click here to login</span></h3>
+                    <div id="checkout-login" class="coupon-content">
+                        <div class="coupon-info">
+                            <p class="coupon-text">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est sit amet ipsum luctus.</p>
+                            <form action="#">
+                                <p class="form-row-first">
+                                    <label>Username or email <span class="required">*</span></label>
+                                    <input type="text">
+                                </p>
+                                <p class="form-row-last">
+                                    <label>Password  <span class="required">*</span></label>
+                                    <input type="text">
+                                </p>
+                                <p class="form-row">
+                                    <input value="Login" type="submit">
+                                    <label>
+                                        <input type="checkbox">
+                                        Remember me
+                                    </label>
+                                </p>
+                                <p class="lost-password"><a href="#">Lost your password?</a></p>
+                            </form>
+                        </div>
+                    </div>
+                    <!--Accordion End-->
+                </div>
+                <% end %>
+            </div>
+        </div>
+
+        <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+
+        <div class="row" data-hook="checkout_content">
+            
+
+            <div class="columns <%= if @order.state != 'confirm' then 'alpha nin col-md-6 col-12' else 'alpha omega sixteen' end %>" data-hook="checkout_form_wrapper">
+            <%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
+                 
+                <%#= form.hidden_field :state_lock_version %>
+                <%= render @order.state, :form => form %>
+            
+            </div>
+            <% if @order.state != 'confirm' %>
+            <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega seven col-md-6 col-12  pb-50">
+                <%= render :partial => 'summary', :locals => { :order => @order } %>
+            </div>
+            <div class="form-buttons form-buttons columns six p-t-20" data-hook="buttons">
+                <%= submit_tag Spree.t(:approve), :class => 'flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer', id: "checkout-now" %>
+            </div>
+            <% end %>
+
+            <% end %>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,24 @@
+<div class="block topmember">
+  <div class="blocksubhead">
+    <%= image_tag "members.png", class: "icontitle" %>
+    <span class="blocktitle">Top nhà quảng cáo</span>
+  </div>
+  <div class="blockbody">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="column-name">Nhà quảng cáo</th>
+          <th class="column-bonus">Hoa hồng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% Spree::User.order(balance: :desc).limit(5).each do |u|%>
+        <tr id="member-1">
+          <td class="column-name" data-title="Nhà quảng cáo"> <%= name_of_member(u) %></td>
+          <td class="column-bonus" data-title="Hoa hồng"> <%= number_to_currency(u.balance, precision: 0,unit: "₫" ,format: "%n %u") %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

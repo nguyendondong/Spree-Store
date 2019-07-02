@@ -1,0 +1,173 @@
+<div class="row">
+  <div data-hook="stores">
+    <div data-hook="admin_store_form_fields_left" class="col-md-8 "> 
+    <!--truoc dung col-md-6-->
+
+      <div data-hook="name">
+        <%= f.field_container :name, class: ['form-group'] do %>
+          <%= f.label :name, Spree.t(:store_name) %><br />
+          <%= f.text_field :name, class: 'form-control' %>
+          <%= error_message_on :store, :name %>
+        <% end %>
+      </div>
+      <div data-hook="seo_title">
+        <%= f.field_container :seo_title, class: ['form-group'] do %>
+          <%= f.label :seo_title, Spree.t(:seo_title) %><br />
+          <%= f.text_field :seo_title, class: 'form-control' %>
+          <%= error_message_on :store, :seo_title %>
+        <% end %>
+      </div>
+      <div data-hook="meta_description">
+        <%= f.field_container :meta_description, class: ['form-group'] do %>
+          <%= f.label :meta_description, Spree.t(:meta_description) %><br />
+          <%= f.text_area :meta_description, class: 'form-control', rows: 5 %>
+          <%= error_message_on :store, :meta_description %>
+        <% end %>
+      </div>
+
+      <div data-hook="code">
+        <%= f.field_container :code, class: ['form-group'] do %>
+          <%= f.label :code, Spree.t(:store_code) %><br />
+          <%= f.text_field :code, class: 'form-control' %>
+          <%= error_message_on :store, :code %>
+        <% end %>
+      </div>
+      <div data-hook="allow-orders">
+       <div class="form-group field" id="store_allow-orders">
+         <label for="store_min_order_unit_number"><span class="translation_missing">Cho Phép Đặt Hàng Khi Hết</span></label><br>
+         <%= f.check_box :allow_addcart, {}, '1', '0' %>
+       </div>
+     </div>
+
+      <div data-hook="default" class="form-group">
+        <strong><%= Spree.t(:default) %></strong>
+
+        <div class="radio">
+          <%= f.label :default, Spree.t(:default) do %>
+            <%= f.radio_button :default, "true" %>
+            <%= Spree.t(:say_yes) %>
+          <% end %>
+          <%= f.label :default, Spree.t(:default) do %>
+            <%= f.radio_button :default, "false" %>
+            <%= Spree.t(:say_no) %>
+          <% end %>
+        </div>
+      </div>
+
+      <div data-hook="mail_form_address">
+        <%= f.field_container :mail_from_address, class: ['form-group'] do %>
+          <%= f.label :mail_from_address, Spree.t(:send_mails_as) %><br />
+          <%= f.text_field :mail_from_address, class: 'form-control' %>
+          <%= error_message_on :store, :mail_from_address %>
+        <% end %>
+        <div data-hook="shipping_policy">
+        <%= f.field_container :shipping_policy, class: ['form-group'] do %>
+          <%= f.label :shipping_policy, Spree.t(:shipping_policy) %><br />
+          <%= f.text_area :shipping_policy, class: 'form-control ckeditor' %>
+          <%= error_message_on :store, :shipping_policy %>
+        <% end %>
+        
+      </div>
+      <div data-hook="phone">
+        <%= f.field_container :phone, class: ['form-group'] do %>
+          <%= f.label :phone, Spree.t(:phone) %><br />
+          <%= f.text_field :phone, class: 'form-control' %>
+          <%= error_message_on :store, :phone %>
+        <% end %>
+      </div>
+
+      <div data-hook="url">
+        <%= f.field_container :url, class: ['form-group'] do %>
+          <%= f.label :url, Spree.t(:domains) %><br />
+          <%= f.text_area :url, cols: 60, rows: 4, class: 'form-control' %>
+          <%= error_message_on :store, :url %>
+        <% end %>
+      </div>
+
+      <div data-hook="min_order_value">
+        <%= f.field_container :min_order_value, class: ['form-group'] do %>
+          <%= f.label :min_order_value, Spree.t(:min_order_value) %><br />
+          <%= f.number_field :min_order_value, class: 'form-control' %>
+          <%= error_message_on :store, :min_order_value %>
+        <% end %>
+      </div>
+      <div data-hook="min_order_unit_number">
+        <%= f.field_container :min_order_unit_number, class: ['form-group'] do %>
+          <%= f.label :min_order_unit_number, Spree.t(:min_order_unit_number) %><br />
+          <%= f.number_field :min_order_unit_number, class: 'form-control' %>
+          <%= error_message_on :store, :min_order_unit_number %>
+        <% end %>
+      </div>
+    </div>
+
+    <div data-hook="admin_store_form_fields_right" class="col-md-6">
+      <div data-hook="logo">
+        <%= image_tag @store.logo %>
+        <%= f.field_container :logo, class: ['form-group'] do %>
+          <%= f.label :logo, Spree.t(:logo) %><br />
+          <%= f.file_field :logo %>
+          <%= error_message_on :store, :logo %>
+        <% end %>
+      </div>
+
+      <div data-hook="social_image">
+        <%= image_tag @store.social_image.url(:small) %>
+        <%= f.field_container :social_image, class: ['form-group'] do %>
+          <%= f.label :social_image, Spree.t(:social_image) %><br />
+          <%= f.file_field :social_image %>
+          <%= error_message_on :store, :social_image %>
+        <% end %>
+      </div>
+
+      <div data-hook="payment_methods">
+        <%= f.field_container :payment_methods, class: ['form-group'] do %>
+          <%= f.label :payment_methods, Spree.t(:payment_methods) %><br />
+          <% @payment_methods.each do |payment_method| %>
+            <label class="sub">
+              <%= check_box_tag 'store[payment_method_ids][]', payment_method.id, @store.payment_methods.include?(payment_method) %>
+            </label> &nbsp;
+            <!-- "#{payment_method.name} (#{payment_method.environment})" -->
+            <%= payment_method.name %>
+            <br>
+          <% end %>
+          <%= hidden_field_tag 'store[payment_method_ids][]', '' %>
+        <% end %>
+      </div>
+
+      <div data-hook="shipping_methods">
+        <%= f.field_container :shipping_methods, class: ['form-group'] do %>
+          <%= f.label :shipping_methods, Spree.t(:shipping_methods) %><br />
+          <% @shipping_methods.each do |shipping_method| %>
+            <label class="sub">
+              <%= check_box_tag 'store[shipping_method_ids][]', shipping_method.id, @store.shipping_methods.include?(shipping_method) %>
+            </label> &nbsp;
+            <%= shipping_method.name %>
+            <br>
+          <% end %>
+          <%= hidden_field_tag 'store[shipping_method_ids][]', '' %>
+        <% end %>
+      </div>
+
+      <div data-hook="default_currency">
+        <%= f.field_container :default_currency, class: ['form-group'] do %>
+          <%= f.label :default_currency, Spree.t(:default_currency) %>
+          <%= f.text_field :default_currency, class: 'form-control' %>
+        <% end %>
+      </div>
+
+      <div data-hook="template">
+        <%= f.field_container :url, class: ['form-group'] do %>
+          <%= f.label :url, "Template" %><br />
+          <%= f.select :template, Spree::Store.templates, { include_blank: true }, class: "form-control selectpicker" %>
+          <%= error_message_on :store, :template %>
+        <% end %>
+      </div>
+      <div id="wrap-pix">
+        <% Spree::Store.templates.each do |i|%>
+          <%#= image_tag store_template.thumb, class: "pix", id: store_template.name %>
+          <%= image_tag ("template_thumb/#{i}.png"), class: "pix", id: i %>
+        <% end %>
+      </div> <!-- End of wrap-pix -->
+    </div>
+  </div>
+</div>

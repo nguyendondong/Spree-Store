@@ -1,0 +1,187 @@
+<% cache [I18n.locale, @template_name, @product, staff?, product_reviews_path(@product),mobile_device?] do %>
+
+  <div data-hook="product_show">
+    <% @body_id = 'product-details' %>
+    <div class="col-md-4 columns six alpha" data-hook="product_left_part">
+      <div class="row" data-hook="product_left_part_wrap">
+        <div id="product-images" data-hook="product_images">
+          <div id="main-image" data-hook>
+            <%= render :partial => 'image' %>
+          </div>
+          <div id="thumbnails" data-hook>
+            <%= render :partial => 'thumbnails' %>
+          </div>
+        </div>
+          <%= render :partial => 'properties' %>
+
+        <div data-hook="promotions">
+          <%= render :partial => 'promotions' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8 col-sm-12 columns ten omega" data-hook="product_right_part">
+      <div class="row" data-hook="product_right_part_wrap">
+
+        <div id="product-description" data-hook="product_description" ng-app="myApp" ng-controller="myController">
+          <% if @product.stock_items.pluck(:count_on_hand).sum <= 0 %>
+          <% unless @product.has_preorder?(current_store) %>
+            <label class ="sold-out none"> Hết Hàng </label>
+          <% end %>
+          <%end%>
+          <h1 class="product-title" itemprop="name"><%= accurate_title %>  </h1>
+          <div class="product-rating">
+            <% total_rating = 0.0 %>
+            <% @product.reviews.each do |review| %>
+              <% review.rating %>
+              <% total_rating += review.rating%>
+            <% end %>
+
+            <% if @product.reviews.count == 0 %>
+              <% @product.avg_rating == 0 %>
+            <% else @product.avg_rating = (total_rating/@product.reviews.count).round%>
+            <% end %>
+
+              <div class="ratings-stars" property="aggregateRating" typeof="AggregateRating">
+                  <% (1..5).each do |i| %>
+                    <div role="text" aria-label="" class="star-rating rater-<%= i %> star star-rating-applied star-rating-readonly <%= 'star-rating-on' if i <= @product.avg_rating  %>"><a title="<%= i %> stars"> <%= i %> stars</a></div>
+                  <% end %>
+                  <span property="ratingValue"><%= @product.avg_rating %></span>
+              </div>
+
+            <a href="javascript:void(0)" id="scroll-reviews">
+              <% if @product.reviews.count == 0 %>
+                <span class="ratings-basedupon" property="ratingCount">(<%= Spree.t('0_review') %>)</span>
+              <% else %>
+                <span class="ratings-basedupon"> Xem <span property="ratingCount"><%= @product.reviews.count %></span> <%= Spree.t('based_upon_review_count', :count => @reviews_count) %> </span>
+              <% end %>
+            </a>
+          </div>
+
+          <strong><%= Spree.t(:discount_price) + ": " %></strong>
+          <span class="price selling" property="lowPrice"><%= @product.display_price %> </span>
+          <% if @product.before_sale_price.present? %>
+
+            <div itemprop="price" class="price-before">
+              <%= Spree.t(:original_price) + ": " %>
+              <span class="before-sale-price">
+                <%= display_before_sale_price(@product) %>
+              </span>
+            </div>
+          <% end %>
+          <% if @product.notice.present? %>
+          <div><em><%= @product.notice %></em></div>
+          <% end %>
+          <% if @product.price >= 500000 %>
+          <div><strong><em>(Sản phẩm này được miễn phí giao hàng)</em></strong></div>
+          <% end %>
+          <%= render :partial => 'buy_now', :product => @product %>
+
+          <div class="description-content" itemprop="description" data-hook="description" style="clear:both; border-top: 1px solid #eee">
+          <%= product_description(@product).html_safe rescue Spree.t(:product_has_no_description) %>
+          </div>
+
+         
+
+          <!-- Modal -->
+          <div id="editImage" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content" style="height: 800px; width: 800px">
+                <div id="tui-image-editor-container"></div>
+              </div>
+
+            </div>
+          </div>
+            <%= render :partial => 'spree/products/image_editor', :formats => :js %>
+        </div>
+        <br/>
+        <%#= render :partial => 'taxons' %>
+        <%#= render :partial => 'comments' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <% if @related_products.present? %>
+    <h2><%= Spree.t(:you_may_be_interested)%></h2>
+    <ul id="products" class="inline product-listing list-related" data-hook>
+      <% @related_products.each do |product| %>
+        <% url = product_path(product) %>
+        <li id="product_<%= product.id %>" class="product columns four <%= cycle("alpha", "secondary", "", "omega secondary", :name => "classes") %>" data-hook="products_list_item" >
+          <div class="product-image">
+            <!-- <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %> -->
+            <%= product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'")%>
+
+            <% if product.stock_items.pluck(:count_on_hand).sum <= 0 %>
+            <% unless product.has_preorder?(current_store) %>
+            <label class ="sold-out none "> Hết Hàng </label>
+            <% end %>
+            <%end%>
+          </div>
+          <div class="product-info">
+            <%= link_to truncate(product.name, :length => 30), url, :class => 'info', :itemprop => "name", :title => product.name %>
+            <span>
+              <span class="selling"><%= product.display_price %></span>
+              <% if product.before_sale_price.present? %>
+              <span class="before-sale-price" itemprop="price">
+                <%= display_before_sale_price(product) %>
+              </span>
+              <% end %>
+            </span>
+          </div>
+          <div class="product-related-hover">
+            <a href="<%= url %>" class="product-button"><i class="fa fa-shopping-cart"></i> Xem chi tiết</a>
+          </div>
+        </li>
+      <% end %>
+      <% reset_cycle("classes") %>
+    </ul>
+  <% end %>
+
+  <div class="clearfix"></div>
+    <%= render 'spree/shared/reviews'%>
+
+
+  <!-- Google Code for Remarketing Tag -->
+  <script type="text/javascript">
+  var google_tag_params = {
+  ecomm_prodid: '<%= @product.id %>',
+  ecomm_pagetype: 'product',
+  ecomm_totalvalue: <%= @product.price %>
+  }
+  </script>
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  var google_conversion_id = 961568658;
+  var google_custom_params = window.google_tag_params;
+  var google_remarketing_only = true;
+  /* ]]> */
+  </script>
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+  <noscript>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/961568658/?value=0&amp;guid=ON&amp;script=0"/>
+  </div>
+  </noscript>
+
+<% end %>
+<%= render :partial => 'spree/products/show', :formats => :js %>
+<% unless mobile_device? %>
+  <%= render :partial => 'spree/shared/checkout_popup', :formats => :js %>
+<% end %>
+<%= render "spree/products/json_ld" %>
+
+<script>
+$(document).ready(function(){
+    if($('#product-description').find('.sold-out').length !== 0)
+      { $('button[name="button"].btn.btn-block.btn-checkout').remove()
+        $('button[type="submit"]').attr('disabled','disabled');
+        $('button[type="submit"]').css('background', '#10131170');
+        $('div .alert-added-to-cart').remove();
+        
+      }
+    });
+</script>

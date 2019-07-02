@@ -1,0 +1,10 @@
+<% max_level = Spree::Config[:max_level_in_taxons_menu] || 1 %>
+<nav id="categories" class="sidebar-item" data-hook>
+  <%# taxons = @store.taxons %>
+  <% cache [@current_store.code, @current_store.updated_at, I18n.locale, max_level, mobile_device?] do %>
+    <% @current_store.taxons.each do |taxon| %>
+    <%= taxons_tree(taxon, taxon, max_level) %>
+    <% end %>
+  <% end %>
+
+</nav>

@@ -1,0 +1,144 @@
+<div class="block campaigns">
+  <div class="blocksubhead">
+    <span class="blocktitle"><%= Spree.t(:campaigns) %></span>
+
+    <div class="action-manager">
+      <a class="btn btn-success" data-toggle="modal" data-target="#new-campaign-modal">
+        <span class="glyphicon glyphicon-send"></span>  <%= Spree.t(:create_new)%>
+      </a>
+    </div>
+  </div>
+  <div class="blockbody">
+    <div id="no-more-tables">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="column-name"><%= Spree.t(:name)%></th>
+            <th class="column-money"><%= Spree.t(:sales_total)%></th>
+            <th class="column-bonus"><%= Spree.t("shipped_successfully")%></th>
+            <th class="column-status">Trạng thái</th>
+            <th class="column-url">URI</th>
+            <th class="column-action">Chi tiết</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @campaigns.each_with_index do |cam, index| %>
+          <%= render "modal_edit_campaign", campaign: cam %>
+          <tr id="campaign-<%= cam.id %>">
+            <td class="column-name" data-title="<%= Spree.t(:name)%>">
+              <%= cam.name %>
+            </td>
+            <td class="column-money" data-title="<%= Spree.t(:sales_total)%>">
+              <%= Spree::Money.new(cam.ordered_total, { currency: Spree::Config[:currency] }) %>
+            </td>
+            <td class="column-bonus" data-title="<%= Spree.t("shipped_successfully")%>">
+              <%= Spree::Money.new(cam.successful_total, { currency: Spree::Config[:currency] }) %>
+            </td>
+            <td class="column-status" data-title="Trạng thái">
+              <label class="switch">
+                <input type="checkbox" class="switch-input" data-cam-id="<%= cam.id %>" value="<%= cam.active ? 1 : 0 %>" <%= cam.active ? 'checked="checked"' : ''%>>
+                <span class="switch-label" data-on="On" data-off="Off"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </td>
+            <td class="column-url" data-title="URI">
+              <input type="text" value='<%= "?ref_id=#{@user.id}&camp_id=#{cam.id}" %>' class="selected_input" onClick="this.setSelectionRange(0, this.value.length)" >
+            </td>
+            <td class="column-action" data-title="Chi tiết">
+              <a data-toggle="modal" data-target="#campaignDetail_<%= cam.id %>">Xem</a>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="new-campaign-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <%= form_for Campaign.new, :url => "/campaigns", html: { :class => "form-horizontal" } do |f|%>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Campaign</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Tên chiến dịch</label>
+          <div class="col-sm-10">
+            <%= f.text_field :name, :class => "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label class="col-sm-2 control-label">Ghi chú</label>
+          <div class="col-sm-10">
+            <%= f.text_area :description, :class => "form-control", rows: 3 %>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="create">
+      </div>
+
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+
+function selected(e, v){
+  $(e + ' option').each(function() {
+      if($(this).val() == v) {
+          $(this).prop("selected", true);
+      }else{
+          $(this).prop("selected", false);
+      }
+  });
+}
+
+
+$(document).ready(function($) {
+var checkbox = $( ".switch-input" );
+$(checkbox).change(function () {
+  if ($(this).attr('checked')){
+    $(this).val( "0" ).removeAttr('checked');
+  } else{
+    $(this).val( "1" ).attr('checked', true);
+  }
+
+  // event change status of cam
+  var active = $(this).val();
+  var cam = $(this).data("cam-id");
+  if (cam){
+    $.ajax({
+      type: "POST",
+      url: "<%= root_url%>update_cam_status",
+      dataType: 'json',
+      data: {
+        active : active,
+        cam_id : cam
+      },
+      success: function(data){
+        console.log(data)
+        if(data.status == 'success'){
+          selected("#campaignDetail_" + cam +" .switch-active", active);
+        }
+        else if(data.status == 'error') {alert('Error!');}
+      },
+      error: function(e){
+        alert('Error Processing your Request!!');
+      }
+    });
+  }
+});
+});
+
+</script>

@@ -1,0 +1,152 @@
+
+ <table class="index" id="listing_users" data-hook>
+ <colgroup>
+     <col style="width: 11%">
+     <col style="width: 6%">
+     <col style="width: 5%">
+     <col style="width: 13%">
+     <col style="width: 6%">
+     <col style="width: 6%">
+     <col style="width: 21%">
+     <col style="width: 8%">
+     <col style="width: 7%">
+     <col style="width: 6%">
+     <col style="width: 5%">
+     <col style="width: 6%">
+ </colgroup>
+ <thead>
+     <tr data-hook="admin_users_index_headers">
+         <th><%= Spree.t(:name)%></th>
+         <th><%= Spree.t(:phone)%></th>
+         <th><%= Spree.t(:fb_name)%></th>
+         <th><%= Spree.t(:hometown)%></th>
+         <th><%= Spree.t(:major)%></th>
+         <th class="text-center"><%= Spree.t(:products)%></th>
+         <th><%= Spree.t(:notes) %></th>
+         <th><%= Spree.t(:time) %></th>
+         <th><%= Spree.t(:lead_list) %></th>
+         <th><%= Spree.t(:item_total) %></th>
+         <th><%= Spree.t(:total_orders) %></th>
+         <th><%= Spree.t(:total_shipped) %></th>
+         <th data-hook="admin_users_index_header_actions" class="actions"></th>
+     </tr>
+ </thead>
+ <tbody>
+     <% @leads.each do |lead|%>
+     <tr id="<%= spree_dom_id lead %>" data-hook="admin_users_index_rows"
+         class="lead_info <%= cycle('odd', 'even')%>">
+         <td class="lead_name"><%= lead.name %></td>
+         <td class="lead_phone"><%= lead.phone %></td>
+         <td class="lead_facebook">
+             <div class="lead_facebook_flex">
+             <%=link_to image_tag('facebook-logo.png',:style => "width: 32px; height: 32px"),lead.fb_url.match(/^(http|https):\/\//) ? lead.fb_url : ("https://" + lead.fb_url), :target => "_blank" if lead.fb_url.present?  %>
+             <% if lead.zalo.present? %>
+                 <div class="zalo-info">
+                     <%= image_tag 'Logo_Zalo.png',:style => "width: 29px; height: 29px; cursor: pointer"%>
+                     <span class="zalo-hover"><%= lead.zalo %></span>
+                 </div>
+                 <script>
+                     $(document).ready(()=>{
+                         $(".zalo-info >img").click(()=>{
+                             alert("Zalo Name: <%= lead.zalo %>");
+                         })
+                     });
+                 </script>
+             <% end %>
+             </div>
+         </td>
+         <td class="lead_hometown">
+             <% if lead.state_id.present? %>
+             <%= lead.state.name %> /
+             <% if lead.district_id.present? %>
+             <%= lead.district.name.gsub("Thành phố ", "TP ").gsub("Thị xã ", "TX ") %>
+             <% end %>
+             <% end %>
+         </td>
+         <td class="lead_major"><%= lead.major if lead.major.present? %></td>
+         <td class='user_product'>
+             <%=link_to( image_tag(lead.products.last.images.first.attachment.url(:mini),:title =>"#{lead.products.last.name}", :class =>"image-product-previews"), product_path( lead.products.last)) if lead.products.last.present?%>
+             <% if lead.products.present?%>
+             <div class ="list_products">
+             <% lead.products.each do |product| %>
+                 <div class="product-site" id="product-site<%= product.id %>">
+                     <%=link_to( image_tag(product.images.first.attachment.url(:mini),:title =>"#{product.name}", :class =>"image-product-previews"), product_path(product))%>
+                 </div>
+                 <% end %>
+             </div>
+             <% end %>
+         </td>
+         <td id='order-<%= lead.id %>' class="notes">
+             <div class="show-notes">
+                 <div data-hook="admin_users_index_row_actions" class="actions btn-change add-notes">
+                     <%= link_to "", "##{lead.id}-notes", :class=>"fa fa-comment icon_link with-tip no-text notes"%>
+                     <div style="display:none">
+                         <div id="<%= lead.id %>-notes" style="width: 500px; height: 300px;">
+                             <%= form_for Spree::Note.new(), :url=>admin_notes_path() do |f| %>
+                             <%= f.text_field :content, :style => "width: 400px;" %>
+                             <%= f.hidden_field :notable_id, :value => lead.id %>
+                             <%= f.hidden_field :notable_type, :value => "Spree::Lead" %>
+                             <%= f.submit Spree.t(:note) %>
+                             <% end %>
+                         </div>
+                     </div>
+                 </div>
+                 <% if lead.notes.present? %>
+                 <div class="note-list">
+                             <%= "(#{lead.notes.last.created_at.strftime('%d/%m %H:%M')})  -  #{lead.notes.last.content}" if lead.notes.last.present? %>
+                 </div>
+                 <% end %>
+             </div>
+             <% if lead.notes.present? %>
+                 <div class ="list_products_note">
+                 <% lead.notes.each do |note| %>
+                     <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+                 <% end %>
+              </div>
+             <% end %>
+         </td>
+         <td>
+             <%= time_ago_in_words(lead.created_at) %>
+         </td>
+         <td class="lead_list"><%= lead.lead_list.name if lead.lead_list_id.present? %></td>
+         <% total_orders =lead.orders.pluck(:total).sum.round(0).to_i %>
+         <td class="total_orders"><%=number_with_delimiter(total_orders,:delimiter => '.')%>&nbsp;₫</td>
+         <%shipped_successfully= lead.orders.where(spree_orders: {shipment_state: "shipped_successfully"}).count.to_i %>
+         <% shipped_total = lead.orders.count.to_i %>
+         <td class="item_total">
+                 <div class="order-shipped">
+              <%= shipped_successfully %> /  <%=shipped_total  %>
+             </div>
+             <div class = "cleanfix"><div>
+             <div class="order-choice">
+                     <span>Đơn hàng: <%=shipped_total  %></span>
+                     <span>Ship thành công: <%= shipped_successfully %></span>
+
+                     <%= button_link_to (fa_icon "plus"), new_admin_order_url(:order => {:bill_address_attributes => {:firstname => lead.name, :phone => lead.phone, :state_id => lead.state_id, :district_id => lead.district_id}}, lead: lead.id), :id => 'admin_new_order', :style => "display: inline-block"  %>
+                     <% if lead.orders.where.not(state: "cart").present? %>
+                     <div class="btn-group">
+                         <a class="button dropdown-toggle fa fa-shopping-cart" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false"></a>
+                         <div class="dropdown-menu" style="min-width: 100px !important;">
+                             <% lead.orders.where.not(state: "cart").each do |order| %>
+                             <%= link_to order.number, "/admin/orders/#{order.number}/edit", :class => 'text-center', :style => "display: block; border-bottom: none", target: "_blank" %>
+                             <% end %>
+                         </div>
+                     </div>
+                     <% end %>
+             </div>
+         </td>
+         <% total_shipped =lead.orders.where(spree_orders: {shipment_state: "shipped_successfully"}).pluck(:total).sum.round(0).to_i %>
+         <td class="total_orders"><%=number_with_delimiter(total_shipped,:delimiter => '.')%>&nbsp;₫</td>
+         
+         <td data-hook="admin_users_index_row_actions" class="actions btn-change">
+             <%#= link_to_user user, :no_text => true %>
+             <%= link_to_edit lead, :no_text => true, :class => 'edit' %>
+             
+         </td>
+     </tr>
+     <% end %>
+ </tbody>
+</table>
+
+    <%= paginate @leads %>

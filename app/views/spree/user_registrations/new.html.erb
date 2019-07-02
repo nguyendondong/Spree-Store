@@ -1,0 +1,46 @@
+<% @body_id = 'signup' %>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @user } %>
+
+    <div id="new-customer">
+      <div class="clearfix">
+        <div class="col-md-6 col-form">
+          <h3>Đăng ký tài khoản</h3>
+          <div data-hook="signup">
+            <%= form_for resource, :as => :spree_user, :url => spree.registration_path(@user) do |f| %>
+            <div data-hook="signup_inside_form">
+              <%= render :partial => 'spree/shared/user_form', :locals => { :f => f } %>
+              <div class="form-group">
+                <%= f.submit "Đăng ký", :class => 'btn-oni', :tabindex => 4 %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+          <div data-hook="login_extras"></div>
+        </div>
+        <div class="col-md-6 col-social">
+          <div class="connect">Bạn đã có tài khoản, click vào nút phía dưới để đăng nhập</div>
+          <%= link_to spree.login_path, class: "btn-oni btn-register" do %>
+            Đăng nhập
+          <% end %>
+          <p class="text-center">Hoặc</p>
+          <a href="" class="btn-oni btn-facebook">
+            Đăng nhập với facebook
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a href="" class="btn-oni btn-twitter">
+            Đăng nhập với twitter
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href="" class="btn-oni btn-google-plus">
+            Đăng nhập với google
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

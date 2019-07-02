@@ -1,0 +1,33 @@
+<%= render "block_message"%>
+<%= render "block_orders"%>
+
+<div id="member-navbar">
+  <ul>
+    <li>
+      <%= link_to account_path, class: (current_spree_page?(account_path) || current_spree_page?(edit_account_path)) ? "topitem active" : "topitem" do %>
+        <i class="fa fa-bell" aria-hidden="true"></i>
+        <span class="numbernotif">2</span>
+        Thông báo
+      <% end%>
+    </li>
+    <li>
+      <%= link_to referred_orders_path, class: current_spree_page?(referred_orders_path) ? "topitem active" : "topitem" do %>
+        <i class="fa fa-list-alt" aria-hidden="true"></i>
+        Đơn hàng
+      <% end%>
+    </li>
+    <li>
+      <%= link_to my_campaigns_path, class: current_spree_page?(my_campaigns_path) ? "topitem active" : "topitem" do %>
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        Chiến dịch
+      <% end%>
+    </li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+  var config = {'.chosen-select' : {},}
+for (var selector in config) {
+  $(selector).chosen(config[selector]);
+}
+</script>

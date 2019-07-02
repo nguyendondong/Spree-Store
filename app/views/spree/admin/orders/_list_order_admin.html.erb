@@ -1,0 +1,134 @@
+<%= paginate @orders %>
+<% if @orders.any? %>
+<table class="index responsive" id="listing_orders" data-hook>
+  <colgroup>
+    <col style="width: 8%;">
+    <col style="width: 8%;">
+    <col style="width: 8%;">
+    <col style="width: 8%;">
+    <% if Spree::Order.checkout_step_names.include?(:delivery) %>
+    <col style="width: 10%;">
+    <% end %>
+    <col style="width: 8%;">
+    <col style="width: 12%;">
+    <col style="width: 9%;">
+    <col style="width: 8%;">
+    <col style="width: 13%;">
+  </colgroup>
+  <thead>
+    <tr data-hook="admin_orders_index_headers">
+      <% if @show_only_completed %>
+      <% if @show_only_paid %>
+      <th><%= sort_link @search, :updated_at,   I18n.t(:paid_at, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <% else %>
+      <th>
+        <%= sort_link @search, :completed_at,   I18n.t(:completed_at, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <% end %>
+      <% else %>
+      <th>
+        <%= sort_link @search, :created_at,     I18n.t(:created_at, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <% end %>
+      <th><%= sort_link @search, :number,           I18n.t(:number, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <th><%= sort_link @search, :state,            I18n.t(:state, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <th>
+        <%= sort_link @search, :payment_state,    I18n.t(:payment_state, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+
+      <th>
+        <%= sort_link @search, :shipment_state, I18n.t(:shipment_state, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+
+      <th><%= sort_link @search, :email,            I18n.t(:full_name, :scope =>'spree') %></th>
+      <th><%= sort_link @search, :phone,            I18n.t(:phone, :scope =>'spree') %></th>
+      <th><%= sort_link @search, :total,            I18n.t(:total, :scope => 'activerecord.attributes.spree/order') %>
+      </th>
+      <th><%= Spree.t(:note) %></th>
+      <th><%= Spree.t(:website) %></th>
+     
+      <th><%= Spree.t(:device) %></th>
+      <th><%= Spree.t(:source) %></th>
+
+      <th><%= Spree.t(:processing) %></th>
+      <th data-hook="admin_orders_index_header_actions" class="actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+    <tr data-hook="admin_orders_index_rows"
+      class="state-<%= order.state.downcase %> <%= cycle('odd', 'even') %> <%= "fake-order" if order.is_risky? %>">
+      <td class="align-center">
+        <%= l (@show_only_completed ? (@show_only_paid ? order.updated_at : order.completed_at) : order.created_at).to_date %>
+      </td>
+      <td class="align-center"><%= link_to order.number, edit_admin_order_path(order), :target => "_blank" %></td>
+      <td class="align-center"><span
+          class="state <%= order.state.downcase %>"><%= Spree.t("order_state.#{order.state.downcase}") %></span></td>
+      <td class="align-center"><span
+          class="state <%= order.payment_state %>"><%= link_to Spree.t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state %></span>
+      </td>
+
+      <td class="align-center"><span class="state <%= order.shipment_state_new %>">
+          <%= Spree.t("shipment_states.#{order.shipment_state_new}") %>
+
+        </span></td>
+
+      <td><%= order.billing_address.firstname if order.billing_address.present? %></td>
+      <% if order.billing_address.present? %>
+      <td>
+        <%= order.approver_id.present? ? order.billing_address.formatted_phone : order.billing_address.formatted_phone[0..6] + "xxx" %>
+      </td>
+      <% end %>
+      <td class="align-center"><%= order.approver_id.present? ? order.display_total.to_html : "xxx" %></td>
+      <td id="order-<%= order.id %>">
+        <% order.notes.each do |note| %>
+        <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+        <% end %>
+      </td>
+      <td>
+        <%= order.store_name %>
+      </td>
+      
+      <td>
+        <%= order.device.present? ? order.device : "" %>
+      </td>
+      <td>
+        <%= order.source %>
+      </td>
+ 
+      <td class="align-center"><%= order.approver.present? ? order.approver.nickname : "" %></td>
+      <td class='actions align-center' data-hook="admin_orders_index_row_actions">
+        <%= link_to "", "##{order.number}-notes", :title => Spree.t(:note), :no_text => true, :class => "fa fa-comment icon_link with-tip no-text notes" %>
+        <div style="display:none">
+          <div id="<%= order.number%>-notes" style="width: 600px; height: 300px;">
+            <%= form_for Spree::Note.new(), :url=>admin_notes_path(), :remote => true, :class => "new-note-form" do |f| %>
+            <%= f.select :note_template_id, NoteTemplates.all.collect {|n| [n.name, n.id]}, {}, :id => "", :class => "note_select form-control"%>
+            <%= f.text_field :content, :class => "form-control" %>
+            <%= f.hidden_field :notable_id, :value => order.id %>
+            <%= f.hidden_field :notable_type, :value => "Spree::Order" %>
+            <%= f.submit Spree.t(:note), :class => "button create-note", :style => "margin-top: 5px; float:right;" %>
+            <br />
+            <div class="note-list">
+              <% order.notes.each do |note| %>
+              <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+              <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+<div class="alpha twelve columns no-objects-found">
+  <%= Spree.t(:no_resource_found, resource: I18n.t(:other, scope: 'activerecord.models.spree/order')) %>,
+      <%=link_to Spree.t(:add_one), new_admin_order_url(:order => {:bill_address_attributes => {:firstname => "donghox", :phone => "0908482804"}})%>  
+</div>
+<% end %>
+
+<%= paginate @orders %>

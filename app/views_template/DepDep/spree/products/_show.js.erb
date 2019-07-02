@@ -1,0 +1,68 @@
+
+<% unless mobile_device? %>
+  <!-- No zoom image single product on mobile version -->
+  <%= render "zoom_image" %>
+<% else %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".thumb", "#product-thumbnails").on("click", function() {
+        var img = $(this).find("img").attr("src").replace("mini", "product");
+        $("#main-image img").attr("src", img);
+        return false;
+      });
+    });
+  </script>
+<% end %>
+<script>
+  $(document).ready(function() {
+
+    setCartFormPosition();
+
+    $(window).resize(function() {
+      setCartFormPosition();
+    });
+
+    $('.variant label').click(function() {
+      $(this).prev().prop('checked', true);
+    });
+
+    $('.product-variant label').click(function() {
+      var id = $(this).attr('for');
+        $('.cart-variant #'+id).prop('checked', true);
+    });
+
+    $("#scroll-reviews").click(function () {
+        var x = $("#reviews").position(); //gets the position of the div element...
+        window.scrollTo(x.left, x.top); //window.scrollTo() scrolls the page upto certain position....
+        //it takes 2 parameters : (x axis cordinate, y axis cordinate);
+    });
+  });
+
+  function setCartFormPosition () {
+    var windowHeight = window.innerHeight;
+    var cartFormHeight = $('#cart-form').height();
+    var top = (windowHeight - cartFormHeight) - 20;
+    $('#cart-form').css('top', top + 'px');
+  }
+
+  function windowSize() {
+  windowHeight = window.innerHeight ? window.innerHeight : $(window).height();
+  windowWidth = window.innerWidth ? window.innerWidth : $(window).width();
+  }
+  windowSize();
+
+  $(window).resize(function() {
+    windowSize();
+    // console.log('width is :', windowWidth, 'Height is :', windowHeight);
+    if (windowWidth < 773) {
+      $('#cart-form').css({
+        'bottom': '0',
+        'height': '100px',
+        'top': '',
+      })
+    }
+    else{
+    $('#cart-form').css('top', top + 'px');
+    }
+  });
+</script>

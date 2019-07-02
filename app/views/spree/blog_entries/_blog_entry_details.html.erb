@@ -1,0 +1,12 @@
+<div class="blog_entry_details">
+  <%= Spree.t(:posted_on) %> <span class="blog_entry_date"><%= l(blog_entry.published_at, :format => :blog_date) %></span>
+  <% unless blog_entry.author.blank? or blog_entry.author.nickname.blank? %>
+    <%= Spree.t(:by) %> <%= link_to blog_entry.author.nickname, blog_author_path(:author => blog_entry.author.nickname), class: "blog_entry_author" %>
+  <% end %>.
+  <% unless blog_entry.category_list.empty? %>
+    <%= Spree.t(:posted_in) %> <%= blog_entry_category_list_html blog_entry %>.
+  <% end %>
+  <% unless blog_entry.tag_list.empty? %>
+    <%= Spree.t(:tagged) %> <%= blog_entry_tag_list_html blog_entry %>.
+  <% end %>
+</div>

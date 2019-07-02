@@ -1,0 +1,22 @@
+<!--
+<% if content_for?(:sub_menu) %>
+<div class="container-fluid">
+    <nav id="sub-menu" data-hook>
+        <div class="toggle">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </div>
+
+        <%= yield :sub_menu %>
+
+
+    </nav>
+</div>
+<% end %>
+
+<script>
+    $(document).ready(function () {
+        $(".container-fluid #sub-menu .fas").click(function () {
+            $(".container-fluid #sub-menu #sub_nav li").toggleClass("active_sub");
+        });
+    })
+</script> -->

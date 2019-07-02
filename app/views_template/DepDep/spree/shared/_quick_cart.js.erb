@@ -1,0 +1,144 @@
+<script>
+  $('.quantity-right-plus').click(function (e) {
+    var product_id = $(this).closest('.modal-content').attr('id')
+    // Stop acting like a button
+    e.preventDefault()
+    // Get the field name
+    quantity_multiples = parseInt($('#' + product_id + ' #quantity2').attr("step"))
+    var quantity = parseInt($('#' + product_id + ' #quantity2').val())
+
+    // If is not undefined
+    $('#' + product_id + ' #quantity2').val(quantity + parseInt(quantity_multiples))
+    // Increment
+  });
+
+  $('.quantity-left-minus').click(function (e) {
+    var product_id = $(this).closest('.modal-content').attr('id')
+    // Stop acting like a button
+    e.preventDefault()
+    // Get the field name
+    quantity_multiples = parseInt($('#' + product_id + ' #quantity2').attr("step"))
+    var quantity = parseInt($('#' + product_id + ' #quantity2').val())
+
+    // If is not undefined
+
+    // Increment
+    if (quantity > parseInt(quantity_multiples)) {
+      $('#' + product_id + ' #quantity2').val(quantity - parseInt(quantity_multiples))
+    }
+  });
+
+  // ===================================
+
+  $(document).on('click', '.product-button.top2', function () {
+    product_id = $(this).attr('id-modal');
+    $('#productvariants ul li .cart-variant input').prop('checked', false);
+    //$('#productvariants ul li .cart-variant label').removeClass('active');
+    $('#' + product_id + ' #productvariants ul li:first-child .cart-variant input').prop('checked', true);
+    $('#' + product_id + ' #productvariants ul li:first-child .cart-variant label').addClass('active');
+    // $('#' + product_id +' #productvariants ul li:first-child').addClass('active');
+
+    $('.variant label').click(function () {
+      $(this).prev().prop('checked', true);
+      $("#productvariants label").removeClass("active");
+      $(this).addClass("active");
+      c = $(this).attr("for")
+      $("label[for='" + c + "']").addClass("active");
+      console.log(c)
+    });
+  });
+  $(document).ready(function () {
+    if (jQuery(window).width() < 767) {
+      console.log(jQuery(window).width() + 16)
+      currentHeight = ($('.product').height() - 1) + "px"
+      $('.product').css('height', currentHeight)
+
+    }
+    $(document).on('click', '.btn-choose, .btn-checkout', function () {
+      var product_id = $(this).closest('.modal-content').attr('id')
+      var variant_id = $('#' + product_id + ' #productvariants ul li .cart-variant label.active').attr(
+        "data-variant")
+      var quantity = parseInt($('#' + product_id + ' #quantity2').val())
+      console.log(product_id, 'product_id')
+      console.log(variant_id, 'variant_id')
+      console.log(quantity, 'quantity')
+      if (typeof variant_id === 'undefined' || variant_id === null) {
+        variant_id = $('#' + product_id + ' #productvariants ul').attr("data-variant")
+      }
+      console.log(product_id, 'product_id')
+      console.log(variant_id, 'variant_id')
+      console.log(quantity, 'quantity')
+      $.ajax({
+        url: "/orders/populate",
+        method: 'POST',
+        dataType: 'JSON',
+        data: {
+          product_id: product_id,
+          variant_id: variant_id,
+          quantity: quantity,
+        },
+        success: function (data) {
+          console.log(data)
+          $(".close-modal").trigger("click")
+          reRenderCart(data)
+        },
+      })
+    });
+  });
+
+  function reRenderCart(data) {
+    // variant_image_url
+    total = parseFloat(data.order.item_total)
+    $(".adc").attr("data-total", total)
+    $(".adc").text(total.toLocaleString('it-IT', {
+      style: 'currency',
+      currency: 'VND'
+    }));
+
+    var html = '<div class="cart-buttons button">' +
+      '<form accept-charset="UTF-8" action="/cart" class="edit_order" id="update-cart" method="post">' +
+      '<div style="display:none"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="patch">' +
+      '<input name="authenticity_token" type="hidden" value="xpPza9aUE9GhWzHD2b+CLS5dx4FV5EhKGXEd2aWJMgQ=">' +
+      '</div>' +
+      '<button class="button checkout " id="checkout-link" name="checkout" type="submit">Tiến hành mua hàng &gt;&gt;</button>' +
+      '</form>' +
+      '</div>';
+    // add line-item
+    line_item_quantity = data.order.line_items.length //parseFloat($('.cart-amount').attr('value')) + 1
+    console.log(line_item_quantity)
+    $('.cart-amount span').text(line_item_quantity + ' SẢN PHẨM TRONG GIỎ HÀNG')
+
+    var $element = $('.cart-list ul');
+    if (!$element.length)
+      $element = $('<ul></ul>').appendTo('.cart-list');
+
+    $('.cart-list ul').html(" ")
+    if ($('.cart-list').children().length < 2) {
+      $('.cart-list').append(html)
+    } else {
+      console.log(123)
+    }
+
+    $.each(data.order.line_items, function (index, item) {
+      // alert( index + ": " + value );
+      var product_image = item.variant.variant_image_url
+      var product_name = $('#' + product_id + ' .modal-title').html()
+      var img_tag = '<img class="product_img" src =' + product_image + '>'
+      var img_name = '<a href="#">' + item.variant.product.name + '</a>'
+      var price_tag = '<span style="clear:both;text-align:center">' + item.quantity + ' x ' + item.price + '</span>'
+
+      $('.cart-list ul').append($(
+        '<li>' + img_tag + img_name + price_tag + '</li>'
+      ))
+    });
+
+
+  }
+
+  if ($('#product-description').find('.sold-out').length !== 0) {
+    $('button[type="button"].btn-choose').attr('disabled', 'disabled');
+    $('button[type="button"].btn-choose').css('background', '#3c403e');
+    $('p.text-message').remove()
+
+  }
+</script>

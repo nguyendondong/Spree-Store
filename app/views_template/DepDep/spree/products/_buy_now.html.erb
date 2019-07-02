@@ -1,0 +1,243 @@
+<%= form_for :order, :url => populate_orders_path do |f| %>
+    <% if check_variant(@product, current_currency) %>
+      <div id="productvariants" class="col-lg-6 col-xs-12">
+        <h4 class="productsectiontitle text-left"><%= Spree.t(:select) + " #{@product.option_types.first.presentation}:" %></h4>
+        <ul>
+          <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+            <li>
+
+              <div class="variant cart-variant">
+                  <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                  <label for="variant_id_<%= variant.id %>v" 
+                    <% if index == 0 %>
+                    class = "active"
+                    <% end %>
+                    > 
+                     <%= variant_options variant %></label>
+              </div>
+
+              <% if variant_price variant %>
+                <span class="price diff"><%= variant_price variant %></span>
+              <% end %>
+
+              <% unless variant.can_supply? %>
+                <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+              <% end %>
+            </li>
+          <% end%>
+        </ul>
+      </div>
+    <% else %>
+      <%= hidden_field_tag "variant_id", @product.master.id %>
+    <% end %>
+    <div class="<% if check_variant(@product, current_currency) %>col-xs-12<% else %>col-xs-6<% end %>  product-form">
+      <div class="add-to-cart">
+        <div class="input-group btn-group">
+            <span class="input-group-btn">
+                <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+            </span>
+            <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity', :value => @product.quantity_multiples_product, :step => @product.quantity_multiples_product, :min => @product.quantity_multiples_product %>
+            <span class="input-group-btn">
+                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+            <span class="input-group-btn">
+              <%= button_tag :class => 'btn btn-sucess', :id => 'add-to-cart-button', :type => :submit, :data => {:toggle => "modal", :target => "#checkoutPopup"} do %>
+                <b><%= Spree.t(:add_to_cart) %></b>
+              <% end %>
+            </span>
+        </div>
+
+          <div class="btn-fixed-block">
+            <p class="text-message">
+              <i class="fa fa-check"></i>
+              <span><%= Spree.t(:added_to_cart) %></span>
+              <button type="button" class="btn-close"><i class="fa fa-close"></i></button>
+            </p>            
+            <%= button_tag :class => 'btn btn-block btn-checkout', :type => :submit, :data => {:toggle => "modal", :target => "#checkoutPopup"} do %>
+              <b><%= Spree.t(:cart_checkout) %></b>
+            <% end %>
+            <button type="button" class="btn btn-block btn-choose">
+              <b><%= Spree.t(:choose) %></b> 
+            </button>
+            <% if check_variant(@product, current_currency) %>
+              <div class="alert-added-to-cart">
+                <div class="cart-item">
+                  <div class="item-image">
+                    <%= image_tag @product.images.first.attachment.url(:small), :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+                  </div>
+                  <div class="item-content">
+                    <p><%= @product.name %></p>
+                    <p>
+                      <span class="price new-price"><%= @product.display_price %></span>
+                      <% if @product.before_sale_price.present? %>
+                          <span class="regular-price">
+                              <%= display_before_sale_price(@product) %>
+                          </span>
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+                <div class="quantity-variant">
+                  <div id="productvariants" class="col-sm-6">
+                    <h4 class="productsectiontitle text-left "><%= Spree.t(:select) + " #{@product.option_types.first.presentation}:" %></h4>
+                    <ul>
+                      <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+                        <li>
+                          <div class="variant cart-variant">
+                              <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                              <label for="variant_id_<%= variant.id %>v"><%= variant_options variant %></label>
+                          </div>
+
+                          <% if variant_price variant %>
+                            <span class="price diff"><%= variant_price variant %></span>
+                          <% end %>
+
+                          <% unless variant.can_supply? %>
+                            <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+                          <% end %>
+                        </li>
+                      <% end%>
+                    </ul>
+                  </div>
+                  <div class ="col-sm-6 quantity">
+                    <div class="input-group btn-group">
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="">
+                            <span class="glyphicon glyphicon-minus"></span>
+                          </button>
+                      </span>
+                      <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity2', :value => @product.quantity_multiples_product, :step => @product.quantity_multiples_product, :min => @product.quantity_multiples_product %>
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                              <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                      </span>
+                    </div>
+                  </div> <!-- aa -->
+                </div> <!-- aa -->
+              </div>
+            <% else %>
+              <div class="alert-added-to-cart">
+                <div class="cart-item">
+                  <div class="item-image">
+                    <%= image_tag @product.images.first.attachment.url(:small), :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+                  </div>
+                  <div class="item-content">
+                    <p><%= @product.name %></p>
+                    <p>
+                      <span class="price new-price"><%= @product.display_price %></span>
+                      <% if @product.before_sale_price.present? %>
+                          <span class="regular-price">
+                              <%= display_before_sale_price(@product) %>
+                          </span>
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+                <div class="quantity-variant">
+                  <div id="productvariants" class="col-sm-6">
+                    
+                    <ul>
+                      <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+                        <li>
+                          <div class="variant cart-variant">
+                              <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                              <label for="variant_id_<%= variant.id %>v"><%= variant_options variant %></label>
+                          </div>
+
+                          <% if variant_price variant %>
+                            <span class="price diff"><%= variant_price variant %></span>
+                          <% end %>
+
+                          <% unless variant.can_supply? %>
+                            <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+                          <% end %>
+                        </li>
+                      <% end%>
+                    </ul>
+                  </div>
+                  <div class ="col-sm-6 quantity">
+                    <div class="input-group btn-group">
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="">
+                            <span class="glyphicon glyphicon-minus"></span>
+                          </button>
+                      </span>
+                      <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity2', :value => @product.quantity_multiples_product, :step => @product.quantity_multiples_product, :min => @product.quantity_multiples_product %>
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                              <span class="glyphicon glyphicon-plus"></span>
+                          </button>
+                      </span>
+                    </div>
+                  </div> 
+                </div> 
+              </div>
+              <%= hidden_field_tag "variant_id", @product.master.id %>
+            <% end %>
+          </div>
+      </div>
+    </div><!-- /Buy now button -->
+<% end %>
+<%= render :partial => 'spree/products/buy_now', :formats => :js %>
+<!-- <style>
+  .alert-added-to-cart{
+    margin: 10px 10px;
+  }
+  .cart-item{
+    display: table;
+    margin-bottom: 5px;
+  }
+  .item-image{
+    display: table-cell;
+    vertical-align: top;
+  }
+  .item-content{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+  }
+  .item-content p{
+    font-size: 1.1em;
+  }
+  .item-content span{
+    font-size: 1.3em;
+  }
+  .btn-show{
+    z-index: 9999;
+    bottom: 40px;
+    -webkit-transition: 0.6s ease-in-out;
+    -moz-transition: 0.6s ease-in-out;
+    -o-transition: 0.6s ease-in-out;
+    transition: 0.6s ease-in-out;
+    transform: translate-y(50px)
+  }
+  .quantity{
+    align-self: center;
+  }
+  .quantity-variant{
+    display: flex;
+  }
+  #quantity2{
+    position: relative;
+    float: left;
+    color: black;
+    border: 1px solid lightgray;
+    text-align: center;
+  }
+  .btn-close{
+    position: absolute;
+    right: 0;
+    background: transparent;
+  }
+  .text-message{
+    text-align: left;
+    margin: 10px 15px;
+    color: #3acf87;
+  }
+</style> -->
+

@@ -1,0 +1,21 @@
+<div class="clearfix"></div>
+<div id="mobile-header">
+	<div class="container" data-hook>
+		<div class="logo">
+			<%= link_to image_tag(current_store.logo(:medium)), root_path %>
+		</div>
+		<% if current_store.phone.empty? || current_store.phone.nil? %>
+			<div class="hot-line"></div>
+		<% else%>
+		<div class="hot-line">
+			<%= link_to current_store.phone do %>
+				<%= image_tag("hot-line.png") %>
+			<% end %>
+			<%= link_to current_store.phone, class: "store-phone" do %>
+				<div>Hot line: </div>
+				<div><%= current_store.phone %></div>
+			<% end %>
+		</div>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<script type="text/javascript">
+  function toMoney(n, currency) {
+    return parseFloat(n).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,") + ' ' + currency;
+  }
+  /*$(document).ready(function() {
+    $(".buy_now_popup").submit(function() {
+      var fdata = $(this).serialize();
+      var furl = $(this).attr('action');
+      $.ajax({
+        method: "POST",
+        url: furl,
+        data: fdata,
+        success: function(data) {
+          var html = '';
+          //order = data.order;
+          console.log(data);
+          var c = JSON.parse(data.order);
+          console.log('Du lieu nhan ve la:  ');
+          console.log(c);
+          $.each(c.line_items, function(i, p) {
+            html += '<tr><td rowspan="2" class="cart-item-image">';
+            if (typeof p.variant.images[0] === 'undefined') {
+              html += '<img src="#"/>';
+            }
+            else {
+              html += '<img src="../spree/products/' + p.variant.images[0].id + '/mini/' + p.variant.images[0].attachment_file_name + '"/>';
+            }
+            html += '</td><td class="cart-item-description"><a href="' + p.variant.product.slug + '">' + p.variant.product.name + '</a></td></tr>';
+
+            html += '<tr style="border-bottom: 1px solid #ddd;"><td class="cart-item-quantity">' + p.quantity + ' x ' + toMoney(p.price, "đ") + '</td></tr>';
+          });
+          $('#summary_table').html(html);
+          $('.total_price').html(toMoney(c.item_total, "đ"));
+        },
+        dataType: "json"
+      });
+      return false;
+    });
+  });*/
+</script>
+

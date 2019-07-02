@@ -1,0 +1,88 @@
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:date_range) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for @search, :url => spree.sale_performances_admin_reports_path  do |s| %>
+    <div class="date-range-filter field align-center">
+      <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+      <%= s.text_field :completed_at_gt, :class => 'datepicker datepicker-from', :value => datepicker_field_value(params[:q][:completed_at_gt]) %>
+
+      <span class="range-divider">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+
+      <%= s.text_field :completed_at_lt, :class => 'datepicker datepicker-to', :value => datepicker_field_value(params[:q][:completed_at_lt]) %>
+      <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+    </div>
+
+    <div class="actions filter-actions">
+      <%= button Spree.t(:search), 'search'  %>
+    </div>
+  <% end %>
+
+<% end %>
+<h2><%= Spree.t(:report_by_approver) %></h2>
+<table class="admin-report" data-hook="sale-performance">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:email) %></th>
+      <th><%= Spree.t(:nickname) %></th>
+      <th><%= Spree.t(:total) %></th>
+      <th><%= Spree.t(:unprocessed) %></th>
+      <th><%= Spree.t("shipment_states.ready") %></th>
+      <th><%= Spree.t("shipment_states.shipped") %></th>
+      <th><%= Spree.t(:shipped_successfully) %></th>
+      <th><%= Spree.t("payment_states.paid") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sales.each do |sale| %>
+      
+      <tr>
+        <td><%= sale.email %></td>
+        <td><%= sale.nickname %></td>
+        <td><%= "#{@reports[sale.id][:total_count]} DH (#{Spree::Money.new(@reports[sale.id][:total_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@reports[sale.id][:unprocessed_count]} DH (#{Spree::Money.new(@reports[sale.id][:unprocessed_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@reports[sale.id][:ready_count]} DH (#{Spree::Money.new(@reports[sale.id][:ready_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@reports[sale.id][:shipped_count]} DH (#{Spree::Money.new(@reports[sale.id][:shipped_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@reports[sale.id][:success_count]} DH (#{Spree::Money.new(@reports[sale.id][:success_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@reports[sale.id][:paid_count]} DH (#{Spree::Money.new(@reports[sale.id][:paid_revenue], { currency: Spree::Config[:currency] })})" %></td>
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
+
+<h2><%= Spree.t(:report_by_creator) %></h2>
+<table class="admin-report" data-hook="sale-performance">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:email) %></th>
+      <th><%= Spree.t(:nickname) %></th>
+      <th><%= Spree.t(:total) %></th>
+      <th><%= Spree.t(:unprocessed) %></th>
+      <th><%= Spree.t("shipment_states.ready") %></th>
+      <th><%= Spree.t("shipment_states.shipped") %></th>
+      <th><%= Spree.t(:shipped_successfully) %></th>
+      <th><%= Spree.t("payment_states.paid") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @creators.each do |sale| %>
+      <% if(@creator_reports[sale.id].present?) %>
+      <tr>
+        <td><%= sale.email %></td>
+        <td><%= sale.nickname %></td>
+        <td><%= "#{@creator_reports[sale.id][:total_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:total_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@creator_reports[sale.id][:unprocessed_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:unprocessed_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@creator_reports[sale.id][:ready_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:ready_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@creator_reports[sale.id][:shipped_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:shipped_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@creator_reports[sale.id][:success_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:success_revenue], { currency: Spree::Config[:currency] })})" %></td>
+        <td><%= "#{@creator_reports[sale.id][:paid_count]} DH (#{Spree::Money.new(@creator_reports[sale.id][:paid_revenue], { currency: Spree::Config[:currency] })})" %></td>
+      </tr>
+      <% end %>
+    <% end %>
+    
+  </tbody>
+</table>

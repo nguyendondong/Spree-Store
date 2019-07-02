@@ -1,0 +1,20 @@
+$("#new_product_wrapper").html('<%= escape_javascript(render :template => "spree/admin/products/new", :formats => [:html], :handlers => [:erb]) %>').promise().done(()=>{
+  $("#new_product_wrapper .filter-actions >a").hide();
+  $("#new_product_wrapper .filter-actions >span").hide();
+  $("#new_product_wrapper .filter-actions >button").attr("disabled", true).css('background', '#10131170');
+  $("#product_name").change(function(){
+    if($(this).val().trim().length >= 3){
+      $("#new_product_wrapper .filter-actions >button").attr("disabled", false).css('background', '#3acf87');
+    }
+  else{
+  $("#new_product_wrapper .filter-actions >button").attr("disabled", true).css('background', '#10131170');
+
+    }
+  })
+
+});
+handle_date_picker_fields();
+<% unless Rails.env.test? %>
+  $('.select2').select2();
+<% end %>
+$("#table-filter").hide();  

@@ -1,0 +1,8 @@
+
+<div style="display:none">
+	<div id="notes">
+		<% notes.each do |note| %>
+			<div><%= "#{note.created_at}: note.content" %></div>
+		<% end %>
+	</div>
+</div>

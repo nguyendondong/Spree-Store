@@ -1,0 +1,73 @@
+
+<% stars = @product.stars %>
+<% reviews_count = @product.reviews.count %>
+<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+  <meta itemprop="ratingValue" content="<%= stars %>" />
+  <meta itemprop="reviewCount" content="<%= reviews_count %>" />
+  <% total_rating = 0.0 %>
+  <% @product.reviews.each do |review| %>
+    <p><% review.rating %></p>
+    <p><% total_rating += review.rating%></p>
+  <% end %>
+  <% if @product.reviews.count == 0 %>
+    <% @product.avg_rating == 0 %>
+  <% else @product.avg_rating = (total_rating/@product.reviews.count).round%>
+  <% end %>
+  <%#= product.reviews.rating %>
+  <% @product.reviews.count %>
+</div>
+<div class="col-md-4 text-center product-ratings">
+  <div class=""><%= Spree.t('average_customer_rating') %>: </div>
+  <div class="ratings-stars">
+    <span title="">
+      <h2 class="text-danger"><%= @product.avg_rating %></h2>
+      <%#= render 'spree/reviews/stars', :stars => stars %>
+      <% (1..5).each do |i| %>
+        <div role="text" aria-label="" class="star-rating rater-<%= i %> star star-rating-applied star-rating-readonly <%= 'star-rating-on' if i <= @product.avg_rating  %>"><a title="<%= i %> stars"> <%= i %> stars</a></div>
+      <% end %>
+    </span>
+  </div>
+  <% if @product.reviews.count == 0 %>
+    <p class="ratings-basedupon">(<%= Spree.t('0_review') %>)
+  <% else %>
+  <p class="ratings-basedupon"><%= @product.reviews.count %> <%= Spree.t('based_upon_review_count', :count => reviews_count) %> </p>
+  <% end %>
+</div>
+<div class="col-md-4 product-review">
+  <% if @total == 0 %>
+    <% @static_star.each_with_index do |item, index|%>
+
+    <div class="item rate-<%= index + 1 %>">
+      <span class="rating-num"> <%= index + 1 %> <div role="text" class="star-rating star-rating-readonly star-rating-on inline"><a></a></div></span>
+      <div class="progress ">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0"
+        aria-valuemin="0" aria-valuemax="100" style="width:0%">
+          <span class="sr-only">0% Complete</span>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% else %>
+    <% @static_star.each_with_index do |item, index|%>
+      <% next if index < 1 %>
+      <div class="item rate-<%= index%>">
+        <span class="rating-num"> <%= index %> <div role="text" class="star-rating star-rating-readonly star-rating-on inline"><a></a></div></span>
+        <div class="progress ">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= item[:pecent_on_total] %>"
+          aria-valuemin="0" aria-valuemax="100" style="width:<%= item[:pecent_on_total] %>%">
+            <span class="sr-only"><%= item[:pecent_on_total] %></span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div class="col-md-4 text-center">
+    <p>Chia sẻ nhận xét về sản phẩm</p>
+    <%  if staff? || spree_current_user.present?  %>
+      <a class="btn btn-primary btn-sm click-scroll-review"> <%= Spree.t('write_your_own_review') %> </a>
+    <% else %>
+      <a class="btn btn-primary btn-sm" href="/login"> <%= Spree.t('login_to_review') %> </a>
+    <% end %>
+</div>
+<div class="clearfix">

@@ -1,0 +1,36 @@
+<script type="text/javascript">
+	(function() {
+	  $(document).ready(function() {
+	    $("#main-image img").elevateZoom({
+	      zoomType: "window",
+	      zoomWindowWidth: 340,
+	      zoomWindowHeight: 340,
+	      zoomWindowOffetx: 33,
+	      borderSize: 0
+	    });
+	    return $(".thumb", "#product-thumbnails").on("click", function(e) {
+	      var $this;
+	      e.preventDefault();
+	      $(".thumb", "#product-thumbnails").removeClass("selected");
+	      $(this).addClass("selected");
+	      $this = $(this).find("img");
+	      $("#main-image img").removeData('elevateZoom');
+	      $("#main-image img").remove();
+	      $("#main-image").append("<img />");
+	      $("#main-image img").attr({
+	        "src": $this.attr("src").replace("mini", "product"),
+	        "data-zoom-image": $this.attr("data-zoom_image")
+	      });
+	      $("#main-image img").elevateZoom({
+	        zoomType: "window",
+	        zoomWindowWidth: 340,
+	        zoomWindowHeight: 340,
+	        zoomWindowOffetx: 33,
+	        borderSize: 0
+	      });
+	      return false;
+	    });
+	  });
+
+	}).call(this);
+</script>

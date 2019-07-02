@@ -1,0 +1,21 @@
+<div class="container site-menu">
+  <a href="#menu" class="menu-trigger">
+  <i class="fa fa-bars"></i> Menu
+  </a>
+
+  <nav id="navigation">
+    <ul class="menu js-enabled arrows" id="responsive">
+      <li><a href="/" class="homepage current">Home</a></li>
+      <#%= yield :sidebar %>
+    </ul>
+  </nav>
+  <%= render :partial => 'spree/shared/member_nav_bar' if store_menu? %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('a.menu-trigger').click(function() {
+      $('ul#responsive.menu').toggleClass('show', 1000);
+    });
+  });
+</script>

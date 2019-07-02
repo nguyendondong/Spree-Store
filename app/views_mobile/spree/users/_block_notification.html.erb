@@ -1,0 +1,40 @@
+<div class="block notifications">
+  <div class="blocksubhead">
+    <span class="blocktitle">Các thông báo gần đây</span>
+
+    <div class="action-manager">
+      <% if(Notification.unread(@user).size > 0) %>
+        <%= form_for :order_notification, :url => "notifications/mark_all" do |f|%>
+        <button type="submit" class="btn btn-success">
+          Đánh dấu tất cả là đã đọc
+        </button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="blockbody">
+  <% if @notifications.present? %>
+    <div id="no-more-tables" class="no-title">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="column-name text-left">Thời gian</th>
+            <th class="column-name text-left">Thông báo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @notifications.each do |n| %>
+          <tr class="<%= n.active ? 'new' : '' %>">
+          <td><span title="<%= n.created_at.strftime("%B %d %Y, %H:%M:%S")%>"><%= time_ago_in_words(n.created_at)%></span></td>
+            <td><%= n.message.html_safe %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @notifications %>
+    <% else %>
+      <p><%= Spree.t(:you_have_no_referred_orders_yet) %></p>
+    <% end %>
+  </div>
+</div>

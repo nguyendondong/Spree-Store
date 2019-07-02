@@ -1,0 +1,18 @@
+/*
+* This is a manifest file that includes stylesheets for spree_frontend
+* Spree_bootstrap_frontend overrides all spree’s default css and resets here in favour of bootstrap
+*= require spree/frontend/bootstrap_frontend
+*
+*= require bootstrap-datepicker3
+*= require chosen
+*
+*= require_self
+*= require_directory .
+*= require_tree ./royalslider
+*= require bootstrap-select
+
+*= require spree/frontend/spree_reviews
+*/
+.fa{
+    font-family: FontAwesome !important;
+}

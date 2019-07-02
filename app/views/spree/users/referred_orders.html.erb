@@ -1,0 +1,14 @@
+<% content_for :sidebar do %>
+  <%= render "sidebar_memberinfo" %>
+  <%= render "sidebar_topproducts" %>
+<% end %>
+
+<%= render "block_message"%>
+<%= render "block_orders"%>
+
+<script type="text/javascript">
+  var config = {'.chosen-select' : {},}
+for (var selector in config) {
+  $(selector).chosen(config[selector]);
+}
+</script>

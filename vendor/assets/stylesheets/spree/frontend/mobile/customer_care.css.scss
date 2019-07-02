@@ -1,0 +1,24 @@
+#customer-care{
+  position: fixed;
+  width: 152px;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  background-color: #449d02;
+  color: #fff;
+  padding: 0px;
+  //border-top-right-radius: 10px;
+  //-webkit-border-top-right-radius: 10px;
+  //-moz-border-top-right-radius: 10px;
+
+  .phones{
+    margin-bottom: 10px;
+    .phone span{
+      font-weight: bold;
+    }
+  }
+
+  .image{
+    text-align: center;
+  }
+}

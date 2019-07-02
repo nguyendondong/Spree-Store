@@ -1,0 +1,19 @@
+<div class="blog-img">
+	<%= image_tag(blog_entry.blog_entry_image.attachment.url(:large)) if blog_entry.blog_entry_image.present? %>
+</div>
+<div>
+<h2><%= link_to blog_entry.title, blog_entry_permalink(blog_entry) %></h2>
+<div class="view-count">
+	<span><i class="fa fa-clock-o"></i> <%= blog_entry.created_at.strftime("%d/%m/%Y") %> </span>
+	<span><i class="fa fa-eye"></i> <%= blog_entry.view %></span>
+</div>
+<div class="blog_entry_summary">
+  <%== blog_entry.entry_summary %>
+  <span class="blog_read_more"><%= link_to Spree.t(:blog_read_more), blog_entry_permalink(blog_entry) %></span>
+</div>
+<div class="read-more">
+	<%= link_to "Xem thêm", blog_entry_permalink(blog_entry) %>
+</div>
+<%#= render :partial => 'spree/blog_entries/blog_entry_details', :locals => {:blog_entry => blog_entry} %>
+</div>
+<div class="clearfix"></div>

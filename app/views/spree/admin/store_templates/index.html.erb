@@ -1,0 +1,21 @@
+<table class="index" id='listing_stores'>
+  <colgroup>
+    <col style="width: 120px">
+    <col style="width: 80px">
+    <col style="width: 80px">
+  </colgroup>
+  <thead>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Thumb</th>
+  </thead>
+  <tbody>
+    <% @get_template.each_with_index do |i, index |%>
+      <tr id="">
+        <td> <%= index +1 %> </td>
+        <td> <%= i %> </td>
+        <td><%= image_tag "template_thumb/#{i}.png"%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

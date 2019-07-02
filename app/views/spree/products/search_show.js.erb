@@ -1,0 +1,16 @@
+$("#result").html("<%= escape_javascript(render partial: 'listproductshow', locals: { products: @products } ) %>").promise().done(function(){
+    
+    $(" #search-product-mobile  .search-animation").removeClass("active");
+    $(" #search-product  .search-animation").removeClass("active");
+
+    
+   if ($('.top-search #search-product #q_name_cont').val() == ''){
+		$(".top-search .dropdown-result").removeClass("active");
+		$(".top-search .dropdown-result").addClass("overfollow");
+
+	}else {
+       $(" .top-search .dropdown-result").addClass("active");
+    };
+
+   
+});

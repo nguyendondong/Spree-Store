@@ -1,0 +1,6 @@
+<% if defined?(image) && image %>
+  <%= image_tag image.attachment.url(:product), :itemprop => "image", "data-zoom-image" => image.attachment.original.url(:original), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+<% else %>
+  <%= image_tag @product.rep_image_url(:product), "data-zoom-image" => @product.rep_image_url(:original), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'" %>
+<% end %>
+

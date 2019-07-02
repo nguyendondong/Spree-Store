@@ -1,0 +1,8 @@
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:back_to_users_list), spree.admin_users_path, :icon => 'arrow-left' %>
+  </li>
+  <li>
+    <%= button_link_to Spree.t(:new_order), spree.new_admin_order_path(user_id: @user.id, :order => {:bill_address_attributes => {:firstname => "donghox", :phone => "0908482804"}}), :icon => 'plus' %>
+  </li>
+<% end %>

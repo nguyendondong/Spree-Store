@@ -1,0 +1,21 @@
+<h2>Danh sách thông báo</h2>
+<hr>
+
+<%  @notifications.order('created_at DESC').each do |notification| %>
+<% if notification.seen == true %>
+<p><a style="color: black" href='<%= "/admin/orders/#{notification.targetable.try(:number)}/edit" %>'>
+        <%= notification.message.html_safe %>
+        <span>At <%= notification.created_at.strftime("%H:%M:%S") %></span></a>
+</p>
+<% else %>
+<p><a style="color: #5498da;" href='<%= "/admin/orders/#{notification.targetable.try(:number)}/edit" %>'>
+        <%= notification.message.html_safe %>
+        <span>At <%= notification.created_at.strftime("%H:%M:%S") %></span></a>
+</p>
+<% end %>
+<% end %>
+
+<div class="page_number" style="margin-top: 300px">
+    <%= paginate @notifications %>
+</div>
+

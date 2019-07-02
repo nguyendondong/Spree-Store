@@ -1,0 +1,55 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= link_to_with_icon('plus', Spree.t(:new_slider), spree.new_admin_slider_path, :class => 'button') %>
+  </li>
+
+<% end %>
+
+<div class="twelve columns">
+  <%= paginate @sliders %>
+
+  <% if @sliders.any? %>
+
+    <table class="index">
+      <colgroup></colgroup>
+      <colgroup style="width: 15%"></colgroup>
+      <colgroup style="width: 68%"></colgroup>
+      <colgroup style="width: 17%"></colgroup>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sliders.each_with_index do |slider, index| %>
+          <tr class="<%= index % 2 == 0 ? "odd" : "even"  %>">
+            <td class="align-center">
+              <%= index + 1 %>
+            </td>
+            <td class="align-center">
+              <%= slider.name %>
+            </td>
+            <td class="" data-hook="admin_products_index_row_actions">
+              <%= link_to_edit slider, :no_text => true, :class => 'edit' %>
+              <%= link_to_delete slider, :no_text => true %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+
+
+  <% else %>
+    <div class="alpha twelve columns no-objects-found">
+      <%= "NO PAGES FOUND, " %>
+      <%= link_to Spree.t(:add_one), spree.new_admin_slider_path %>
+    </div>
+  <% end %>
+
+  <%= paginate @sliders %>
+</div>

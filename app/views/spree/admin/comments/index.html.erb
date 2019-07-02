@@ -1,0 +1,96 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:comments) + " (#{@comments.total_count})" %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:new_user), new_admin_lead_url, :icon => 'plus', :id => 'admin_new_user_link' %>
+  </li>
+<% end %>
+<% content_for :table_filter do %>
+  <div data-hook="admin_orders_index_search">
+    <%= search_form_for [:admin, @search] do |f| %>
+
+
+      <div class="four columns">
+        <div class="field">
+          <%= label_tag nil, Spree.t(:facebook_name, :number => '') %>
+          <%= f.text_field :user_fb_name_cont %>
+        </div>
+        <div class="field">
+          <%= label_tag nil, Spree.t(:phone) %>
+          <%= f.text_field :user_phone_cont %>
+        </div>
+      </div>
+
+      <div class="four columns">
+        <div class="field">
+          <%= label_tag nil, Spree.t(:message) %>
+          <%= f.text_field :message_cont, :size => 25 %>
+        </div>
+        <div class="field">
+          <%#= label_tag nil, Spree.t(:phone) %>
+          <%#= f.text_field :bill_address_phone_cont, :size => 25 %>
+        </div>
+      </div>
+
+      <div class="omega four columns">
+        <div class="field checkbox">
+          <label>
+            <%= check_box_tag :read_eq, '1', @show_read %>
+            <%= Spree.t(:show_read_comments) %>
+          </label>
+<!--           <label>
+            <%= f.check_box :considered_risky_eq, {:checked => (params[:q][:considered_risky_eq] == '1')}, '1', '' %>
+            <%= Spree.t(:show_only_considered_risky) %>
+          </label> -->
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="actions filter-actions">
+        <div data-hook="admin_comments_index_search_buttons">
+          <%= button Spree.t(:filter_results), 'search' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<table class="index" id="listing_users" data-hook>
+  <colgroup>
+
+    <col style="width: 15%">
+    <col style="width: 10%">
+    <col style="width: 20%">
+    <col style="width: 35%">
+    <col style="width: 10%">
+  </colgroup>
+  <thead>
+    <tr data-hook="admin_users_index_headers">
+      <th><%= sort_link @search,:fb_name, Spree.t(:fb_name), {}, {:title => 'users_fb_name_title'} %></th>
+      <th><%= Spree.t(:phone)%></th>
+      <th><%= Spree.t(:products)%></th>
+      <th><%= Spree.t(:message)%></th>
+      <th><%= Spree.t(:time)%></th>
+      <th data-hook="admin_users_index_header_actions" class="actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comments.each do |comment|%>
+      <% user = comment.user %>
+      <tr id="<%= spree_dom_id comment %>" data-hook="admin_comments_index_rows" class="<%= cycle('odd', 'even')%>">
+        <td class='user_email'><%=link_to user.fb_name[0..20], "https://www.facebook.com/#{user.fb_id}", :target => "_blank" if user.present? %></td>
+        <td class='user_phone'><%= user.phone if user.present? %></td>
+        <td class='product'><%= link_to comment.product.name[0..30] + "..." + comment.product.sku, product_url(comment.product), :target=>"_blank" if comment.product.present?%></td>
+        <td class='comment_message'><%= link_to comment.message, comment.post_url, :target=>"_blank" %></td>
+        <td class='user_phone'><%= time_ago_in_words(comment.created_at) + " trước" %></td>
+        <td data-hook="admin_users_index_row_actions" class="actions">
+          <%= link_to "", "/admin/comments/#{comment.id}", :no_text => true, :class => "fa fa-approve icon_link no-text mark-as-read", :data => comment.id %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @comments %>

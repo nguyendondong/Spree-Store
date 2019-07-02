@@ -1,0 +1,114 @@
+<div class="modal" id="checkoutPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">x</span>
+      </button>
+      <div class="modal-body">
+        <% if staff? %>
+        <ul>
+          <li>
+            <%= label_tag Spree.t(:buy_at_shop)%>
+            <%= radio_button_tag :source, :shop %>
+          </li>
+          <li>
+            <%= label_tag Spree.t(:buy_by_phone)%>
+            <%= radio_button_tag :source, :phone %>
+          </li>
+            <li>
+            <%= label_tag Spree.t(:buy_on_facebook)%>
+            <%= radio_button_tag :source, :facebook %>
+          </li>
+            <li>
+            <%= label_tag Spree.t(:buy_on_zalo)%>
+            <%= radio_button_tag :source, :zalo %>
+          </li>
+        </ul>
+        <% end %>
+        <div id="checkout-popup">
+          <div class="col-md-5">
+            <div class="cart-info">
+              <div ng-repeat="item in order.line_items">
+                <div class="col-xs-3" class="cart-item-image">
+                  <img ng-src="../spree/products/{{item.variant.images[0].id}}/mini/{{item.variant.images[0].attachment_file_name}}"/>
+                </div>
+                <div class="col-xs-8">
+                  <div class="cart-item-description row" >
+                    <a href="{{item.variant.product.slug}}"> {{item.variant.product.name}} </a>
+                  </div>
+                  <div style="border-bottom: 1px solid #ddd;" class="cart-item-quantity row"> {{item.quantity}}  x  {{toMoney(item.price, "đ")}} </div>
+                </div>
+              </div>
+            </div>
+            <table style="width:100%;margin-top:10px">
+              <tr>
+                <td><strong><%= Spree.t(:item_total) %>:</strong></td>
+                <td class="total_price" style="text-align:center;">{{toMoney(order.item_total, "đ")}}</td>
+              </tr>
+            </table>
+            <div class="summary-note"><span class="summary-note-label">Phí vận chuyển:</span> 20K đối với các đơn hàng ở TP.HCM, 30K với các tỉnh còn lại. Miễn phí vận chuyển với các đơn hàng từ 500K trở lên </div>
+            <div class="summary-note"><span class="summary-note-label">Thời gian nhận hàng:</span> TP.HCM nhận hàng trong vòng 24h, các tỉnh thành còn lại, từ 1-4 ngày làm việc.</div>
+          </div>
+          <div class="col-md-7" style="padding-left:5px;">
+            <form accept-charset="UTF-8" role="form" name="addressForm" class="edit_order" id="checkout_form_address" ng-submit="updateAddress()">
+                <div style="display:none">
+                  <input name="utf8" type="hidden" value="✓">
+                  <input name="_method" type="hidden" value="patch">
+                  <input name="authenticity_token" type="hidden" value="08cnH1LfgoYPGmVipo4QRYQw6PX0vcw2P4mDHvnX5sg=">
+                </div>
+                <h2 style="font-size: 17px;margin-top:0;">Thông tin người mua</h2>
+                <p class="field" id="bfirstname">
+                  <input class="required form-control" id="order_bill_address_attributes_firstname" name="order[bill_address_attributes][firstname]" ng-model="bill_address_attributes.firstname" placeholder="Họ tên của bạn (bắt buộc)" type="text">
+                </p>
+                <p class="field" id="bphone">
+                  <input class="required form-control" id="order_bill_address_attributes_phone" name="order[bill_address_attributes][phone]" placeholder="Số di động (bắt buộc)" type="text" ng-model="bill_address_attributes.phone">
+                </p>
+                <p class="field" id="bemail">
+                  <input class="form-control" id="order_bill_address_attributes_email" name="order[bill_address_attributes][email]" placeholder="Email (không bắt buộc, dùng để gửi xác nhận)" type="text" ng-model="bill_address_attributes.email">
+                </p>
+                <p class="address-toggle-btn">Nhập địa chỉ, thời gian để NHẬN HÀNG NHANH (không bắt buộc)<span class="caret"></span></p>
+                <div class="address-toggle" style="display: none;">
+                  <p class="field" id="bcity">
+                    <label for="order_bill_address_attributes_city">Tỉnh / Thành phố:</label>
+                    <select ng-model="bill_address_attributes.state_id" class="form-control" ng-change="selectState()">
+                      <option ng-repeat="i in state" value={{i.id}}> {{ i.name}}</option>
+                    </select>
+                  </p>
+
+                  <p class="field" id="district">
+                    <label for="order_bill_address_attributes_district">Quận / Huyện:</label>
+                    <select ng-model="bill_address_attributes.district_id" class="form-control">
+                      <option ng-repeat="i in districts" value={{i.id}}> {{ i.name}}</option>
+                    </select>
+
+                  </p>
+
+                  <p class="field" id="baddress1">
+                    <label for="order_bill_address_attributes_address1">Địa chỉ: (Ghi rõ số nhà, tên đường, thôn, xóm, ...)</label>
+                    <input class="form-control" id="order_bill_address_attributes_address1" name="order[bill_address_attributes][address1]" type="text" ng-model="bill_address_attributes.address1">
+                  </p>
+                </div>
+
+                <input id="address-city" ng-model="order.bill_address_attributes.city" type="hidden" ng-value=" " name="order[bill_address_attributes][city]">
+                <input id="order_bill_address_attributes_zipcode" ng-model="order.bill_address_attributes.zipcode" type="hidden" ng-value="70000" name="order[bill_address_attributes][zipcode]">
+                <input id="order_bill_address_attributes_lastname" ng-model="order.bill_address_attributes.lastname" type="hidden" ng-value="AB">
+                <input  ng-model="order.bill_address_attributes.country_id" type="hidden" ng-init="order.bill_address_attributes.country_id = 84 ">
+
+                <div class="form-buttons form-buttons columns six" data-hook="buttons">
+                  <%= submit_tag Spree.t(:approve), :class => 'continue button primary' %>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= image_tag("spinner.gif", :class => "snipper", :style => "display: none; position: fixed;z-index: 1001;top: 40%; left: 50%;")%>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.address-toggle-btn').click(function() {
+      $('.address-toggle').toggle();
+    });
+  });
+</script>

@@ -1,0 +1,60 @@
+<%= render :partial => 'spree/admin/shared/configuration_slider_menu' %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= link_to_with_icon('back', "Back to Slider", edit_admin_slider_path(@slider), :class => 'button') %>
+  </li>
+  <li>
+    <%= link_to_with_icon('plus', Spree.t(:new_image), new_admin_slider_slider_image_url(@slider), :class => 'button') %>
+  </li>
+<% end %>
+
+<div id="images" data-hook="">
+  <% unless @slider.slider_images.any? || @slider.slider_images.any? %>
+    <div class="no-objects-found">
+      <%= Spree.t(:no_images_found) %>
+      <%= link_to Spree.t(:add_one), spree.new_admin_slider_slider_image_url(@slider) %>
+    </div>
+  <% else %>
+    <h4><%= "Slider: #{@slider.name}" %></h4>
+    <table class="index sortable" data-hook="images_table">
+      <colgroup>
+        <col style="width: 5%;"></col>
+        <col style="width: 10%;"></col>
+        <col style="width: 45%;"></col>
+        <col style="width: 20%;"></col>
+        <col style="width: 15%;"></col>
+      </colgroup>
+      <thead>
+        <tr data-hook="images_header">
+          <th colspan="2">
+            <%= Spree.t(:thumbnail) %>
+          </th>
+          <th>
+            <%= Spree.t(:alt_text) %>
+          </th>
+          <th>Url</th>
+          <th class="actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @slider.slider_images.each do |image| %>
+          <tr class="<%= cycle('odd', 'even') %>" data-hook="images_row" id="<%= spree_dom_id image %>">
+            <td class="no-border">
+              <span class="handle"></span>
+            </td>
+            <td>
+              <%= link_to image_tag(image.image.url(:mini)), image.image.url(:product) %>
+            </td>
+            <td><%= image.alt %></td>
+            <td><%= image.url %></td>
+            <td class="actions">
+              <%= link_to_with_icon 'edit', Spree.t(:edit), edit_admin_slider_slider_image_url(@slider, image), :no_text => true, :data => {:action => 'edit'} %>
+              <%= link_to_delete image, { :url => admin_slider_slider_image_url(@slider, image), :no_text => true } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

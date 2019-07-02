@@ -1,0 +1,19 @@
+<% if recent_blog_entries.present? %>
+  <div class="recent_blog_entries_wrapper">
+    <h4><%= Spree.t('blog.recent_entries') %></h4>
+    <ul class="recent_blog_entries">
+      <% recent_blog_entries.each do |blog_entry| %>
+        <li>
+          <%= link_to(blog_entry_permalink(blog_entry)) do %>
+            <%= image_tag(blog_entry.blog_entry_image.attachment.url(:normal)) if blog_entry.blog_entry_image.present? %>
+            <div>
+              <%= blog_entry.title %>
+            </div>
+          <% end %>
+          <div><span><i class="fa fa-eye"></i> <%= blog_entry.view %> lượt xem</span></div>
+          <div class="clearfix"></div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

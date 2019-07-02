@@ -1,0 +1,80 @@
+
+<div class="customer-info">
+	<h4>Thông tin khách hàng:</h4>
+	<p><strong>Họ và tên: </strong><%= @order.bill_address.firstname %></p>
+	<p><strong>Số điện thoại: </strong><%= @order.bill_address.phone %></p>
+</div>
+
+<div class="order-info">
+	<h4>Thông tin đơn hàng:</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Tên sản phẩm</th>
+				<th>Giá tiền</th>
+				<th>Số lượng</th>
+				<th>Giá trị</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @order.line_items.each do |item| %>
+				<tr>
+					<td><%= item.variant.product.name %></td>
+					<td><%= item.single_money.to_html %></td>
+					<td><%= item.quantity %></td>
+					<td><%= item.display_amount.to_html %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	  <tfoot id="order-total" data-hook="order_details_total">
+	    <tr class="total">
+	      <td colspan="3"><b><%= Spree.t(:order_total) %>:</b></td>
+	      <td class="total"><span id="order_total"><%= @order.display_total.to_html %></span></td>
+	    </tr>
+	  </tfoot>
+
+	  <% if @order.line_item_adjustments.exists? %>
+	    <% if @order.all_adjustments.promotion.eligible.exists? %>
+	      <tfoot id="price-adjustments" data-hook="order_details_price_adjustments">
+	        <% @order.all_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+	          <tr class="total">
+	            <td colspan="3"><%= Spree.t(:promotion) %>: <strong><%= label %></strong></td>
+	            <td class="total"><span><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency) %></span></td>
+	          </tr>
+	        <% end %>
+	      </tfoot>
+	    <% end %>
+	  <% end %>
+
+	  <tfoot id='shipment-total'>
+	    <% @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments| %>
+	      <tr class="total" data-hook='shipment-row'>
+	        <td colspan="3"><%= Spree.t(:shipping) %>: <strong><%= name %></strong></td>
+	        <td class="total"><span><%= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency).to_html %></span></td>
+	      </tr>
+	    <% end %>
+	  </tfoot>
+
+	  <% if @order.all_adjustments.tax.exists? %>
+	    <tfoot id="tax-adjustments" data-hook="order_details_tax_adjustments">
+	      <% @order.all_adjustments.tax.group_by(&:label).each do |label, adjustments| %>
+	        <tr class="total">
+	          <td colspan="3"><%= Spree.t(:tax) %>: <strong><%= label %></strong></td>
+	          <td class="total"><span><%= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency) %></span></td>
+	        </tr>
+	      <% end %>
+	    </tfoot>
+	  <% end %>
+
+	  <tfoot id="order-charges" data-hook="order_details_adjustments">
+	    <% @order.adjustments.eligible.each do |adjustment| %>
+	    <% next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+	      <tr class="total">
+	        <td colspan="3"><strong><%= adjustment.label %></strong></td>
+	        <td class="total"><span><%= adjustment.display_amount.to_html %></span></td>
+	      </tr>
+	    <% end %>
+	  </tfoot>
+	</table>
+</div>
+<p><%= link_to "Quay trở lại", user_root_path %></p>

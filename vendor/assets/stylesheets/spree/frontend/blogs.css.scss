@@ -1,0 +1,22 @@
+#blog_entry_entry{
+  .view-count{
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 3px;
+    position: relative;
+    top: 3px;
+    span{
+      font-weight: bold;
+    }
+  }
+  img {
+    display: initial;
+  }
+}
+
+.blog-entry-products{
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+

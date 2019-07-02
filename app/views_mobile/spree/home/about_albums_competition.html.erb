@@ -1,0 +1,114 @@
+<div id="about-albums-competition">
+  <div class="tabs">
+    <div id="competition-rules">Thể lệ cuộc thi</div>
+    <div id="participants">Đối tượng tham gia</div>
+    <div id="award-structures">Cơ cấu giải thưởng</div>
+    <div id="competition-album">
+      <a href="/albums">Album dự thi</a>
+    </div>
+  </div>
+  <div class="content">
+    <div id="join-competition" data-signed=<%= spree_current_user.present? ? true : false %> data-phone=<%= (spree_current_user.present? && spree_current_user.phone.present?) ? true : false %>>
+      <div class="row">
+        <div class= "wrap col-xs-12">
+          <div class="col-xs-5">
+            <div class="img" style="background-image: url('assets/your-girl.png');"> </div>
+          </div>
+          <div class="col-xs-7">
+              <img src="assets/chup-anh-xinh.png" alt="" class="img-responsive">
+              <a href="/my-albums" > <img src="assets/join-now-btn.png" alt="" class="img-responsive col-xs-offset-4 col-xs-8"> </a> 
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="preamble-content">
+      <div class="row">
+        <div class="wrap col-xs-12">
+        <div class="col-xs-5"> <img src="assets/watches-1.png" class="img-responsive"> </div>
+        <div class="col-xs-7"> <img src="assets/image-gallery.png" class="img-responsive"> </div>
+      </div>
+      </div>
+    </div>
+
+    <div id="competition-rules-content">
+      <div class="row">
+        <div class="wrap col-xs-12">
+          <div class="col-xs-8">
+            <div class="title text-center">Thể lệ cuộc thi</div>
+            <img src="assets/symbol-absolute-1.png " class="img-responsive">
+            <div class="description">
+              <p>Với mỗi sản phẩm đã mua, bạn được đăng ký 1 album dự thi, không giới hạn số lượng album. Mỗi cuối tháng, donghox sẽ tổng hợp số lượng like album, album có nhiều lượt like nhất sẽ là người thắng giải. </p>
+              <p>Yêu cầu: hình chụp phải thể hiện rõ chiếc đồng hồ đang đeo.</p>
+              <p>Người tham dự vui lòng điền chính xác SDT đã sử dụng để mua hàng tại donghox.com. Chúng tôi sẽ dùng số điện thoại này để xác thực và trao giải. </p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+          </div>
+          <div class="image">
+            <img src="assets/watches-2.png" class="img-responsive">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="participants-content">
+      <div class="row">
+        <div class="wrap col-xs-12">
+          <div class="col-xs-4">
+          </div>
+          <div class="image">
+            <img src="assets/watches-3.png" class="img-responsive">
+          </div>
+          <div class="col-xs-8">
+            <div class="title text-center"> Đối tượng tham gia</div>
+            <img src="assets/symbol-absolute-2.png" class="img-responsive">
+            <div class="description">
+              <p>Tất cả các khách hàng đã từng mua sản phẩm tại donghox.com. Với mỗi sản phẩm đã mua, bạn được đăng ký 1 album dự thi, không giới hạn số lượng album.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="award-structures-content">
+      <div class="row">
+        <div class="wrap col-xs-12">
+          <div class="col-xs-8">
+            <img src="assets/symbol-absolute-3.png" class="img-responsive">
+            <div class="title text-right">Cơ cấu giải thưởng</div>
+            <div class="description">
+              <h4>Giải của tháng (kết quả công bố vào cuối tháng):</h4>
+                <p>1 Giải nhất: voucher mua hàng trị giá 1.000.000 đ </p>
+                <p>5 giải khuyến khích: mỗi giải 1 voucher mua hàng trị giá 200.000 đ </p>
+              <h4>Giải của năm (kết quả công bố vào cuối năm):</h4>
+                <p>1 Giải nhất: Tiền mặt trị giá 5.000.000 đ </p>
+                <p>5 giải khuyến khích: mỗi giải 1 voucher mua hàng trị giá 1.000.000 đ </p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+          </div>
+          <div class="image">
+            <img src="assets/watches-4.png" class="img-responsive">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ask-to-update-phone-modal">
+  <div>
+    Bạn chưa nhập số điện thoại. Hãy cập nhật.
+  </div>
+  <div class="content">
+    <input class="phone" type="text" placeholder="Nhập số điện thoại">
+  </div>
+  <div class="error">
+  </div>
+  <div class="success">
+    asdasd
+  </div>
+  <a class="update-phone">Cập nhật</a>
+</div>

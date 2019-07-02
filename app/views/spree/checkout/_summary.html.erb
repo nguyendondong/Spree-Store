@@ -1,0 +1,95 @@
+<div class="cart-info">
+<table >
+<% order.line_items.each do |line_item| -%>
+  <% variant = line_item.variant -%>
+  <tr class="<%= cycle('', 'alt') %> line-item">
+    <td class="cart-item-image" data-hook="cart_item_image" rowspan="2">
+      <% if variant.images.length == 0 %>
+        <%= link_to mini_image(variant.product), variant.product %>
+      <% else %>
+        <%= link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product %>
+      <% end %>
+    </td>
+    <td class="cart-item-description" data-hook="cart_item_description" colspan="4">
+      <%= link_to "#{line_item.name} #{variant_name(variant)}", product_path(variant.product) %>
+      <% if line_item.insufficient_stock? %>
+        <span class="out-of-stock">
+          <%= Spree.t(:out_of_stock) %>&nbsp;&nbsp;<br />
+        </span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="cart-item-quantity" data-hook="cart_item_quantity">
+      <%= "#{line_item.quantity} x #{line_item.single_money}" %>
+    </td>
+  </tr>
+<% end -%>
+</table>
+</div>
+<table data-hook="order_summary" id="checkout_summary">
+  <tbody>
+     <tr data-hook="item_total">
+      <td style="padding: 10px 0;width: 30%;"><strong><%= Spree.t(:item_total) %>:</strong></td>
+      <td style="width: 70%; text-align: right;"><strong><%= order.display_item_total.to_html %></strong></td>
+    </tr>
+
+    <% if order.line_item_adjustments.exists? %>
+      <tbody data-hook="order_details_promotion_adjustments">
+        <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+          <tr class="total">
+            <td><%= label %></td>
+            <td><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+
+    <tbody data-hook="order_details_tax_adjustments">
+      <% order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
+        <tr class="total">
+          <td><%= label %></td>
+          <td><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <% if order.checkout_steps.include?("delivery") && order.shipments.any? %>
+      <tr data-hook="shipping_total">
+        <td><%= Spree.t(:shipping_total) %>:</td>
+        <td><%= Spree::Money.new(order.shipments.to_a.sum(&:cost), currency: order.currency).to_html %></td>
+      </tr>
+
+      <% if order.shipment_adjustments.exists? %>
+        <tbody data-hook="order_details_shipment_promotion_adjustments">
+          <% order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+            <tr class="total">
+              <td><%= label %>:</td>
+              <td><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      <% end %>
+    <% end %>
+
+    <% if order.adjustments.eligible.exists? %>
+      <tbody id="summary-order-charges" data-hook>
+        <% order.adjustments.eligible.each do |adjustment| %>
+        <% next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+          <tr class="total">
+            <td><%= adjustment.label %>:</td>
+            <td><%= adjustment.display_amount.to_html %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+
+<!--     <tr data-hook="order_total">
+      <td><strong><%= Spree.t(:order_total) %>:</strong></td>
+      <td><strong><span id='summary-order-total'><%= order.display_total.to_html %></span></strong></td>
+    </tr> -->
+  </tbody>
+</table>
+
+<div class="summary-note"><span class='summary-note-label'>Phí vận chuyển:</span> 20K đối với các đơn hàng ở TP.HCM, 30K với các tỉnh còn lại. Miễn phí vận chuyển với các đơn hàng từ 500K trở lên </span></div>
+<div class="summary-note"><span class='summary-note-label'>Thời gian nhận hàng:</span> TP.HCM nhận hàng trong vòng 24h, các tỉnh thành còn lại, từ 1-4 ngày làm việc.</div>

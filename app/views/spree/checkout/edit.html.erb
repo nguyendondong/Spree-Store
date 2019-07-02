@@ -1,0 +1,49 @@
+<div id="checkout" data-hook>
+  <%  if !staff? || !spree_current_user.present?  %>
+    <p class="login-checkout-link"><a href="https://donghox.webmely.com/login">Vui lòng đăng nhập tại đây để  nhận thêm ưu đãi!</a></p>
+  <% end %>
+  <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+
+  <div class="row" daa-hook="checkout_content">
+    
+
+    <div class="columns <%= if @order.state != 'confirm' then 'alpha nin col-md-7' else 'alpha omega sixteen' end %>" data-hook="checkout_form_wrapper">
+      <%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
+        <%#= form.hidden_field :state_lock_version %>
+        <%= render @order.state, :form => form %>
+      <% end %>
+    </div>
+    <% if @order.state != 'confirm' %>
+      <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega seven col-md-5">
+        <%= render :partial => 'summary', :locals => { :order => @order } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+Spree.current_order_id = "<%= @order.number %>"
+Spree.current_order_token = "<%= @order.guest_token %>"
+</script>
+<!-- Google Code for Remarketing Tag -->
+<script type="text/javascript">
+  var google_tag_params = {
+  ecomm_prodid: '<%= @order.number %>',
+  ecomm_pagetype: 'cart',
+  ecomm_totalvalue: <%= @order.item_total %>
+  };
+</script>
+<script type="text/javascript">
+  /* <![CDATA[ */
+  var google_conversion_id = 961568658;
+  var google_custom_params = window.google_tag_params;
+  var google_remarketing_only = true;
+  /* ]]> */
+  </script>
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+  <noscript>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/961568658/?value=0&amp;guid=ON&amp;script=0"/>
+  </div>
+</noscript>

@@ -1,0 +1,59 @@
+<%= render :partial =>'spree/shared/top_bar' %>
+
+<button id="contact-btn" class="conta-open"><i class="fa fa-phone" aria-hidden="true"></i></button>
+<div id="contact-gr">
+  <div class="contact-bg"></div>
+  <button id="contact-btn" class="conta-close"><i class="fa fa-times" aria-hidden="true"></i></i></button>
+  <a href="tel:+84981805506" class="pulse">
+    <i class="fa fa-phone" aria-hidden="true"></i>
+    <span>Gọi cho chúng tôi</span>
+  </a>
+  <a href="https://www.facebook.com/Dong-ho-X-Teen-249467635263830/" class="face-btn">
+    <i class="fa fa-facebook" aria-hidden="true"></i>
+    <span>Nhắn tin qua facebook</span>
+  </a>
+  <a href="http://zalo.me/0983379782" class="zalo-button">
+      <%= image_tag 'Logo_Zalo.png',:style => "width: 20px; height: 20px; cursor: pointer"%>
+      <span>Nhắn tin qua zalo</span>
+  </a>
+ 
+</div>
+
+
+<script>
+  $(document).ready(()=>{
+    $("#contact-btn").click(()=>{
+      $("#contact-gr").addClass("active");
+      $("#contact-gr >a").addClass("active").css("pointer-events", "unset");
+      $("#contact-gr >a >span").addClass("active");
+    })
+    $("#contact-btn.conta-close").click(()=>{
+      $("#contact-gr >a").removeClass("active").css("pointer-events", "none");
+      $("#contact-gr").removeClass("active");
+      $("#contact-gr >a >span").removeClass("active");
+    })
+    $("#contact-gr .contact-bg").click(()=>{
+      $("#contact-gr >a").removeClass("active").css("pointer-events", "none");
+      $("#contact-gr").removeClass("active")
+    })
+  });
+</script>
+
+
+<div class="clearfix"></div>
+<div id="header" class="container" data-hook>
+	<% unless (mobile?) %>
+  <div class="four columns col-md-3">
+	<div id="logo">
+	 <%= link_to (image_tag current_store.logo(:medium), alt: current_store.name), "/" %>
+	</div>
+  </div>
+  <% end %>
+  <%= render :partial => 'spree/shared/nav_bar' %>
+</div>
+<%= render "spree/shared/slider" unless @disable_slider %>
+<%= render :partial => 'spree/shared/main_nav_bar' if store_menu? %>
+
+<% if @just_sign %>
+  <%#= render :partial => 'shared/invite_friends' %>
+<% end %>

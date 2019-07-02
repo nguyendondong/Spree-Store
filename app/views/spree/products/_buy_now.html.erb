@@ -1,0 +1,104 @@
+<%= form_for :order, :url => populate_orders_path do |f| %>
+    <% if check_variant(@product, current_currency) %>
+      <div id="productvariants" class="col-lg-6 col-xs-4">
+        <h4 class="productsectiontitle "><%= Spree.t(:select) + " #{@product.option_types.first.presentation}:" %></h4>
+        <ul>
+          <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+            <li>
+
+              <div class="variant cart-variant">
+                  <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                  <label for="variant_id_<%= variant.id %>v"><%= variant_options variant %></label>
+              </div>
+
+              <% if variant_price variant %>
+                <span class="price diff"><%= variant_price variant %></span>
+              <% end %>
+
+              <% unless variant.can_supply? %>
+                <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+              <% end %>
+            </li>
+          <% end%>
+        </ul>
+      </div>
+    <% else %> 
+
+      <%= hidden_field_tag "variant_id", @product.master.id %>
+    <% end %>
+    <div class="<% if check_variant(@product, current_currency) %>col-xs-12<% else %>col-xs-6<% end %>">
+      <div class="add-to-cart">
+        <div class="input-group btn-group">
+            <span class="input-group-btn">
+                <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+            </span>
+            <%= number_field_tag (:quantity), 1, :class => 'form-control input-number', :id => 'quantity', :value => @product.quantity_multiples_product, :step => @product.quantity_multiples_product, :min => @product.quantity_multiples_product %>
+            <span class="input-group-btn">
+                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
+
+        
+        <%= button_tag :class => 'large primary', :id => 'add-to-cart-button', :type => :submit, :data => {:toggle => "modal", :target => "#checkoutPopup"} do %>
+          <%= Spree.t(:add_to_cart) %>
+        <% end %>
+      </div>
+    </div><!-- /Buy now button -->
+<% end %>
+<div class="animsition"></div>
+<script>
+
+  var quantity = 0
+  var quantity_multiples = <%= @product.quantity_multiples_product %>
+  $('.quantity-right-plus').click(function(e){
+      
+      // Stop acting like a button
+      e.preventDefault()
+      // Get the field name
+      var quantity = parseInt($('#quantity').val())
+      
+      // If is not undefined
+          
+          $('#quantity').val(quantity + quantity_multiples)
+
+        
+          // Increment
+      
+  });
+
+    $('.quantity-left-minus').click(function(e){
+      // Stop acting like a button
+      e.preventDefault()
+      // Get the field name
+      var quantity = parseInt($('#quantity').val())
+      
+      // If is not undefined
+    
+          // Increment
+          if(quantity > quantity_multiples){
+          $('#quantity').val(quantity - quantity_multiples)
+          }
+  });
+
+    var all_prices = <%= @product.all_prices %>;
+    var lowest_discounted_volume_price = <%= @product.lowest_discounted_volume_price %>
+
+    $('.title').on('keyup change', function(e){
+		var qty = parseInt( $(this).val())
+		var prices_array = all_prices
+		if (qty <= prices_array.length)
+		{
+			$('span.price.selling').text(+prices_array[qty -1]+'đ')
+		}
+		else
+		{
+			$('span.price.selling').text(+lowest_discounted_volume_price+'đ')
+		}
+	});
+
+  
+</script>

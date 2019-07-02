@@ -1,0 +1,9 @@
+.billing-row {
+	height: 40px;
+}
+.billing-row .columns.omega {
+	margin-left: 0px; 
+}
+.fake-order {
+	color: red !important;
+}

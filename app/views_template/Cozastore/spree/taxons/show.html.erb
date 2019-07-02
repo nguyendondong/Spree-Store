@@ -1,0 +1,55 @@
+
+<% content_for :sidebar do %>
+  <div data-hook="taxon_sidebar_navigation">
+    <%= render partial: 'spree/shared/taxonomies' %>
+    <%#= render partial: 'spree/shared/filters' if @taxon.children.empty? %>
+  </div>
+<% end %>
+
+<div data-hook="taxon_products">
+  <div class="container p-t-100">
+    <div class="section-title2">
+      <h2><%= @taxon.name %></h2>
+    </div>
+    <div class="row">
+      <%= render partial: 'spree/shared/products', locals: { products: @products, taxon: @taxon } %>
+    </div>
+  </div>
+</div>
+
+<% unless params[:keywords].present? %>
+  <div data-hook="taxon_children">
+    <% cache [I18n.locale, @taxon, mobile_device?] do %>
+      <%= render partial: 'taxon', collection: @taxon.children %>
+    <% end %>
+  </div>
+<% end %>
+<p class="clearfix"></p>
+<% if @taxon.description.present? %>
+<div class="row taxon-info">
+  <h1><%= @taxon.name %></h1>
+  <p><%= @taxon.description.html_safe %></p>
+</div>
+<% end %>
+<!-- Google Code for Remarketing Tag -->
+  <script type="text/javascript">
+  var google_tag_params = {
+  ecomm_prodid: '<%= @taxon.id %>',
+  ecomm_pagetype: 'category',
+  ecomm_totalvalue: '10000'
+  };
+  </script>
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  var google_conversion_id = 961568658;
+  var google_custom_params = window.google_tag_params;
+  var google_remarketing_only = true;
+  /* ]]> */
+  </script>
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+  <noscript>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/961568658/?value=0&amp;guid=ON&amp;script=0"/>
+  </div>
+  </noscript>

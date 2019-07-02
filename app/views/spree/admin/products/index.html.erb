@@ -1,0 +1,320 @@
+<% content_for :page_title do %>
+<div class="listing_products_title">
+ <span>Còn lại:</span>
+ <span><%= @sum_product.present? ? @sum_product : 0 %></span> 
+</div>
+<%= search_form_for  [:admin,@search], remote: true, id: "search-product-admin" do |f| %>
+ <ul class="navbar-nav ">
+      <li class ="list-nav">
+      <div data-hook="admin_products_index_search"></div>
+      </li>
+      <li  class ="list-nav">
+        <label><%= Spree.t(:search) %></label>
+        <%= f.text_field :name_cont, :size => 15, class: 'abc'%>
+        </li>
+      <li class ="list-nav">
+        <label>
+          <%= f.check_box :deleted_at_null, {:checked => params[:q][:deleted_at_null] == '0'}, '0', '1' %>
+          <%= Spree.t(:show_product_deleted) %>
+        </label>
+      </li>
+ </ul>
+  <% end %>
+<% end %>
+
+<% content_for :page_actions do %>
+
+<li id="new_product_link">
+ <%= button_link_to Spree.t(:new_product), new_object_url, { :remote => true, :icon => 'plus', :id => 'admin_new_products' } %>
+</li>
+<% end if can?(:create, Spree::Product) %>
+<div class="new_product_bl">
+  <div class="new_product_wrapper_bg"></div>
+  <div id="new_product_wrapper" data-hook>
+  </div>
+</div>
+
+<div id="listing_products">
+<%= paginate @collection %>
+<% if @collection.any? %>
+<table class="index">
+ <colgroup>
+   <col style="width: 10%;">
+   <col style="width: 10%;">
+   <col style="width: 23%;">
+   <col style="width: 10%;">
+   <col style="width: 15%;">
+   <col style="width: 10%;">
+   <col style="width: 12%;">
+   <col style="width: 10%;">
+ </colgroup>
+ <thead>
+
+   <tr data-hook="admin_products_index_headers" >
+     <th  class="align-center"><%= Spree.t(:sku) %></th>
+     <th  class="align-center"><%= sort_link @search,:image, Spree.t(:image), {:title => 'admin_products_listing_name_title'} %></th>
+     <th  class="align-center"><%= sort_link @search,:name, Spree.t(:name), {:title => 'admin_products_listing_name_title'} %></th>
+     <th  class="align-center">
+       <%= sort_link @search,:master_default_price_amount, Spree.t(:master_price), {}, {:title => 'admin_products_listing_price_title'} %>
+     </th>
+     <th  class="align-center cl-chart" >
+      <span><%= Spree.t(:one_month)%></span>
+      <div class="toogle-chart">3 tháng</div>
+     </th>
+     <th  class="align-center"><%= Spree.t(:Remain)%></th>
+     <th  class="align-center" >
+       <%= sort_link @search,:updated_at, Spree.t(:update), { :default_order => "desc" }, {:title => 'admin_products_listing_name_title'} %>
+     </th>
+     <th data-hook="admin_products_index_header_actions" class="actions "></th>
+   </tr>
+ </thead>
+ <tbody>
+
+
+   <% i = 1%>
+   <% @collection.each do |product| %>
+   <tr <% "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>"
+     data-hook="admin_products_index_rows" class=" list_products  <%= cycle('odd', 'even') %>">
+     <td class="align-center "><%= link_to product.sku, product_path(product), target: "_blank",:class => "sku" %>
+     </td>
+     <td class="align-center image"><%= mini_image(product) %></td>
+     <td class="align-center "><%= link_to product.try(:name), edit_admin_product_path(product),:class =>"name" %>
+     </td>
+     <td class="align-center master_price "><%= product.display_price.to_html rescue '' %></td>
+     <td class="align-center chart">
+            <div id="chart-head">
+              <div class="chart-total" data-chart-3m="<%= @sold_3_month[product.id].present? ?  @sold_3_month[product.id] : 0 %>" data-chart="<%=@sold_1_month[product.id].present? ?  @sold_1_month[product.id] : 0 %>"><%= @sold_1_month[product.id].present? ?  @sold_1_month[product.id] : 0 %></div>
+              <div class="chart-expand"><i class="fa fa-expand" aria-hidden="true"></i></div>
+            </div>
+             <div id="chart-<%= i %>" class="chart-products" data-chart="<%= @report_1_month[product.id].present? ? @report_1_month[product.id] : @array_value_none %>" data-chart-3m= "<%= @report_3_month[product.id].present? ? @report_3_month[product.id] : @array_value_none  %>"></div>
+     </td>
+     <% i= i +1 %>
+     <td class="align-center Remain "> <%=@remain_product.present? ? @remain_product[product.id] : 0 %></td>
+     <td class="align-center update "><%= product.updated_at.strftime("%F %R") rescue '' %></td>
+     <td class="actions btn-change" data-hook="admin_products_index_row_actions">
+       <%= link_to_edit product, :no_text => true, :class => 'edit' if can?(:edit, product) && !product.deleted? %>
+       &nbsp;
+       <%= link_to_clone product, :no_text => true, :class => 'clone' if can?(:clone, product) && !product.deleted? %>
+       &nbsp;
+       <%= link_to_delete product, :no_text => true if can?(:delete, product) && !product.deleted? %>
+       <%= link_to_with_icon "recycle", "", recover_admin_product_url(product.id), :no_text => true if can?(:delete, product) && product.deleted? %>
+     </td>
+   </tr>
+   <% end %>
+ </tbody>
+</table>
+<div class="chart-zoom">
+  <div class="chart-zoom-bg"></div>
+  <div class="chart-zoom-content">
+    <div class="chart-close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+    <div id="chart-full"></div>
+  </div>
+</div>
+<% else %>
+<div class="alpha twelve columns no-objects-found">
+ <%= Spree.t(:no_resource_found, resource: I18n.t(:other, scope: 'activerecord.models.spree/product')) %>,
+ <%= link_to Spree.t(:add_one), spree.new_admin_product_path %>!
+</div>
+<% end %>
+<%= paginate @collection %>
+
+</div>
+
+
+<script>
+var _changeInterval;
+$(document).ready(function () {
+  //disable click button new product
+  $('#admin_new_products').trigger('click').click(false);
+  $("#new_product_link").click(()=>{
+    $(".new_product_bl").addClass("active");
+  })
+  $(".new_product_bl .new_product_wrapper_bg").click(()=>{
+    $(".new_product_bl").removeClass("active");
+  })
+
+  $('#q_stores_id_eq option:first-child').text("Chọn cửa hàng");
+ // draw chart
+ function drawChartProducts(el,val){
+   var salesChart = Highcharts.chart(el,{
+       chart: {
+           backgroundColor: 'transparent',
+           type: "area",
+           zoomType: 'x',
+           margin: 0,
+           defaultSeriesType: 'areaspline'
+       },
+       title: {
+           text: null,
+       },
+       xAxis: {
+         visible: false
+       },
+       yAxis: {
+           labels: {
+             enabled: false
+           }
+       },
+       tooltip: {
+           enabled: false,
+       },
+       credits: {
+           enabled: false
+       },
+       legend: {
+           align: 'center',
+           verticalAlign: 'top',
+           floating: false,
+           x: 0,
+           y: 30
+       },
+       plotOptions: {
+           line: {
+               marker: {
+                   enabled: false
+               }
+           },
+           area: {
+                 fillColor: {
+                     linearGradient: {
+                         x1: 0,
+                         y1: 0,
+                         x2: 0,
+                         y2: 1
+                     },
+                     stops: [
+                         [0, Highcharts.getOptions().colors[0]],
+                         [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                     ]
+                 },
+                 marker: {
+                     radius: 2
+                 },
+                 lineWidth: 1,
+                 threshold: null
+             }
+       },
+       series: [{
+           name: null,
+           showInLegend: false,
+           data: val,
+           lineWidth: 3,
+           marker: {
+             enabled: false
+             }
+         }]
+     });
+ }
+ function drawFullChartProducts(val, title, ac){
+          var salesChart = Highcharts.chart('chart-full',{
+              chart: {
+                  backgroundColor: 'white',
+              },
+              title: {
+                  text: title,
+                  style: {
+                      color: '#1b2947',
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                  }
+              },
+              xAxis: {
+                  categories: ['1', '2', '3', '4', '5', '6',
+                      '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26','27','28', '29', '30']
+              },
+              yAxis: {
+                  title:{
+                      text: null
+                  },
+                  plotLines: [{
+                      value: 0,
+                      width: 1,
+                      color: '#808080'
+                  }]
+              },
+              tooltip: {
+                  formatter: function() {
+                      return 'Ngày thứ ' + this.x + ' bán được<b>: ' + this.y + '</b> cái. ';
+                  },
+                  backgroundColor: '#1b2947',
+                  style: {"color":"white",},
+                  borderWidth: 0,
+              },
+              credits: {
+                  enabled: false
+              },
+              legend: {
+                  align: 'center',
+                  verticalAlign: 'top',
+                  floating: false,
+                  x: 0,
+                  y: 30
+              },
+              plotOptions: {
+                  line: {
+                      marker: {
+                          enabled: false
+                      }
+                  }
+              },
+              series: [{
+                  name: "Số lượng sản phẩm theo ngày trong " + ac,
+                  data: val,
+                  lineWidth: 4,
+                  borderRadius: 0
+              }]
+          });
+  }
+ let a = $(".chart-products");
+ let d = "chart";
+ for(i=0; i < a.length; i++){
+   drawChartProducts(a[i].id,$(a[i]).data(d));
+ }
+ $("#listing_products .cl-chart .toogle-chart").click(function(){
+  $(this).text((($(this).text() == "3 tháng") ? "1 tháng" : "3 tháng")).prev().text((($(this).text() == "1 tháng") ? "3 tháng" : "1 tháng"));
+  d = ((d == "chart") ? "chart-3m" : "chart");
+  for(i=0; i < a.length; i++){
+    el = $(a[i]).prev().children().eq(0);
+    el.text(el.data(d));
+    drawChartProducts(a[i].id,$(a[i]).data(d));
+  }
+ });
+ $("#chart-head .chart-expand").click(function(){
+   let valueChart = $(this).parent().next().data(d);
+   let titleChart = $(this).parent().parent().prev().prev().children().text();
+   let subTitleChart = (d == "chart" ? "1 tháng" : "3 tháng"); 
+    drawFullChartProducts(valueChart, titleChart , subTitleChart);
+    $("#listing_products .chart-zoom").addClass("active");
+ });
+ $(".chart-zoom-content .chart-close").click(()=>{
+   $("#listing_products .chart-zoom").removeClass("active");
+ })
+ $(".chart-zoom .chart-zoom-bg").click(()=>{
+   $("#listing_products .chart-zoom").removeClass("active");
+ })
+});
+//end draw chart
+//search
+$('#q_stores_id_eq').change(function () {
+ clearInterval(_changeInterval)
+ _changeInterval = setInterval(function () {
+   $('#search-product-admin').submit();
+   clearInterval(_changeInterval)
+ }, 600);
+})
+$('#q_name_cont.abc').on('keyup', function () {
+   clearInterval(_changeInterval)
+   _changeInterval = setInterval(function () {
+     $('#search-product-admin').submit();
+     clearInterval(_changeInterval)
+   }, 600);
+ })
+//end search
+</script>
+
+
+
+
+
+
+

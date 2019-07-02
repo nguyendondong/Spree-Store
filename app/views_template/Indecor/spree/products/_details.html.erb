@@ -1,0 +1,70 @@
+<div class="col-md-12 col-lg-6">
+    <!--Product Details Content Start-->
+    <div class="product-details-content">
+        <!--Product Nav Start-->
+        <div class="product-nav">
+            <a href="#"><i class="fa fa-angle-left"></i></a>
+            <a href="#"><i class="fa fa-angle-right"></i></a>
+        </div>
+        <!--Product Nav End-->
+        <h2><%= accurate_title %></h2>
+        <div class="single-product-reviews">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <a class="review-link" href="#">(1 customer review)</a>
+        </div>
+        <div class="single-product-price">
+            <span class="price new-price"><%= @product.display_price %></span>
+            <% if @product.before_sale_price.present? %>
+                <span class="regular-price">
+                    <%= display_before_sale_price(@product) %>
+                </span>
+            <% end %>
+        </div>
+        <div class="product-description">
+            <% if product_description(@product).length > 300 %>
+            <%= product_description(@product).truncate(300).html_safe rescue Spree.t(:product_has_no_description) %>
+            <a href="#myTabContent-4">See more ...</a>
+            <% else %> 
+            <%= product_description(@product).html_safe rescue Spree.t(:product_has_no_description) %>
+            <% end %>
+        </div>
+        <div class="single-product-quantity">
+            <!-- <form class="add-quantity" action="#">
+                    <div class="product-quantity">
+                        <input value="1" type="number">
+                    </div>
+                <div class="add-to-link">
+                    <button class="product-btn" data-text="add to cart">add to cart</button>
+                </div>
+            </form> -->
+            <div id="cart-form" data-hook="cart_form" class="columns seven">
+                <%= render :partial => 'cart_form', :product => @product %>
+            </div>
+        </div>
+        <!-- <div class="wishlist-compare-btn">
+            <a href="#" class="wishlist-btn">Add to Wishlist</a>
+            <a href="#" class="add-compare">Compare</a>
+        </div> -->
+        <div class="product-meta">
+            <span class="posted-in">
+                    Categories:
+                    <a href="#"></a>
+                </span>
+        </div>
+        <div class="single-product-sharing">
+            <h3>Share this product</h3>
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <!--Product Details Content End-->
+</div>

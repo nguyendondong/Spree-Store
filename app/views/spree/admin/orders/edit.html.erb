@@ -1,0 +1,144 @@
+<% is_admin = spree_current_user.has_spree_role?('admin') %>
+<% content_for :page_actions do %>
+  <li>
+  <% if @order.is_risky? %>
+    <%= link_to Spree.t(:fake_order), "#", :class => "fa fa-warning fake-order icon_link with-tip no-text button" %>
+  <% end %>
+  <%= render partial: "spree/admin/shared/notes", locals: { target: @order, note_type: "Spree::Order" } %>
+  </li>
+  <% if @order.approver_id.present? &&  (@order.approver_id == spree_current_user.id || is_admin) %>
+    <li><%= button_link_to Spree.t(:transfer), "#transfer-form", icon: 'email', :id => "transfer-order" %></li>
+    <div style="display:none">
+      <%= render "transfer_form" %>
+    </div>
+  <% end %>
+  <% if @order.authorized_approver_id.present? &&  @order.authorized_approver_id == spree_current_user.id %>
+    <li><%= button_link_to Spree.t(:accept), accept_transfer_admin_order_path, icon: 'email' %></li>
+  <% end %>
+  <% if can?(:fire, @order) %>
+    <li><%= event_links %></li>
+  <% end %>
+  <% if can?(:resend, @order) %>
+    <li><%= button_link_to Spree.t(:resend), resend_admin_order_url(@order), method: :post, icon: 'email' %></li>
+  <% end %>
+  <% if can?(:admin, Spree::Order) %>
+    <li><%= button_link_to Spree.t(:back_to_orders_list), admin_orders_path, icon: 'arrow-left' %></li>
+  <% end %>
+
+<% end %>
+
+<%= render partial: 'spree/admin/shared/order_tabs', locals: { current: 'Order Details' } %>
+
+<div data-hook="admin_order_edit_header">
+  <%= render partial: 'spree/shared/error_messages', locals: { target: @order } %>
+  <% if @order.approver.present? && @order.approver.id != spree_current_user.id %>
+    <div class="alert alert-danger" role="alert"><%= Spree.t(:order_processing_by) + " #{@order.approver.nickname}" %></div>
+  <% end %>
+</div>
+
+<% if @order.payments.exists? && @order.considered_risky? %>
+  <%= render 'spree/admin/orders/risk_analysis', latest_payment: @order.payments.order("created_at DESC").first %>
+<% end %>
+
+<%#= render partial: 'add_product' if @order.shipment_state != 'shipped' && can?(:update, @order) %>
+
+<% if @order.line_items.empty? %>
+  <div class="no-objects-found">
+    <%= Spree.t(:your_order_is_empty_add_product)%>
+  </div>
+<% end %>
+
+<div data-hook="admin_order_edit_form">
+  <div id="order-form-wrapper">
+    <%= render partial: 'form', locals: { order: @order } %>
+  </div>
+</div>
+<% if @orders.present? && @orders.any? %>
+  <fieldset class="no-border-bottom" id="order-history" >
+    <legend><%= Spree.t(:order_history) %></legend>
+
+  </fieldset>
+  <table class="index responsive" id="listing_orders" data-hook>
+    <colgroup>
+       <col style="width: 8%;">
+       <col style="width: 8%;">
+       <col style="width: 8%;">
+       <col style="width: 8%;">
+       <% if Spree::Order.checkout_step_names.include?(:delivery) %>
+         <col style="width: 10%;">
+       <% end %>
+       <col style="width: 8%;">
+       <col style="width: 12%;">
+       <col style="width: 8%;">
+       <col style="width: 8%;">
+       <col style="width: 20%;">
+    </colgroup>
+    <thead>
+      <tr data-hook="admin_orders_index_headers">
+
+        <th><%= I18n.t(:created_at, :scope => 'activerecord.attributes.spree/order') %></th>
+
+        <th><%= I18n.t(:number, :scope => 'activerecord.attributes.spree/order') %></th>
+        <th><%= I18n.t(:state, :scope => 'activerecord.attributes.spree/order') %></th>
+        <th><%= I18n.t(:payment_state, :scope => 'activerecord.attributes.spree/order') %></th>
+
+        <th><%= I18n.t(:shipment_state, :scope => 'activerecord.attributes.spree/order') %></th>
+
+        <th><%= I18n.t(:full_name, :scope =>'spree') %></th>
+        <th><%= I18n.t(:phone, :scope =>'spree') %></th>
+        <th><%= I18n.t(:total, :scope => 'activerecord.attributes.spree/order') %></th>
+        <th><%= Spree.t(:note) %></th>
+        <th data-hook="admin_orders_index_header_actions" class="actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @orders.each do |order| %>
+      <tr data-hook="admin_orders_index_rows" class="state-<%= order.state.downcase %> <%= cycle('odd', 'even') %>">
+        <td class="align-center"><%= l (@show_only_completed ? (@show_only_paid ? order.updated_at : order.completed_at) : order.created_at).to_date %></td>
+        <td class="align-center"><%= link_to order.number, edit_admin_order_path(order), target: "_blank" %></td>
+        <td class="align-center"><span class="state <%= order.state.downcase %>"><%= Spree.t("order_state.#{order.state.downcase}") %></span></td>
+        <td class="align-center"><span class="state <%= order.payment_state %>"><%= link_to Spree.t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state %></span></td>
+
+        <td class="align-center"><span class="state <%= order.shipment_state_new %>">
+          <%= Spree.t("shipment_states.#{order.shipment_state_new}") %>
+
+        </span></td>
+
+        <td><%= link_to order.billing_address.firstname, admin_order_customer_url(order) if order.billing_address.present? %></td>
+        <td><%= order.billing_address.phone if order.billing_address.present? %></td>
+        <td class="align-center"><%= order.display_total.to_html %></td>
+        <td id="order-<%= order.id %>">
+          <% order.notes.each do |note| %>
+            <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+          <% end %>
+        </td>
+        <td class='actions align-center' data-hook="admin_orders_index_row_actions">
+          <%= link_to "", "##{order.number}-notes", :title => Spree.t(:note), :no_text => true, :class => "fa fa-edit icon_link with-tip no-text notes" %>
+          <div style="display:none">
+            <div id="<%= order.number%>-notes" style="width: 600px; height: 300px;">
+              <%= form_for Spree::Note.new(), :url=>admin_notes_path(), :remote => true, :class => "new-note-form" do |f| %>
+                <%= f.text_field :content, :style => "width: 400px;" %>
+                <%= f.hidden_field :notable_id, :value => order.id %>
+                <%= f.hidden_field :notable_type, :value => "Spree::Order" %>
+                <%= f.submit Spree.t(:note), :class => "button create-note" %>
+
+              <br/>
+              <div class="note-list">
+              <% order.notes.each do |note| %>
+                <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+              <% end %>
+              </end>
+              <% end %>
+            </div>
+          </div>
+          </div>
+          <%= check_box_tag "print_orders[]", order.id, false, :class => "print_orders" %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<% content_for :head do %>
+  <%= javascript_tag 'var expand_variants = true;' %>
+<% end %>

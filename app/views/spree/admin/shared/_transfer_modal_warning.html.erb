@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <!-- Xuan Tai Modal warning chose product -->
+  <div class="modal fade in modal-warning" id="modalChooseProduct" role="dialog" aria-hidden="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p><%= Spree.t(:not_choose_yet)%></p>
+          <div >
+            <button type="button" class="btn btn-default" data-dismiss="modal"><%= Spree.t(:got_it) %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Xuan Tai Modal warning chose product -->
+
+  <!--End Xuan Tai Modal warning quantity invalid -->
+  <div class="modal fade in modal-warning" id="modalQuantity" role="dialog" aria-hidden="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p><%= Spree.t(:quantity_false)%></p>
+          <div >
+            <button type="button" class="btn btn-default " data-dismiss="modal"><%= Spree.t(:got_it) %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Xuan Tai Modal warning quantity invalid -->
+</div>

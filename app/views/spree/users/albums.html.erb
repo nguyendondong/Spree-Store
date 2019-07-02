@@ -1,0 +1,34 @@
+<%= render "spree/albums/list" %>
+
+<% if @album_url_share.present? %>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script>
+    FB.init({
+      appId:'<%= @appFBId %>',
+      cookie:true,
+      status:true,
+      xfbml:true
+    });
+    function shareAlbum(){
+      FB.ui(
+        {
+          method : 'share',
+          href   : "<%= @album_url_share %>"
+        },
+        function (response) {
+          // If response is null the user canceled the dialog
+          if (response != null) {
+  //            logResponse(response);
+          }
+        }
+      );
+    }
+  </script>
+
+  <div id="ask-to-share-album-modal">
+    <div>
+      Bạn đã đăng album ảnh thành công, chia sẻ để mọi người cùng like để trở thành người trúng giải
+    </div>
+    <a class="accept-share">Share trên facebook</a>
+  </div>
+<% end %>

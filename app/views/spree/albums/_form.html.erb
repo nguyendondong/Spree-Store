@@ -1,0 +1,52 @@
+<%= form_for @album, :html => { :class => "album-form", :multipart => true } do |f| %>
+  <div class="wrap">
+    <div class="control-group">
+      <%= f.label Spree.t("contest.album_name") %>
+      <div class="controls">
+        <%= f.text_field :name %><br />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label Spree.t("contest.contest_product") %>
+      <div class="controls">
+        <%= f.text_field :product_url, :placeholder => Spree.t("contest.product_url") %><br />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label Spree.t("contest.photos") %>
+      <div class="controls">
+        <%= f.file_field :photos, :multiple => true %><br />
+      </div>
+    </div>
+    <br class="clear"/>
+    <%= f.submit %>
+  </div>
+<% end %>
+<script>
+  $(document).ready(function() {
+    $('form').submit(function() {
+      var fdata = $(this).serialize();
+      var furl = $(this).attr('action');
+      $.ajax({
+        method: "POST",
+        url: furl,
+        data: fdata,
+        success: function(data) {
+          console.log(data);
+          fbShare('<%= cookies[:album_url_share] %>',data.name,'Nhanh tay bình chọn cho album mình nào',500,500);
+          window.location.assign('<%= cookies[:album_url_share] %>');
+        },
+        dataType: "json"
+      });
+      return false;
+    });
+  });
+
+    function fbShare(url, title, descr, winWidth, winHeight) {
+        var winTop = (screen.height / 2) - (winHeight / 2);
+        var winLeft = (screen.width / 2) - (winWidth / 2);
+        window.open('http://www.facebook.com/sharer.php?s=100&p[title]=' + title + '&p[summary]=' + descr + '&p[url]=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+    }
+</script>

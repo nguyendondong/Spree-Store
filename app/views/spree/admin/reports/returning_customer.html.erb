@@ -1,0 +1,98 @@
+<% content_for :page_title do %>
+    <%= Spree.t(:returning_customer) %>
+<% end %>
+<% content_for :page_actions do %>
+    <div id="top-link">
+      <div class="menu-link">
+        <a href="/admin/reports">Tổng Quan</a>
+        <% @reports.each do |key, value| %>
+            <%= link_to value[:name], send("#{key}_admin_reports_url".to_sym)%>
+        <% end %>
+      </div>
+      <li><%= link_to_with_icon 'arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+    </div>
+ <% end %>
+<div class="returning-customer-content">
+    <h3>Returning Customer Vs New Customer</h3>
+    <div class="control-rc">
+            <!-- select 1 -->
+            <select id="rc-date-range">
+                <option value="tuyChinh">Tùy chỉnh</option>
+                <option value="homNay" selected>Hôm nay</option>
+                <option value="homQua">Hôm qua</option>
+                <option value="tuanQua">7 ngày qua</option>
+                <option value="thangQua">30 ngày qua</option>
+                <option value="quyQua">90 ngày qua</option>
+                <option value="namNay">Năm nay</option>
+            </select>
+            <!-- div pick date -->
+            <div class="date-range-filter field align-center">
+            <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+            <input class="datepicker datepicker-from">
+            <span class="range-divider">
+                <i class="fa fa-arrow-right"></i>
+            </span>
+            <input class="datepicker datepicker-to">            
+            <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+            </div>
+            <!-- button -->
+            <button id="fill-table" type="button">XEM</button>
+    </div>
+    <div class="wrapper-chart">
+        <div id="chart-re-customer" ></div>
+        <div class="content-chart">
+            <table class="admin-report" id="table-sales-ct" data-hook="sales_total">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Số Lượng Đơn Hàng</th>
+                        <th>Giá Trị Đơn Hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Returning</th>
+                        <th>10</th>
+                        <th>1.500.000 đ</th>
+                    </tr>
+                    <tr>
+                        <th>New</th>
+                        <th>30</th>
+                        <th>3.500.000 đ</th>
+                    </tr>
+                    <tr>
+                        <th>Tổng</th>
+                        <th>40</th>
+                        <th>5.000.000 đ</th>
+                    </tr>
+                </tbody>
+                
+            </table>
+        </div>
+        
+    </div>
+    <table id="returning-cus-details" data-toggle="table"> 
+            <thead>
+                <tr>
+                    <th>Tên Khách Hàng</th>
+                    <th>Đặt Hàng Lần Đầu</th>
+                    <th>Đặt Hàng Lần Cuối</th>
+                    <th>Tổng Số Đơn Hàng</th>
+                    <th>GTTB Đơn Hàng</th>
+                    <th>Tổng GT Đơn Hàng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lead-name">Trần Văn Sỷ</td>
+                    <td >12/06/2019</td> 
+                    <td >21/06/2020</td>
+                    <td>20</td>
+                    <td>400.000 đ</td>
+                    <td>1.550.000 ₫</td>
+                </tr>
+            </tbody>
+          </table>
+</div>
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<script src="/assets/spree/backend/returning_customer.js"></script>

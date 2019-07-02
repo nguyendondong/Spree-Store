@@ -1,0 +1,62 @@
+<div class="product-area pt-20 pb-35">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!--Section Title 2 Start-->
+                <div class="section-title2">
+                    <h2>Our Products</h2>
+                    <!--Product Tab Menu Start
+                    <div class="product-tab-menu">
+                        <ul class="nav">
+                            <li><a class="active" data-toggle="tab" href="#bedroom">bedroom</a></li>
+                            <li><a data-toggle="tab" href="#diningroom">dining room</a></li>
+                            <li><a data-toggle="tab" href="#livingroom">Livingroom</a></li>
+                            <li><a data-toggle="tab" href="#office">office</a></li>
+                        </ul>
+                    </div>
+                    Product Tab Menu End-->
+                </div>
+                <!--Section Title 2 End-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="bedroom">
+                        <div class="row">
+                            <div class="product-slider owl-carousel">
+                                <% if products.any? %>
+                                <% products.each do |product| %>
+                                <% url = product_path(product) %>
+                                <div class="col-md-12">
+                                    <!--Single Product Area Start-->
+                                    <div class="single-product-area mb-40">
+                                        <div class="product-img img-full">
+                                            <%= link_to product_image(product, :itemprop => "image", onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'"), url, :itemprop => 'url' %>
+                                            <span class="sticker">New</span>
+                                            <div class="product-action">
+                                                <ul>
+                                                    <li><%= link_to '<span class="icon_bag_alt"></span>'.html_safe, product_path(product) %></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h4><%= link_to truncate(product.name, :length => 36), url, :class => 'info', :itemprop => "name", :title => product.name %></h4>
+                                            <div class="product-price">
+                                                <span class="now-price"><%= display_price(product) %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Single Product Area End-->
+                                </div>
+                                <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+             
+    </div>
+</div>

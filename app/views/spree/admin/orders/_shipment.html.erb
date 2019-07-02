@@ -1,0 +1,150 @@
+<div id="<%= "shipment_#{shipment.id}" %>" data-hook="admin_shipment_form" class="col-md-6">
+  <%= render :partial => "spree/admin/variants/split", :formats => :js %>
+  <fieldset class="no-border-bottom">
+    <legend align="center" class="stock-location" data-hook="stock-location">
+      <span class="shipment-number"><%= shipment.number %></span>
+      -
+      <span class="shipment-state"><%= Spree.t("shipment_states.#{shipment.state}") %></span>
+      
+      <% if shipment.ready? and can? :update, shipment %>
+        -
+        <%= link_to Spree.t(:ship), '#', :class => 'ship button fa fa-arrow-right', :data => {'shipment-number' => shipment.number} %>
+      <% end %>
+      <% if shipment.shipped? and can? :update, shipment %>
+        -
+        <%= link_to Spree.t(:finish), '#', :class => 'finish button fa fa-arrow-right', :data => {'shipment-number' => shipment.number} %>
+      <% end %>
+    </legend>
+  </fieldset>
+
+  <table class="stock-contents index" data-hook="stock-contents">
+    <colgroup>
+      <col style="width: 10%;" />
+      <col style="width: 30%;" />
+      <col style="width: 15%;" />
+      <col style="width: 15%;" />
+      <col style="width: 15%;" />
+      <col style="width: 15%;" />
+    </colgroup>
+
+    <thead>
+      <th colspan="2"><%= Spree.t(:shipment) %></th>
+      <th><%= Spree.t(:price) %></th>
+      <th><%= Spree.t(:quantity) %></th>
+      <th><%= Spree.t(:total) %></th>
+      <th class="orders-actions actions" data-hook="admin_order_form_line_items_header_actions"></th>
+    </thead>
+
+    <tbody data-shipment-number="<%= shipment.number %>" data-order-number="<%= order.number %>">
+      <%#= render 'spree/admin/orders/shipment_manifest', shipment: shipment %>
+
+      <% unless shipment.shipped? %>
+        <tr class="edit-method none-display total">
+          <td colspan="5">
+            <div class="field alpha five columns">
+              <%= label_tag 'selected_shipping_rate_id', Spree.t(:shipping_method) %>
+              <%= select_tag :selected_shipping_rate_id,
+                    options_for_select(shipment.shipping_rates.map {|sr| ["#{sr.name} #{sr.display_price}", sr.id] }, shipment.selected_shipping_rate_id),
+                    {:class => 'select2 fullwidth', :data => {'shipment-number' => shipment.number } } %>
+            </div>
+          </td>
+          <td class="actions">
+            <% if can? :update, shipment %>
+              <%= link_to '', '#', :class => 'save-method fa fa-ok no-text with-tip',
+                :data => {'shipment-number' => shipment.number, :action => 'save'}, title: Spree.t('actions.save') %>
+              <%= link_to '', '#', :class => 'cancel-method fa fa-cancel no-text with-tip',
+                :data => {:action => 'cancel'}, :title => Spree.t('actions.cancel') %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+
+        <tr class="show-method total">
+          <% if rate = shipment.selected_shipping_rate %>
+            <td colspan="4">
+              <strong><%= rate.name %></strong>
+            </td>
+            <td class="total" align="center">
+              <span><%= shipment.display_cost %></span>
+            </td>
+          <% else %>
+            <td colspan='5'><%= Spree.t(:no_shipping_method_selected) %></td>
+          <% end %>
+
+          <td class="actions">
+            <% if( (can? :update, shipment) and !shipment.shipped?) %>
+              <%= link_to '', '#', :class => 'edit-method fa fa-edit no-text with-tip', :data => {:action => 'edit'}, :title => Spree.t('edit') %>
+            <% end %>
+          </td>
+        </tr>
+
+
+      <tr class="edit-tracking none-display total">
+        <td colspan="5">
+          <label><%= Spree.t(:tracking_number) %>:</label>
+          <%= text_field_tag :tracking, shipment.tracking %>
+        </td>
+        <td class="actions">
+          <% if can? :update, shipment %>
+            <%= link_to '', '#', :class => 'save-tracking fa fa-ok no-text with-tip', :data => {'shipment-number' => shipment.number, :action => 'save'}, :title => Spree.t('actions.save') %>
+            <%= link_to '', '#', :class => 'cancel-tracking fa fa-cancel no-text with-tip', :data => {:action => 'cancel'}, :title => Spree.t('actions.cancel') %>
+          <% end %>
+        </td>
+      </tr>
+      
+
+      <% if order.special_instructions.present? %>
+        <tr class='special_instructions'>
+          <td colspan="5">
+            <strong><%= Spree.t(:special_instructions) %>:&nbsp;</strong><%= order.special_instructions %>
+          </td>
+        </tr>
+      <% end %>
+
+      <tr class="show-tracking total">
+        <td colspan="5" class="tracking-value">
+          <% if shipment.tracking.present? %>
+            <strong><%= Spree.t(:tracking) %>:</strong> <%= link_to shipment.tracking, shipment.tracking_url, :target => "_blank" %><br/>
+            <strong><%= Spree.t(:status) %>:</strong> <%= shipment.status %>
+            <% if shipment.post_office.present? %>
+              <br/>
+              <strong><%= Spree.t(:post_office) %>:</strong> <%= shipment.post_office.name + " | " + shipment.post_office.address + " | " + shipment.post_office.province %>
+            <% end %>
+          <% else %>
+            <%= Spree.t(:no_tracking_present) %>
+          <% end %>
+        </td>
+        <td class="actions">
+          <% if can? :update, shipment %>
+            <%= link_to '', '#', :class => 'edit-tracking fa fa-edit no-text with-tip', :data => {:action => 'edit'}, :title => Spree.t('edit') %>
+          <% end %>
+        </td>
+      </tr>
+
+      <tr class="edit-real-shipment-cost none-display total">
+        <td colspan="5">
+          <label><%= Spree.t(:real_shipment_cost) %>:</label>
+          <%= text_field_tag :real_cost, shipment.real_cost %>
+        </td>
+        <td class="actions">
+          <% if can? :update, shipment %>
+            <%= link_to '', '#', :class => 'save-real-shipment-cost fa fa-ok no-text with-tip', :data => {'shipment-number' => shipment.number, :action => 'save'}, :title => Spree.t('actions.save') %>
+            <%= link_to '', '#', :class => 'cancel-real-shipment-cost fa fa-cancel no-text with-tip', :data => {:action => 'cancel'}, :title => Spree.t('actions.cancel') %>
+          <% end %>
+        </td>
+      </tr>
+      <tr class="show-real-shipment-cost total">
+        <td colspan="5" class="tracking-value">
+          <strong><%= Spree.t(:real_shipment_cost) %>: </strong>
+          <strong><%= shipment.real_cost %><br/>
+          
+        </td>
+        <td class="actions">
+          <% if can? :update, shipment %>
+            <%= link_to '', '#', :class => 'edit-real-shipment-cost fa fa-edit no-text with-tip', :data => {:action => 'edit'}, :title => Spree.t('edit') %>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

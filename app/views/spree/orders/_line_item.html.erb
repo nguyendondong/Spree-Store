@@ -1,0 +1,37 @@
+
+  <% variant = line_item.variant -%>
+  <%= order_form.fields_for :line_items, line_item do |item_form| -%>
+    <div class="<%= cycle('', 'alt') %> line-item shopping-cart-item">
+      <div class="cart-item-image " data-hook="cart_item_image">
+        <% if variant.images.length == 0 %>
+          <%= link_to small_image(variant.product), variant.product %>
+        <% else %>
+          <%= link_to image_tag(variant.images.first.attachment.url(:small)), variant.product %>
+        <% end %>
+      </div>
+      <div class="cart-item-description " data-hook="cart_item_description">
+        <h4><%= link_to line_item.name, product_path(variant.product) %></h4>
+        <p><%= variant.options_text %></p>
+        <% if line_item.insufficient_stock? %>
+          <span class="out-of-stock">
+            <%= Spree.t(:out_of_stock) %>&nbsp;&nbsp;<br/>
+          </span>
+        <% end %>
+        
+      </div>
+      <div class="cart-item-price " data-hook="cart_item_price" style="line-height: 3rem;">
+        <p class="price"><%= line_item.single_money.to_html %></p>
+        <%if line_item.variant.product.before_sale_price.present? %>
+        <p class="price2 text-muted"><%=number_with_delimiter( line_item.variant.product.before_sale_price.round(0), :delimiter => '.') %> &nbsp;₫</p>
+        <%end%>
+      </div>
+      <div class="cart-item-quantity " data-hook="cart_item_quantity">
+        <span class="button-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+        <%= item_form.number_field :quantity, :min => 0, :class => "line_item_quantity", :size => 5 %>
+        <span class="button-plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+      </div>
+      <div class="cart-item-delete " data-hook="cart_item_delete">
+        <%= link_to image_tag('icons/delete.png'), '#', :class => 'delete', :id => "delete_#{dom_id(line_item)}" %>
+      </div>
+    </div>
+  <% end -%>

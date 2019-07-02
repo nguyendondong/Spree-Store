@@ -1,0 +1,68 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:top_cities) %>
+<% end %>
+
+  <% content_for :page_actions do %>
+    <div id="top-link">
+      <div class="menu-link">
+        <a href="/admin/reports">Tổng Quan</a>
+        <% @reports.each do |key, value| %>
+            <%= link_to value[:name], send("#{key}_admin_reports_url".to_sym)%>
+        <% end %>
+      </div>
+      <li><%= link_to_with_icon 'arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+    </div>
+ <% end %>
+
+<div id="sales-ct-content">
+    <div class="table-control control-ct">
+      <!-- select 1 -->
+      <select id="sct-date-range">
+          <option value="tuyChinh">Tùy chỉnh</option>
+          <option value="homNay" selected>Hôm nay</option>
+          <option value="homQua">Hôm qua</option>
+          <option value="tuanQua">7 ngày qua</option>
+          <option value="thangQua">30 ngày qua</option>
+          <option value="quyQua">90 ngày qua</option>
+          <option value="namNay">Năm nay</option>
+      </select>
+      <!-- div pick date -->
+      <div class="date-range-filter field align-center">
+        <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+        <input class="datepicker datepicker-from">
+        <span class="range-divider">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+        <input class="datepicker datepicker-to">            
+        <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+      </div>
+      <!-- button -->
+      <button id="fill-table" type="button">XEM</button>
+    </div>
+
+    <table class="admin-report" id="table-sales-ct" data-hook="sales_total" data-toggle="table">
+      <thead>
+        <tr>
+          <th><%= Spree.t(:city) %></th>
+          <th><%= Spree.t(:order) %></th>
+          <th><%= Spree.t(:product) %></th>
+          <th><%= Spree.t(:total) %></th>
+          <th><%= Spree.t(:total_success) %></th>
+          <th><%= Spree.t(:total_success_percent) %></th>
+        </tr>
+      </thead>
+      <% @cities.each do |city| %>
+        <tr>
+          <td><%= link_to city.city, admin_orders_path("q[ship_address_state_id_eq]" => city.state_id), :target => "_blank" %></td>
+          <td><%= city.order_count %></td>
+          <td><%= city.item_count %></td>
+          <td><%= city.total_value %></td>
+          <td><%= city.total_success_value %></td>
+          <td><%= ((city.total_success_value / city.total_value) * 100).round(2) %></td>
+        </tr>
+      <% end %>
+
+    </table>
+</div>
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<script src="/assets/spree/backend/topcities.js"></script>

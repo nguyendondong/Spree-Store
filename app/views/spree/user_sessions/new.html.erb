@@ -1,0 +1,62 @@
+<% if flash[:alert] %>
+<div class="flash errors"><%= flash[:alert] %></div>
+<% end %>
+<% @body_id = 'login' %>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div id="existing-customer">
+      <div class="clearfix">
+        <div class="col-sm-12 col-md-6 col-form">
+          <h3>Đăng nhập</h3>
+          <div data-hook="login">
+            <%= form_for Spree::User.new, :as => :spree_user, :url => spree.admin_create_new_session_path do |f| %>
+            <div id="password-credentials">
+              <div class="form-group">
+                <%= f.label :email, Spree.t(:email) %>
+                <%= f.email_field :email, :class => 'form-control', :tabindex => 1 %>
+              </div>
+              <div class="form-group">
+                <%= f.label :password, Spree.t(:password) %>
+                <%= f.password_field :password, :class => 'form-control', :tabindex => 1 %>
+              </div>
+              <div class="form-group">
+                <%= f.check_box :remember_me, :tabindex => 3 %>
+                <%= f.label :remember_me, Spree.t(:remember_me) %>
+              </div>
+              <div class="form-group">
+                <%= f.submit Spree.t(:login), :class => 'btn-oni', :tabindex => 4 %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-social">
+          <div class="connect">Nếu bạn chưa có tài khoản thì click vào nút phía dưới để đăng ký thành viên</div>
+          <%= link_to spree_signup_path, class: "btn-oni btn-register" do %>
+            Đăng ký tài khoản
+          <% end %>
+          <!-- <p class="text-center">Hoặc</p>
+          <a href="" class="btn-oni btn-facebook">
+            Đăng nhập với facebook
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a href="" class="btn-oni btn-twitter">
+            Đăng nhập với twitter
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href="" class="btn-oni btn-google-plus">
+            Đăng nhập với google
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+          </a> -->
+        </div>
+        <div data-hook="login_extras"></div>
+        <div class="col-md-12 col-bottom">
+          Không thể đăng nhập tài khoản? <%= link_to Spree.t(:forgot_password), spree.recover_password_path %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

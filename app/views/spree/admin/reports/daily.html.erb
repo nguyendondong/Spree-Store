@@ -1,0 +1,498 @@
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:date_range) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for @search, :url => spree.daily_admin_reports_path  do |s| %>
+    <div class="two columns">
+      <%= label_tag nil, Spree.t(:ref_id), :class => 'inline' %>
+      <%= s.text_field :ref_id_eq, :value => params[:q][:ref_id_eq]%>
+    </div>
+    <div class="date-range-filter field align-center">
+
+      <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+      <%= s.text_field :completed_at_gt, :class => 'datepicker datepicker-from', :value => datepicker_field_value(params[:q][:completed_at_gt]) %>
+
+      <span class="range-divider">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+
+      <%= s.text_field :completed_at_lt, :class => 'datepicker datepicker-to', :value => datepicker_field_value(params[:q][:completed_at_lt]) %>
+      <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+    </div>
+
+    <div class="actions filter-actions">
+      <%= button Spree.t(:search), 'search'  %>
+    </div>
+  <% end %>
+
+<% end %>
+<div id="daily-report-mbars"></div>
+<div id="daily-report-revenue"></div>
+
+<script type="text/javascript">
+/***********************************************************
+ ********************** So luong don hang ******************
+ ***********************************************************/
+  var w = 1200;                        //width
+	var h = 500;                        //height
+	var padding = {top: 40, right: 40, bottom: 40, left:40};
+  var col_width = 25;
+  var x_range = 0;
+	var dataset;
+	//Set up stack method
+	var stack = d3.layout.stack();
+
+//	d3.json("/mperday.json",function(json){
+//		dataset = json;
+    dataset = <%= @raw_data %>;
+
+		//Data, stacked
+		stack(dataset);
+
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var firstDate = new Date(dataset[0][0].time);
+    firstDate = new Date(firstDate - oneDay);
+    var lastDate = new Date(dataset[0][dataset[0].length-1].time);
+
+		var color_hash = {
+			  0 : ["Đặt hàng","#1f77b4"],
+				1 : ["Sẵn sàng","#2ca02c"],
+				2 : ["Đang ship","#ff7f0e"],
+        3 : ["Ship thành công","#EECF53"],
+        4 : ["Hủy","#FF2FE6"],
+        5 : ["Trả về","#33E0CC"]
+		};
+
+		//Set up scales
+		var xScale = d3.time.scale()
+			.domain([firstDate, d3.time.day.offset(lastDate, 1)])
+			.rangeRound([0, w-padding.left-padding.right]);
+
+		var yScale = d3.scale.linear()
+			.domain([0,
+				d3.max(dataset, function(d) {
+					return d3.max(d, function(d) {
+						return d.y0 + d.y;
+					});
+				})
+			])
+			.range([h-padding.bottom-padding.top,0]);
+
+
+		var xAxis = d3.svg.axis()
+					   .scale(xScale)
+					   .orient("bottom")
+					   .ticks(d3.time.days, 1)
+             .tickFormat(d3.time.format("%b %d"));
+
+		var yAxis = d3.svg.axis()
+					   .scale(yScale)
+					   .orient("left")
+					   .ticks(10);
+
+		//Easy colors accessible via a 10-step ordinal scale
+		var colors = d3.scale.category10();
+
+		//Create SVG element
+		var svg = d3.select("#daily-report-mbars")
+					.append("svg")
+					.attr("width", w)
+					.attr("height", h);
+
+		// Add a group for each row of data
+		var groups = svg.selectAll("g")
+			.data(dataset)
+			.enter()
+			.append("g")
+			.attr("class","rgroups")
+			.attr("transform","translate("+ padding.left + "," + (h - padding.bottom) +")")
+			.style("fill", function(d, i) {
+				return color_hash[dataset.indexOf(d)][1];
+			});
+
+    var tooltip = d3.select("#daily-report-mbars").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    var parts = groups.selectAll("g")
+      .data(function(d) { return d; })
+      .enter()
+      .append("g")
+      .attr("class", "parts hover");
+
+    groups.selectAll(".parts.hover").on("mouseover", function(d) {
+        tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+        tooltip.html(d.y + " đơn hàng")
+          .style("left", (d3.event.pageX - $("#daily-report-mbars").offset().left) + "px")
+          .style("top", (d3.event.pageY - 150 - $("#table-filter").height()) + "px")
+          .style({"background":"#000", "color":"#fff", "padding":"5px 10px"});
+      })
+      .on("mouseout", function(d) {
+        tooltip.transition()
+          .duration(500)
+          .style("opacity", 0);
+      });
+
+		// Add a rect for each data value
+		var rects = parts.selectAll("rect")
+			.data(function(d) { return [d]; })
+			.enter()
+			.append("rect")
+			.attr("width", 2)
+			.style("fill-opacity",1e-6);
+
+    var texts = parts.selectAll("text")
+      .data(function(d) { return [d]; })
+      .enter()
+      .append("text")
+      .style("fill", "#000000");
+
+    svg.append("g")
+      .attr("class","x axis")
+      .attr("transform","translate(40," + (h - padding.bottom) + ")")
+      .call(xAxis);
+
+    svg.append("g")
+      .attr("class","y axis")
+      .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+      .call(yAxis);
+
+    var x_first_time_scale = d3.transform(d3.select('.x.axis .tick').attr("transform")).translate[0];
+    var x_second_time_scale = d3.transform($(d3.selectAll('.x.axis .tick')[0][1]).attr("transform")).translate[0];
+    x_range = x_second_time_scale - x_first_time_scale;
+
+    rects.transition()
+      .duration(function(d,i){
+        return 500 * i;
+      })
+      .ease("linear")
+      .attr("x", function(d) {
+        return (d.offset*x_range + x_first_time_scale - col_width/2);
+      })
+      .attr("y", function(d) {
+        return -(- yScale(d.y0) - yScale(d.y) + (h - padding.top - padding.bottom)*2);
+      })
+      .attr("height", function(d) {
+        return -yScale(d.y) + (h - padding.top - padding.bottom);
+      })
+      .attr("width", col_width)
+      .style("fill-opacity",1);
+
+    texts.transition()
+      .duration(function(d,i){
+        return 500 * i;
+      })
+      .ease("linear")
+      .attr("x", function(d) {
+        return (d.offset*x_range + x_first_time_scale);
+      })
+      .attr("y", function(d) {
+        var y_rect = -(- yScale(d.y0) - yScale(d.y) + (h - padding.top - padding.bottom)*2);
+        var h_rect = -yScale(d.y) + (h - padding.top - padding.bottom);
+        return y_rect + h_rect/2 + 5;
+      })
+      .style({"font-size":"13px","fill-opacity":1, "text-anchor": "middle"})
+      .attr("class", function(d) {
+        var height = -yScale(d.y) + (h - padding.top - padding.bottom);
+        return height > 20 ? "" : "hide";
+      })
+      .text(function(d){return d.y != 0 ? d.value : "";});
+
+
+    // adding legend
+    var legend = svg.append("g")
+            .attr("class","legend")
+            .attr("x", w - padding.right - 65)
+            .attr("y", 25)
+            .attr("height", 100)
+            .attr("width",100);
+
+    legend.selectAll("g").data(dataset)
+        .enter()
+        .append('g')
+        .each(function(d,i){
+          var g = d3.select(this);
+          g.append("rect")
+            .attr("x", w - padding.right - 65)
+            .attr("y", i*25 + 10)
+            .attr("width", 10)
+            .attr("height",10)
+            .style("fill",color_hash[String(i)][1]);
+
+          g.append("text")
+           .attr("x", w - padding.right - 50)
+           .attr("y", i*25 + 20)
+           .attr("height",30)
+           .attr("width",100)
+           .style("fill",color_hash[String(i)][1])
+           .text(color_hash[String(i)][0]);
+        });
+
+    svg.append("text")
+    .attr("transform","rotate(-90)")
+    .attr("y", 0 - 5)
+    .attr("x", 0-(h/2))
+    .attr("dy","1em")
+    .text("Số lượng đơn hàng");
+
+		svg.append("text")
+		   .attr("class","xtext")
+		   .attr("x",w/2 - padding.left)
+		   .attr("y",h - 5)
+		   .attr("text-anchor","middle")
+		   .text("Ngày");
+
+		svg.append("text")
+        .attr("class","title")
+        .attr("x", (w / 2))
+        .attr("y", 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("Số lượng đơn hàng / ngày");
+
+
+//		});
+
+
+/***********************************************************
+ ************************** Doanh thu **********************
+ ***********************************************************/
+  var w = 1200;                        //width
+  var h = 500;                        //height
+  var padding = {top: 40, right: 40, bottom: 40, left:40};
+  var col_width = 25;
+  var x_range = 0;
+  var dataset;
+  //Set up stack method
+  var stack = d3.layout.stack();
+
+//  d3.json("/mperday.json",function(json){
+//    dataset = json;
+    dataset = <%= @raw_data2 %>;
+
+    //Data, stacked
+    stack(dataset);
+
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var firstDate = new Date(dataset[0][0].time);
+    firstDate = new Date(firstDate - oneDay);
+    var lastDate = new Date(dataset[0][dataset[0].length-1].time);
+
+    var color_hash = {
+        0 : ["Đặt hàng","#1f77b4"],
+        1 : ["Sẵn sàng","#2ca02c"],
+        2 : ["Đang ship","#ff7f0e"],
+        3 : ["Ship thành công","#EECF53"],
+        4 : ["Hủy","#FF2FE6"],
+        5 : ["Trả về","#33E0CC"]
+    };
+
+    //Set up scales
+    var yCol = 0;
+    var xScale = d3.time.scale()
+      .domain([firstDate, d3.time.day.offset(lastDate, 1)])
+      .rangeRound([0, w-padding.left-padding.right]);
+    var yScale = d3.scale.linear()
+      .domain([0,
+        d3.max(dataset, function(d) {
+
+          return d3.max(d, function(d) {
+            yCol = yCol + parseInt(d.y);
+            return d.y0 + parseInt(d.y);
+          });
+        })
+      ])
+      .range([h-padding.bottom-padding.top,0]);
+
+
+    var xAxis = d3.svg.axis()
+             .scale(xScale)
+             .orient("bottom")
+             .ticks(d3.time.days, 1)
+             .tickFormat(d3.time.format("%b %d"));
+
+    var yAxis = d3.svg.axis()
+             .scale(yScale)
+             .orient("left")
+             .ticks(3)
+             .tickFormat(d3.format("s"));
+
+    //Easy colors accessible via a 10-step ordinal scale
+    var colors = d3.scale.category10();
+
+    //Create SVG element
+    var svg = d3.select("#daily-report-revenue")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+          .style("padding-left", "20px");
+
+    // Add a group for each row of data
+    var groups = svg.selectAll("g")
+      .data(dataset)
+      .enter()
+      .append("g")
+      .attr("class","rgroups")
+      .attr("transform","translate("+ padding.left + "," + (h - padding.bottom) +")")
+      .style("fill", function(d, i) {
+        return color_hash[dataset.indexOf(d)][1];
+      });
+
+    var tooltip = d3.select("#daily-report-revenue").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    var parts = groups.selectAll("g")
+      .data(function(d) { return d; })
+      .enter()
+      .append("g")
+      .attr("class", "parts hover");
+
+    groups.selectAll(".parts.hover").on("mouseover", function(d) {
+        tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+        tooltip.html(toMoney(d.y, "đ"))
+          .style("left", (d3.event.pageX - $("#daily-report-revenue").offset().left) + "px")
+          .style("top", (d3.event.pageY - 150 - $("#table-filter").height()) + "px")
+          .style({"background":"#000", "color":"#fff", "padding":"5px 10px"});
+      })
+      .on("mouseout", function(d) {
+        tooltip.transition()
+          .duration(500)
+          .style("opacity", 0);
+      });
+
+    // Add a rect for each data value
+    var rects = parts.selectAll("rect")
+      .data(function(d) { return [d]; })
+      .enter()
+      .append("rect")
+      .attr("width", 2)
+      .style("fill-opacity",1e-6);
+
+    var texts = parts.selectAll("text")
+      .data(function(d) { return [d]; })
+      .enter()
+      .append("text")
+      .style("fill", "#000000");
+
+    svg.append("g")
+      .attr("class","x axis")
+      .attr("transform","translate(40," + (h - padding.bottom) + ")")
+      .call(xAxis);
+
+    svg.append("g")
+      .attr("class","y axis")
+      .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+      .call(yAxis);
+
+    var x_first_time_scale = d3.transform(d3.select('.x.axis .tick').attr("transform")).translate[0];
+    var x_second_time_scale = d3.transform($(d3.selectAll('.x.axis .tick')[0][1]).attr("transform")).translate[0];
+    x_range = x_second_time_scale - x_first_time_scale;
+
+    rects.transition()
+      .duration(function(d,i){
+        return 500 * i;
+      })
+      .ease("linear")
+      .attr("x", function(d) {
+        return (d.offset*x_range + x_first_time_scale - col_width/2);
+      })
+      .attr("y", function(d) {
+        return -(- yScale(d.y0) - yScale(parseInt(d.y)) + (h - padding.top - padding.bottom)*2);
+      })
+      .attr("height", function(d) {
+        return -yScale(parseInt(d.y)) + (h - padding.top - padding.bottom);
+      })
+      .attr("width", col_width)
+      .style("fill-opacity",1);
+
+    texts.transition()
+      .duration(function(d,i){
+        return 500 * i;
+      })
+      .ease("linear")
+      .attr("x", function(d) {
+        return (d.offset*x_range + x_first_time_scale);
+      })
+      .attr("y", function(d) {
+        var y_rect = -(- yScale(d.y0) - yScale(d.y) + (h - padding.top - padding.bottom)*2);
+        var h_rect = -yScale(d.y) + (h - padding.top - padding.bottom);
+        return y_rect + h_rect/2 + 5;
+      })
+      .style({"font-size":"13px","fill-opacity":1, "text-anchor": "middle"})
+      .attr("class", function(d) {
+        var height = -yScale(d.y) + (h - padding.top - padding.bottom);
+        return height > 20 ? "" : "hide";
+      })
+      .text(function(d){ 
+        var format = d3.format("s");
+        //return parseInt(d.y) != 0 ? parseInt(d.y)/1000 : "";
+        return format(d.y);
+      });
+
+
+    // adding legend
+    var legend = svg.append("g")
+            .attr("class","legend")
+            .attr("x", w - padding.right - 65)
+            .attr("y", 25)
+            .attr("height", 100)
+            .attr("width",100);
+
+    legend.selectAll("g").data(dataset)
+        .enter()
+        .append('g')
+        .each(function(d,i){
+          var g = d3.select(this);
+          g.append("rect")
+            .attr("x", w - padding.right - 65)
+            .attr("y", i*25 + 10)
+            .attr("width", 10)
+            .attr("height",10)
+            .style("fill",color_hash[String(i)][1]);
+
+          g.append("text")
+           .attr("x", w - padding.right - 50)
+           .attr("y", i*25 + 20)
+           .attr("height",30)
+           .attr("width",100)
+           .style("fill",color_hash[String(i)][1])
+           .text(color_hash[String(i)][0]);
+        });
+
+    svg.append("text")
+    .attr("transform","rotate(-90)")
+    .attr("y", 0 - 5)
+    .attr("x", 0-(h/2))
+    .attr("dy","1em")
+    .text("Doanh thu");
+
+    svg.append("text")
+       .attr("class","xtext")
+       .attr("x",w/2 - padding.left)
+       .attr("y",h - 5)
+       .attr("text-anchor","middle")
+       .text("Ngày");
+
+    svg.append("text")
+        .attr("class","title")
+        .attr("x", (w / 2))
+        .attr("y", 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("Doanh thu / ngày");
+
+
+//    });
+
+  function toMoney(n, currency) {
+    return parseFloat(n).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,") + ' ' + currency;
+  }
+</script>

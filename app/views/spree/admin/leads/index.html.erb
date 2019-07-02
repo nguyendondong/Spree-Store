@@ -1,0 +1,381 @@
+<% content_for :page_title do %>
+<div class="listing_users_title">
+    <%= Spree.t(:listing_users) + " (#{@leads.total_count})" %>
+</div>
+
+<div data-hook="admin_orders_index_search" class="group-form-lead">
+    <%= search_form_for [:admin, @search], remote: true, id: "search-leads" do |f| %>
+    <ul class="navbar-nav ">
+        <li class="list-nav">
+            <%= f.text_field :name_or_phone_cont , placeholder: "Tìm kiếm"%>
+        </li>
+        <li class="list-nav select-country">
+            <% country = Spree::Country.find_by_iso("VN") %>
+            <%= f.select  :state_id_eq, options_for_select( country.states.sort.map{|k| [k.name, k.id]} ), {:include_blank => true }, {:id => 'lead_state_id', :class => 'select2 fullwidth'} %>
+        </li>
+        <li class="list-nav select-list-lead">
+            <%= f.select  :lead_list_id_eq, options_for_select(  Spree::LeadList.all.sort.map{|k| [k.name, k.id]} ), {:include_blank => true }, {:id => 'lead_list_id', :class => 'select3 fullwidth'} %>
+        </li>
+    </ul>
+    <% end %>
+        <div id="modal-add-list">
+                <div class="md-add-list-bg"></div>
+                <div class="md-add-list-content">
+                    <form>
+                        <label>Tên Danh Sách</label>
+                        <input type="text" id ="doc" placeholder="Nhập vào tên danh sách mới">
+                        <label class="not-null">Tên danh sách không được rỗng</label>
+                        <button type="button" class="add">Tạo</button>
+                        <button type="reset" class="cancel">Hủy</button>
+                    </form>
+                </div>
+            </div>
+         </div>
+
+</div>
+<% end %>
+
+<% content_for :page_actions do %>
+<li class="list-nav">
+    <%= button_link_to Spree.t(:new_user), new_admin_lead_url , :icon => 'plus', :id => 'admin_new_user_link' ,  :remote => true, "data-toggle" =>"modal", "data-target"=>"#myModal" %>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body" id="form-new">
+                    <%= render partial: 'form' %>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</li>
+<% end %>
+  
+<div id="list_lead">
+    <table class="index" id="listing_users" data-hook>
+        <colgroup>
+            <col style="width: 11%">
+            <col style="width: 6%">
+            <col style="width: 5%">
+            <col style="width: 13%">
+            <col style="width: 6%">
+            <col style="width: 6%">
+            <col style="width: 21%">
+            <col style="width: 8%">
+            <col style="width: 7%">
+            <col style="width: 6%">
+            <col style="width: 5%">
+            <col style="width: 6%">
+        </colgroup>
+        <thead>
+            <tr data-hook="admin_users_index_headers">
+                <th><%= Spree.t(:name)%></th>
+                <th><%= Spree.t(:phone)%></th>
+                <th><%= Spree.t(:fb_name)%></th>
+                <th><%= Spree.t(:hometown)%></th>
+                <th><%= Spree.t(:major)%></th>
+                <th class="text-center"><%= Spree.t(:products)%></th>
+                <th><%= Spree.t(:notes) %></th>
+                <th><%= Spree.t(:time) %></th>
+                <th><%= Spree.t(:lead_list) %></th>
+                <th><%= Spree.t(:item_total) %></th>
+                <th><%= Spree.t(:total_orders) %></th>
+                <th><%= Spree.t(:total_shipped) %></th>
+                <th data-hook="admin_users_index_header_actions" class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @leads.each do |lead|%>
+            <tr id="<%= spree_dom_id lead %>" data-hook="admin_users_index_rows"
+                class="lead_info <%= cycle('odd', 'even')%>">
+                <td class="lead_name"><%= lead.name %></td>
+                <td class="lead_phone"><%= lead.phone %></td>
+                <td class="lead_facebook">
+                    <div class="lead_facebook_flex">
+                        <%=link_to image_tag('facebook-logo.png',:style => "width: 32px; height: 32px"),lead.fb_url.match(/^(http|https):\/\//) ? lead.fb_url : ("https://" + lead.fb_url), :target => "_blank" if lead.fb_url.present?  %>
+                        <% if lead.zalo.present? %>
+                        <div class="zalo-info">
+                            <%= image_tag 'Logo_Zalo.png',:style => "width: 29px; height: 29px; cursor: pointer"%>
+                            <span class="zalo-hover"><%= lead.zalo %></span>
+                        </div>
+                        <script>
+                            $(document).ready(() => {
+                                $(".zalo-info >img").click(() => {
+                                    alert("Zalo Name: <%= lead.zalo %>");
+                                })
+                            });
+                        </script>
+                        <% end %>
+                    </div>
+                </td>
+                <td class="lead_hometown">
+                    <% if lead.state_id.present? %>
+                    <%= lead.state.name %> /
+                    <% if lead.district_id.present? %>
+                    <%= lead.district.name.gsub("Thành phố ", "TP ").gsub("Thị xã ", "TX ") %>
+                    <% end %>
+                    <% end %>
+                </td>
+                <td class="lead_major"><%= lead.major if lead.major.present? %></td>
+                <td class='user_product'>
+                    <%=link_to( image_tag(lead.products.last.images.first.attachment.url(:mini),:title =>"#{lead.products.last.name}", :class =>"image-product-previews"), product_path( lead.products.last)) if lead.products.last.present?%>
+                    <% if lead.products.present?%>
+                    <div class="list_products">
+                        <% lead.products.each do |product| %>
+                        <div class="product-site" id="product-site<%= product.id %>">
+                            <%=link_to( image_tag(product.images.first.attachment.url(:mini),:title =>"#{product.name}", :class =>"image-product-previews"), product_path(product))%>
+                        </div>
+                        <% end %>
+                    </div>
+                    <% end %>
+                </td>
+                <td id='order-<%= lead.id %>' class="notes">
+                    <div class="show-notes">
+                        <div data-hook="admin_users_index_row_actions" class="actions btn-change add-notes">
+                            <%= link_to "", "##{lead.id}-notes", :class=>"fa fa-comment icon_link with-tip no-text notes"%>
+                            <div style="display:none">
+                                <div id="<%= lead.id %>-notes" style="width: 500px; height: 300px;">
+                                    <%= form_for Spree::Note.new(), :url=>admin_notes_path() do |f| %>
+                                    <%= f.text_field :content, :style => "width: 400px;" %>
+                                    <%= f.hidden_field :notable_id, :value => lead.id %>
+                                    <%= f.hidden_field :notable_type, :value => "Spree::Lead" %>
+                                    <%= f.submit Spree.t(:note) %>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                        <% if lead.notes.present? %>
+                        <div class="note-list">
+                            <%= "(#{lead.notes.last.created_at.strftime('%d/%m %H:%M')})  -  #{lead.notes.last.content}" if lead.notes.last.present? %>
+                        </div>
+                        <% end %>
+                    </div>
+                    <% if lead.notes.present? %>
+                    <div class="list_products_note">
+                        <% lead.notes.each do |note| %>
+                        <div><%= "(#{note.created_at.strftime('%d/%m %H:%M')})  -  #{note.content}" %></div>
+                        <% end %>
+                    </div>
+                    <% end %>
+                </td>
+                <td>
+                    <%= time_ago_in_words(lead.created_at) %>
+                </td>
+                <td class="lead_list"><%= lead.lead_list.name if lead.lead_list_id.present? %></td>
+                <% total_orders =lead.orders.pluck(:total).sum.round(0).to_i %>
+                <td class="total_orders"><%=number_with_delimiter(total_orders,:delimiter => '.')%>&nbsp;₫</td>
+                <%shipped_successfully= lead.orders.where(spree_orders: {shipment_state: "shipped_successfully"}).count.to_i %>
+                <% shipped_total = lead.orders.count.to_i %>
+                <td class="item_total">
+                    <div class="order-shipped">
+                        <%= shipped_successfully %> / <%=shipped_total  %>
+                    </div>
+                    <div class="cleanfix">
+                        <div>
+                            <div class="order-choice">
+                                <span>Đơn hàng: <%=shipped_total  %></span>
+                                <span>Ship thành công: <%= shipped_successfully %></span>
+
+                                <%= button_link_to (fa_icon "plus"), new_admin_order_url(:order => {:bill_address_attributes => {:firstname => lead.name, :phone => lead.phone, :state_id => lead.state_id, :district_id => lead.district_id}}, lead: lead.id), :id => 'admin_new_order', :style => "display: inline-block"  %>
+                                <% if lead.orders.where.not(state: "cart").present? %>
+                                <div class="btn-group">
+                                    <a class="button dropdown-toggle fa fa-shopping-cart" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu" style="min-width: 100px !important;">
+                                        <% lead.orders.where.not(state: "cart").each do |order| %>
+                                        <%= link_to order.number, "/admin/orders/#{order.number}/edit", :class => 'text-center', :style => "display: block; border-bottom: none", target: "_blank" %>
+                                        <% end %>
+                                    </div>
+                                </div>
+                                <% end %>
+                            </div>
+                </td>
+                <% total_shipped =lead.orders.where(spree_orders: {shipment_state: "shipped_successfully"}).pluck(:total).sum.round(0).to_i %>
+                <td class="total_orders"><%=number_with_delimiter(total_shipped,:delimiter => '.')%>&nbsp;₫</td>
+
+                <td data-hook="admin_users_index_row_actions" class="actions btn-change">
+                    <%#= link_to_user user, :no_text => true %>
+                    <%= link_to_edit lead, :no_text => true, :class => 'edit' %>
+
+                </td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+    <%= paginate @leads %>
+</div>
+<style>
+    .admin .container-fluid .row:first-child {
+        margin-bottom: 0;
+    }
+
+    .admin .container-fluid .row .sixteen.col-md-12.columns {
+        padding: 0;
+    }
+
+    #content-header .container-fluid {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #content-header .container-fluid .block-table {
+        display: block;
+    }
+
+    #content-header .container-fluid .block-table .table-cell {
+        display: block;
+    }
+
+    .block-table .table-cell .listing_users_title {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .block-table .table-cell .page-title ul li:nth-child(2) {
+        display: flex;
+        align-items: center;
+    }
+
+    .block-table .table-cell .page-title ul li:nth-child(2) label {
+        white-space: nowrap;
+        padding-right: 10px;
+    }
+
+    .block-table .table-cell .page-title ul li:nth-child(2)>div {
+        min-width: 200px;
+    }
+    #select2-chosen-1, #select2-chosen-6{
+        font-size: 13px;
+        padding: 3px;
+    }
+</style>
+<script>
+    var _changeInterval;
+    $(document).ready(function () {
+        $('#q_name_or_phone_cont').on('keyup', function () {
+            clearInterval(_changeInterval)
+            _changeInterval = setInterval(function () {
+                // Typing finished, now you can Do whatever after 2 sec
+                $('#search-leads').submit();
+                clearInterval(_changeInterval)
+            }, 600);
+        })
+    });
+    $(document).on("click", "#admin_new_user_link", function () {
+        $("#click-create-lead").prop("disabled", true);
+        $("#click-create-lead").css('background', '#10131170');
+        $(".fa-remove").hide();
+        $(".or").hide();
+        $('#lead_phone').blur(function (e) {
+            if (validatePhone('lead_phone')) {
+                $('#spnPhoneStatus').html('Valid');
+                $('#spnPhoneStatus').css('color', 'green');
+                $("#click-create-lead").prop("disabled", false);
+                $("#click-create-lead").css('background', '#3acf87');
+                $('#lead_phone').css('border', '1px solid #cee1f4')
+            } else {
+                $('#spnPhoneStatus').html('Invalid');
+                $('#spnPhoneStatus').css('color', 'red');
+                $("#click-create-lead").prop("disabled", true);
+                $("#click-create-lead").css('background', '#10131170');
+                $('#lead_phone').css('border', '1px solid red');
+
+            }
+        });
+    });
+</script>
+
+<script>
+    var _changeInterval;
+    /* search input in select2*/
+    $(document).ready(function () {
+        $('#s2id_autogen4_search').on('keyup', function () {
+            clearInterval(_changeInterval)
+            _changeInterval = setInterval(function () {
+                // Typing finished, now you can Do whatever after 2 sec
+                $('#search-leads').submit();
+                clearInterval(_changeInterval)
+            }, 600);
+
+        })
+        $('#lead_state_id option:first-child').text("Chọn tỉnh / thành phố");
+        $('select.select3 option:first-child').text("Chọn danh sách");
+        $('.select3').select2({
+            dropdownCssClass: "custom-dropdown",
+            allowClear: false,
+        });
+        $('#lead_state_id').val('').trigger('change');
+        $('#lead_list_id').val('').trigger('change');
+        $('.custom-dropdown').append('<button id="add-lead-list"> Danh sách mới</button>').trigger('change');
+        /* search select option */
+        $('#lead_state_id').on('change', function () {
+            $('#search-leads').submit();
+        })
+
+        $('#lead_list_id').on('change',function () {
+            clearInterval(_changeInterval)
+            _changeInterval = setInterval(function () {
+                $('#search-leads').submit();
+                clearInterval(_changeInterval)
+            }, 600);
+        })
+
+    });
+
+
+
+    $(document).ready(function () {
+        $("#add-lead-list").on('click',function(){
+            $('#lead_list_id').select2('close');
+            $("#modal-add-list").addClass("active");
+        });
+        $("#modal-add-list .md-add-list-bg").click(function(){
+            $(this).parent().removeClass("active");
+        })
+        $("#modal-add-list .md-add-list-content button.cancel").click(function(){
+            $(".group-form-lead #modal-add-list").removeClass("active");
+        })
+        
+        $('#doc').keyup(function(){
+            if($(this).val){
+                $("#modal-add-list .md-add-list-content >form >label.not-null").removeClass("active");
+            }
+        });
+
+        $('.md-add-list-content button.add').click(function (){
+        name = $('#doc').val().trim();
+        console.log(name);
+        if(name){
+            $.ajax({  
+            type: "POST",
+            url: "/admin/lead_lists",
+            dataType: "JSON",
+            data: {lead_list: { name: name } } ,
+            success: function(data) {
+                $('#modal-add-list').removeClass("active");
+                $("select.select3").append("<option value="+ data.id + ">" + data.name + "</option>")
+                $("#lead_lead_list_id").append("<option value="+ data.id + ">" + data.name + "</option>")
+                $('#doc').val("");
+            }
+            });
+        }
+        else{
+            $("#modal-add-list .md-add-list-content >form >label.not-null").addClass("active");
+        }
+        })
+
+
+
+    })
+
+    
+
+    
+
+</script>

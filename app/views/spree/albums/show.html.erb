@@ -1,0 +1,70 @@
+<div id="fb-root"></div>
+<script>
+  var album_tag = "<%= @album.tag %>";
+  var like_album_event = function(response) {
+    window.likeAlbum(album_tag, response);
+  }
+  var unlike_album_event = function(response) {
+    window.unlikeAlbum(album_tag, response);
+  }
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1557606587807429',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+    FB.Event.subscribe('edge.create', like_album_event);
+    FB.Event.subscribe('edge.remove', unlike_album_event);
+  };
+
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<div id="album-detail">
+  <div class="album-name">
+    <%= @album.name %>
+
+    <% if spree_current_user && @album.user == spree_current_user %>
+      <a href="<%= edit_album_path(@album) %>" class="edit-album"><%= Spree.t(:edit) %></a>
+    <% end %>
+  </div>
+  <div class="fb-like" data-href="<%= @url %>" data-layout="standard" data-action="like" data-show-faces="true"></div>
+  <div class="images">
+    <div class="wrap">
+      <div class="left-section">
+        <div id="album-slider" class="royalSlider rsDefault">
+          <% @album.photos.each do |photo| %>
+            <a class="rsImg"  data-rsBigImg="<%= photo.image_url(:original) %>" href="<%= photo.image_url(:large) %>"><%= photo.image_file_name %></a>
+          <% end %>
+        </div>
+        <div class="fb-comments" notify="true" data-href="<%= @url %>" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
+      </div>
+      <div class="information">
+        <div class="wrap">
+          <div class="author">
+            <span>Người dự thi</span>: <%= @user.email %>
+          </div>
+          <div class="others">
+            <div class="title"><%= Spree.t("albums.others") %></div>
+            <div class="wrap">
+              <% @user.albums.each do |album| %>
+                <% if album.id != @album.id %>
+                  <div class="other-album">
+                    <a href="<%= album_path(album) %>">
+                      <img src="<%= album.cover_photo.present? ? album.cover_photo.image_url(:default_cover) : "" %>">
+                    </a>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

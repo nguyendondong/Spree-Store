@@ -1,0 +1,28 @@
+<%# if (current_spree_page?(account_path)|| current_spree_page?(referred_orders_path) || current_spree_page?(my_campaigns_path) || current_spree_page?(edit_account_path)) %>
+<% if spree_current_user %>
+<div id="topfixed">
+  <div class="clearfix">
+    <div class="pull-left">
+      <%= link_to account_path, class: (current_spree_page?(account_path) || current_spree_page?(edit_account_path)) ? "topitem active" : "topitem" do %>
+        <span>@<%= spree_current_user.display_name %> <% if(Notification.unread(spree_current_user).size > 0) %><span class="numbernotif"><%= Notification.unread(spree_current_user).size %></span><%end%></span>
+      <% end%>
+      <%= link_to referred_orders_path, class: current_spree_page?(referred_orders_path) ? "topitem active" : "topitem" do %>
+      <span>Đơn hàng</span>
+      <% end%>
+      <%= link_to my_campaigns_path, class: current_spree_page?(my_campaigns_path) ? "topitem active" : "topitem" do %>
+      <span>Chiến dịch</span>
+      <% end%>
+      <%= link_to withdraw_money_path, class: current_spree_page?(withdraw_money_path) ? "topitem active" : "topitem" do %>
+      <span>Thanh toán</span>
+      <% end%>
+      <!--<a class="topitem" href="#"><span>Thanh toán</span></a>-->
+    </div>
+    <!--
+    <div class="pull-right">
+      <a class="topitem" href="#"><span>Cài đặt</span></a>
+      <a class="topitem" href="#"><span>Trợ giúp</span></a>
+    </div>
+    -->
+  </div>
+</div>
+<% end %>

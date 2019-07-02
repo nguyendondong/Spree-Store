@@ -1,0 +1,26 @@
+<div class="breadcrumb-area pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-bg">
+                    <ul class="breadcrumb-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li>Single Product</li>
+                    </ul>
+                    <h2>Single Product</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="single-product-area pb-70">
+    <div class="container">
+        <div class="row">
+            <%= render :partial => 'spree/products/images' %>
+            <%= render :partial => 'spree/products/details' %>
+        </div>
+        <%= render :partial => 'spree/products/description' %>
+        <%= render :partial => 'spree/shared/related_product' %>
+    </div>
+</div>
+<%= render "spree/products/json_ld" %>

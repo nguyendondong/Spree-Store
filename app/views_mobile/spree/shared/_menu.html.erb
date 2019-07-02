@@ -1,0 +1,86 @@
+<div class="navbar navbar-default navbar-fixed-top">
+	<!-- Logo -->
+	<%= link_to image_tag(current_store.logo(:medium)), root_path, :class => "navbar-brand" %>
+
+	<!-- Hotline -->
+	<% if current_store.phone.empty? || current_store.phone.nil? %>
+		<div class="hot-line"></div>
+	<% else%>
+	<div class="hot-line">
+		<%= link_to current_store.phone do %>
+			<%= image_tag("hot-line.png") %>
+		<% end %>
+			<%= link_to current_store.phone, class: "store-phone" do %>
+				<div>Hot line: </div>
+				<div><%= current_store.phone %></div>
+			<% end %>
+	</div>
+	<% end %>
+
+
+	<!-- Cart -->
+	<div id="cart">
+		<div class="cart-btn">
+			<a href="/cart" class="button adc">
+			</a>
+		</div>
+		<% if simple_current_order.present? %>
+			<div class="cart-list" style="display: none;">
+			<div class="arrow"></div>
+				<div class="cart-buttons button">
+					<%= form_for simple_current_order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
+						<%= button_tag :class => 'button checkout ', :id => 'checkout-link', :name => 'checkout' do %>
+							<%= Spree.t(:checkout) %>
+						<% end %>
+					<% end %>
+				</div>
+			<div class="clearfix"></div>
+			</div>
+		<% end %>
+	</div><!-- /Cart-->
+</div><!-- /navbar-fixed-top -->
+
+<div class="navbar navbar-default navbar-static-top" style="margin-top: 50px;">
+
+		    <!-- Search -->
+				<div class="top-search">
+					<%= form_tag spree.products_path, :method => :get, :class => "form-inline" do %>
+						<button type="submit"><i class="fa fa-search"></i></button>
+						<%= search_field_tag :keywords, params[:keywords], :placeholder => Spree.t(:search), :class=>"search-field form-control" %>
+					<% end %>
+				</div><!-- /Search -->
+
+		<!-- Menu -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+    <% unless @taxonomies.blank? %>
+      <% taxonomy = @taxonomies.first %>
+      <% cache [I18n.locale, taxonomy, "mobile"] do %>
+        <% taxonomy.root.children.each do |taxon| %>
+          <li>
+            <a href="<%= seo_url(taxon) %>">
+              <%= taxon.name %>
+            </a>
+          </li>
+        <% end %>
+      <% end %>
+    <% end %>
+
+      <% if spree_current_user %>
+        <li><%= link_to Spree.t(:account), "/account" %></li>
+        <li><%= link_to Spree.t(:logout), spree_logout_path %></li>
+      <% else %>
+        <li><%= link_to Spree.t(:login), spree_login_path %></li>
+        <li><%= link_to Spree.t(:signup), spree_signup_path %></li>
+      <% end %>
+      </ul>
+    </div><!--/.nav-collapse -->
+</div>
+<div class="clearfix"></div>

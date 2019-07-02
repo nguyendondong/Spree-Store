@@ -1,0 +1,29 @@
+ <div class="block neworders">
+  <div class="blocksubhead">
+    <%= image_tag "orders.png", class: "icontitle" %>
+    <span class="blocktitle">Đơn hàng mới nhất</span>
+  </div>
+  <div class="blockbody">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="column-name">Mô tả hóa đơn</th>
+          <th class="column-money">Giá trị</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referred_orders.limit(5).each do |o|%>
+        <tr >
+          <td class="column-name" data-title="Mô tả hóa đơn">
+            <span class="ordername"><%= "#{o.number}" %> </span>
+            <span class="orderdate"> <%= time_ago_in_words(o.completed_at)%> </span>
+          </td>
+          <td class="column-money" data-title="Giá trị">
+            <%= Spree::Money.new(o.total, { currency: Spree::Config[:currency] }) %>
+          </td>
+        </tr>
+        <%end %>
+      </tbody>
+    </table>
+  </div>
+</div>

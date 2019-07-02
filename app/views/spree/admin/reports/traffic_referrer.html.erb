@@ -1,0 +1,82 @@
+<% content_for :page_title do %>
+    <%= Spree.t(:traffic_referrer) %>
+  <% end %>
+  
+  <% content_for :page_actions do %>
+    <div id="top-link">
+      <div class="menu-link">
+        <a href="/admin/reports" >Tổng Quan</a>
+        <% @reports.each do |key, value| %>
+            <%= link_to value[:name], send("#{key}_admin_reports_url".to_sym)%>
+        <% end %>
+      </div>
+      <li><%= link_to_with_icon 'arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+    </div>
+ <% end %>
+  
+  <div id="sales-tr-content">
+      <div class="table-control control-ct">
+        <!-- select 1 -->
+        <select id="str-date-range">
+            <option value="tuyChinh">Tùy chỉnh</option>
+            <option value="homNay" selected>Hôm nay</option>
+            <option value="homQua">Hôm qua</option>
+            <option value="tuanQua">7 ngày qua</option>
+            <option value="thangQua">30 ngày qua</option>
+            <option value="quyQua">90 ngày qua</option>
+            <option value="namNay">Năm nay</option>
+        </select>
+        <!-- div pick date -->
+        <div class="date-range-filter field align-center">
+          <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+          <input class="datepicker datepicker-from">
+          <span class="range-divider">
+            <i class="fa fa-arrow-right"></i>
+          </span>
+          <input class="datepicker datepicker-to">            
+          <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+        </div>
+        <!-- button -->
+        <button id="fill-table" type="button">XEM</button>
+      </div>
+  
+      <table class="admin-report" id="table-sales-tr" data-toggle="table" data-silent-sort="false">
+        <thead>
+          <tr>
+            <th>TRAFFIC REFERRER SOURCE</th>
+            <th>TRAFFIC REFERRER NAME</th>
+            <th>SỐ ĐƠN HÀNG</th>
+            <th>GIÁ TRỊ SALES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Direct</td>
+            <td>N/A</td>
+            <td>164</td>
+            <td>1.600.000 đ</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>Bing</td>
+            <td>4</td>
+            <td>8.600.000 đ</td>
+          </tr>
+          <tr>
+            <td>Social</td>
+            <td>Facebook</td>
+            <td>14</td>
+            <td>600.000 đ</td>
+          </tr>
+          <tr>
+            <td>Tổng</td>
+            <td></td>
+            <td>182</td>
+            <td>10.800.000 đ</td>
+          </tr>
+        </tbody>
+  
+      </table>
+  </div>
+  <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+  <script src="/assets/spree/backend/traffic_referrer.js"></script>

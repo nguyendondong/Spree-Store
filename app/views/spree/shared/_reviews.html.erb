@@ -1,0 +1,87 @@
+<div id="reviews">
+  <h2 class="product-section-title"><%= Spree.t(:reviews) %></h2>
+  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @product.reviews.approved.count == 0 %>
+    <p class="reviews-none"><%= Spree.t('no_reviews_available') %></p>
+  <% else %>
+    <%= render 'spree/shared/rating', :product => @product, :review => 0 %>
+    <div id="list-review" class="col-md-12">
+      <% for review in (Spree::Reviews::Config[:track_locale] ? @product.reviews.localized(I18n.locale) : @product.reviews).default_approval_filter.preview %>
+        <%= render 'spree/shared/review', :review => review %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="clearfix"></div>
+
+  <%= form_for :review, :url => product_reviews_path(@product), :html => {:method => :post, id: "create-review", class: ""}, :remote => true do |f| %>
+  <%= render "spree/shared/error_messages", :target => review %>
+
+  <div class="form-group">
+    <%= f.label :rating %> <span class="required">*</span><br />
+    <%= render "spree/reviews/stars", :stars => 0, :edit_enabled => true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name %> <span class="required">*</span><br />
+    <%= f.text_field :name, :maxlength => "255", :size => "50", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :title %><br />
+    <%= f.text_field :title, :maxlength => "255", :size => "50", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :review %> <span class="required">*</span><br />
+    <%= f.text_area :review, :wrap => "virtual", :rows => "10", :cols => "50", :draggable => false, class: "form-control" %>
+  </div>
+
+  <div class="form-group review_submit">
+    <%= f.submit Spree.t(:submit_your_review), :class => "btn review-submit button bg_darkfirst" %>
+  </div>
+<% end %>
+
+  <%# if !Spree::Reviews::Config[:require_login] || spree_current_user %>
+    <%#= link_to Spree.t('write_your_own_review'), new_product_review_path(@product), :class => "button btn",
+                :rel => 'nofollow' %>
+  <%# end %>
+</div>
+
+<script>
+$(document).ready(function(){ 
+  var rating = null ;
+  $('.star-rating-control').click(function(){
+    rating = $('#create-review .star-rating-on').size();
+    console.log(rating);
+  })
+  
+  $('.review-submit').click(function(e){
+    e.preventDefault();
+
+    if(rating == null){
+      alert('please choice rating!!!')
+      return false;
+    }
+    var name = $('#review_name').val()
+    var title = $('#review_title').val()
+    var review = $('#review_review').val()
+    var url = '<%= product_reviews_path(@product) %>'
+      $.ajax({
+      type: "POST",
+      url: url,
+      dataType: "script ",
+      data: {
+        review: {
+          rating: rating,
+          name: name,
+          title: title,
+          review: review,
+        }
+      },
+      success: function(response) { 
+        console.log(response)
+
+      }
+    })
+  })
+})
+</script>

@@ -1,0 +1,10 @@
+<div class="row" style="clear:both; margin-left: 0; margin-right: 0;">
+	<h3 style="border-bottom: 1px solid #eee; margin: 0 0 20px 15px;">Video hướng dẫn sử dụng</h3>
+	<% if @product_videos.any? %>
+		<% @product_videos.each do |p| %>
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<iframe class="product-video" type="text/html"src="<%= p.video_url %>" frameborder="0" style="width: 100%; height: 200px;"></iframe>
+			</div>
+		<% end %>
+	<% end %>
+</div>

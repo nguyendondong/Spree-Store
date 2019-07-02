@@ -1,0 +1,30 @@
+<%= form_for :order, :url => populate_orders_path do |f| %>
+      <% if check_variant(@product, current_currency) %>
+        <div id="productvariants">
+          <h4 class="productsectiontitle"><%= Spree.t(:select) + " #{@product.option_types.first.presentation}:" %></h4>
+          <ul>
+            <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+              <li>
+                <div class="variant product-variant">
+                    <%= radio_button_tag "", variant.id, index == 0, 'dataprice' => variant.price_in(current_currency).money, :id => "variant_id_#{variant.id}v", :name => "variant_id" %>
+                    <label for="variant_id_<%= variant.id %>v"><%= variant_options variant %></label>
+                </div>
+                  <% if variant_price variant %>
+                    <span class="price diff"><%= variant_price variant %></span>
+                  <% end %>
+
+                  <% unless variant.can_supply? %>
+                    <span class="outofstock"><%= Spree.t(:out_of_stock) %></span>
+                  <% end %>
+              </li>
+            <% end%>
+          </ul>
+        </div>
+      <% else %>
+        <%= hidden_field_tag "variant_id", @product.master.id %>
+      <% end %>
+    <%= hidden_field_tag :quantity, 1 %>
+    <%= button_tag :class => 'btn large primary col-md-3', :id => 'add-to-cart-button', :type => :submit do %>
+      <%= Spree.t(:add_to_cart) %> >>
+    <% end %>
+<% end %>

@@ -1,0 +1,15 @@
+<%= render :partial => 'spree/admin/shared/configuration_slider_menu' %>
+
+<%= form_for [:admin, @slider, @slider_image], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="new_image">
+    <legend align="center"><%= Spree.t(:new_image) %></legend>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('actions.new'), 'refresh' %>
+      <span class="or">
+        <%= Spree.t(:or) %>
+      </span>
+      <%= link_to_with_icon 'remove', Spree.t('actions.cancel'), admin_slider_slider_images_url(@slider), :id => 'cancel_link', :class => 'button' %>
+    </div>
+  </fieldset>
+<% end %>

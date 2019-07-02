@@ -1,0 +1,10 @@
+<div id="district_members" data-hook="member" class="omega six columns">
+  <fieldset class="no-border-bottom">
+    <legend align="center"><%= Spree.t(:district) %></legend>
+
+    <%= zone_form.field_container :district_ids do %>
+      <%= zone_form.label :district_ids, "" %><br>
+      <%= zone_form.collection_select :district_ids, @districts, :id, :name, {}, { :multiple => true, :class => "select2 fullwidth" } %>
+    <% end %>
+  </fieldset>
+</div>

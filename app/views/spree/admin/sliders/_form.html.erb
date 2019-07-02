@@ -1,0 +1,14 @@
+<%= form_for [:admin, @slider], :html => { :multipart => true } do |f| %>
+  <fieldset>
+    <legend align="center"><%= @slider.new_record? ? "New Slider" : "Edit Slider" %></legend>
+
+    <%= f.field_container :name do %>
+      <%= f.label :name, Spree.t(:name) %>
+      <%= f.text_field :name, :class => 'fullwidth' %>
+    <% end %>
+
+    <div class="align-center">
+      <%= f.submit %>
+    </div>
+  </fieldset>
+<% end %>

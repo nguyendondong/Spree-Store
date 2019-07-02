@@ -1,0 +1,31 @@
+<% url = "http://donghox.com" + product_path(@product) %>
+
+<div class="fb-comments" notify="true" data-href="<%= url %>" data-width="580" data-numposts="5" data-colorscheme="light"></div>
+<div id="fb-root"></div>
+<script>
+  var product_slug = "<%= @product.slug %>";
+  var page_comment_event = function(response) {
+    console.log(response);
+    window.postComment(product_slug, response);
+  }
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1557606587807429',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+    FB.Event.subscribe('comment.create', page_comment_event);
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  
+
+
+</script>

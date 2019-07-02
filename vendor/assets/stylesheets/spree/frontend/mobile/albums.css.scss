@@ -1,0 +1,538 @@
+.album-form{
+  text-align: center;
+  .wrap{
+    width: 80%;
+    display: inline-block;
+    .control-group{
+      clear: both;
+      label, .controls{
+        float: left;
+
+      }
+      label{
+        width: 20%;
+        text-align: right;
+        margin-right: 15px;
+      }
+      .controls{
+        width: 70%;
+        input, textarea{
+          width: 97%;;
+        }
+      }
+    }
+  }
+}
+
+.albums-list{
+  .album{
+    width: 294px;
+    float: left;
+    position: relative;
+    &:nth-child(3n+1){
+      margin: 10px 14px 20px 0;
+    }
+    &:nth-child(3n+2){
+      margin: 10px 14px 20px 14px;
+    }
+    &:nth-child(3n+3){
+      margin: 10px 0 20px 14px;
+    }
+
+    a.new-album{
+      height: 200px;
+      width: 97%;
+      display: inline-block;
+      line-height: 200px;
+      text-align: center;
+      font-size: 30px;
+      border: 5px dashed #eee;
+      &:hover{
+        background-color: #eee;
+        border-color: transparent;
+      }
+    }
+
+    .album-name{
+      color: #3acf87;
+      font-weight: bold;
+    }
+
+
+    .likes-views{
+      float: right;
+      div{
+        display: inline-block;
+        .number, .image{
+          float: left;
+        }
+        .number{
+          margin-top: 3px;
+          margin-right: 5px;
+        }
+        .image img{
+          width: 22px;
+        }
+      }
+    }
+
+    &:hover .options{
+      display: block !important;
+    }
+
+    .options{
+      display: none;
+      height: 35px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #8F9C96;
+      a{
+        display: inline-block;
+        padding: 5px;
+        img{
+          width: 25px;
+        }
+        &:hover{
+          background-color: #3ACF87;
+        }
+      }
+    }
+  }
+  .cover-image{
+    width: 310px;
+    height: 210px !important;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.25);
+    margin-bottom: 10px;
+  }
+}
+
+#album-detail{
+  .album-name{
+    color: #000;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    .edit-album{
+      float: right;
+      background-color: #3ACF87;
+      padding: 5px;
+      font-weight: normal;
+      margin-top: -10px;
+      color: #fff;
+      font-size: 16px;
+    }
+  }
+  .images{
+    margin-top: 10px;
+    text-align: center;
+    .left-section, .information{
+      float: left;
+    }
+    .left-section{
+      #album-slider{
+        margin-bottom: 15px;
+      }
+    }
+    .information{
+      width: 380px;
+      .wrap{
+        padding-left: 15px;
+        .author{
+          text-align: left;
+          span{
+            font-weight: bold;
+          }
+        }
+        .others{
+          .title{
+            background-color: #555;
+            color: #fff;
+            padding: 5px;
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+          .wrap{
+            padding-left: 0;
+            text-align: left;
+            .other-album{
+              width: 172px;
+              display: inline-block;
+              margin-bottom: 16px;
+              margin-right: 8px;
+              &:hover{
+                opacity: 0.6;
+              }
+            }
+            .other-album:nth-child(2n){
+              margin-right: 0;
+              margin-left: 8px;
+            }
+          }
+        }
+      }
+    }
+    .rsDefault .rsArrowIcn{
+      background-color: #333;
+      color: #333;
+    }
+    .rsDefault.rsHor .rsArrowRight .rsArrowIcn:before {
+      content: "";
+    }
+  }
+}
+
+
+.photos{
+  margin-top: 20px;
+  .photo{
+    position: relative;
+    width: 280px;
+    margin: 0 15px 25px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    .image-container-outer{
+      height: 280px;
+      line-height: 280px;
+      .image-container{
+        display: inline-block;
+        position: relative;
+        line-height: 0;
+        .image-photo{
+          max-width: 280px;
+          max-height: 280px;
+          display: inline-block;
+          overflow: hidden;
+          vertical-align: middle;
+          img{
+            max-height: 100%;
+          }
+        }
+        .delete{
+          position: absolute;
+          top: 0;
+          right: 0;
+          background-color: #999;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          color: #fff;
+          font-weight: bold;
+          cursor: pointer;
+          text-align: center;
+          img{
+            width: 25px;
+            display: inline;
+            margin-top: 2px;
+          }
+        }
+        .cover-photo, .select-cover-photo{
+          width: 100%;
+          position: absolute;
+          bottom: 0px;
+          background-color: #222;
+          height: 30px;
+          line-height: 30px;
+          opacity: 0.7;
+          color: #fff;
+          font-size: 18px;
+        }
+        .select-cover-photo{
+          background-color: #999;
+          opacity: 1;
+          cursor: pointer;
+          display: none;
+        }
+
+      }
+    }
+  }
+  .image-photo:hover~.select-cover-photo{
+    display: block !important;
+  }
+}
+
+#about-albums-competition{
+  .tabs{
+    text-align: right;
+    div{
+      display: inline-block;
+      padding: 5px;
+      border: 2px dotted #333;
+      border-bottom: none;
+      color: #fff;
+      cursor: pointer;
+      a{
+        color: #fff;
+      }
+    }
+    #competition-rules{
+      background-color: #FAA002;
+    }
+    #participants{
+      background-color: #26B1DA;
+    }
+    #award-structures{
+      background-color: #E64577;
+      border-color: #FAA002;
+    }
+    #competition-album{
+      background-color: #353334;
+      border-color: #FAA002;
+    }
+  }
+  .content{
+    #join-competition{
+      .row{
+        margin-left :0px !important;
+        margin-right :0px !important;
+        .wrap{
+          background-color: #DFF610;
+          img{
+            margin-top : 20px;
+          }
+          .row{
+            img{
+              margin-top : 10px;
+              padding-bottom: 25px;
+            }
+          }
+          .col-xs-5{
+            .img {
+              margin-left: -12%;
+              padding-bottom: 120%;
+              background-position: 50% 50%;
+              background-repeat: no-repeat;
+              background-size: cover;
+            }
+            
+          }
+        }
+      }
+    }
+
+    #competition-rules-content{
+      .row{
+        margin-left :0px !important;
+        margin-right :0px !important;
+        .wrap{
+          background-color: #FAA002;
+          position: relative;
+          img{
+          padding-top : 25px;
+          padding-bottom : 10px;
+          } 
+          .col-xs-8{
+            position: relative;
+            .title{
+            padding-top: 30px;
+            margin-bottom: 35px;
+            font-weight:bold; 
+            font-size: 3.5vw;
+            }
+            img{
+              position: absolute;
+              width: 25%;
+              top:-20px;
+              right:0px;
+            }
+            .description{
+              font-size:  2.5vw;
+            }
+          }
+          .col-xs-4{
+              border : 1px dashed #FEFEFE;
+              border-radius: 100%;
+              margin-top: 55px;
+              padding:15%;
+          }
+          .image{
+            width: 24%;
+            position: absolute;
+            top: 37px;
+            right: 25px;
+          }
+        }
+      }
+    }
+
+    #participants-content{
+      .row{
+        margin-left :0px !important;
+        margin-right :0px !important;
+        .wrap{
+          background-color: #04DDD5;
+          position: relative;
+          img{
+          padding-top : 15px;
+          padding-bottom : 10px;
+          } 
+          .col-xs-8{
+            position: relative;
+            .title{
+            padding-top: 30px;
+            margin-bottom: 35px;
+            font-weight:bold; 
+            font-size: 3.5vw;
+            }
+            img{
+              position: absolute;
+              width: 25%;
+              top:-14px;
+              right:0px;
+            }
+            .description{
+              font-size:  2.5vw;
+            }
+          }
+          .col-xs-4{
+              border : 1px dashed #FEFEFE;
+              border-radius: 100%;
+              margin-top: 20px;
+              padding:15%;
+              margin-bottom:20px;
+          }
+          .image{
+            width: 24%;
+            position: absolute;
+            top: 0px;
+            left: 15px;
+            margin-bottom:10px;
+          }
+        }
+      }
+    }
+
+    #award-structures-content{
+      .row{
+        margin-left :0px !important;
+        margin-right :0px !important;
+        .wrap{
+          background-color: #E64577;
+          position: relative;
+          img{
+          margin-top : 15px;
+          padding-bottom : 10px;
+          } 
+          .col-xs-8{
+            position: relative;
+            .title{
+            padding-top: 30px;
+            margin-bottom: 35px;
+            font-weight:bold; 
+            font-size: 3.5vw;
+            }
+            img{
+              position: absolute;
+              width: 25%;
+              left:0px;
+            }
+            .description{
+              h4{
+                font-size:  2.5vw;
+                font-weight: 700;
+              }
+              font-size:  2vw;
+            }
+          }
+          .col-xs-4{
+              border : 1px dashed #FEFEFE;
+              border-radius: 100%;
+              margin-top: 20px;
+              padding:15%;
+              margin-bottom:20px;
+          }
+          .image{
+            width: 24%;
+            position: absolute;
+            top: 0px;
+            right: 25px;
+            margin-bottom:10px;
+          }
+        }
+      }
+    }
+
+    #preamble-content{
+      .row{
+        margin-left :0px !important;
+        margin-right :0px !important;
+        .wrap{
+          background-color: #353334;
+          img{
+          padding-top : 20px;
+          padding-bottom : 10px;
+          }
+          .col-xs-5{
+              img{
+                margin-top: 30px;
+              }
+              img:first-child{
+                border: 1px dashed #A4A2A3;
+                border-radius: 100%;
+                padding: 0 5%;
+                padding-left: 15px;
+                padding-right: 15px;
+              }
+          }
+        }
+      }
+    }
+  }
+}
+
+#ask-to-share-album-modal{
+  display: none;
+  width: 100%;
+  .accept-share{
+    float: right;
+    margin-top: 12px;
+    background-color: #3acf87;
+    padding: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+  }
+}
+
+#ask-to-update-phone-modal{
+  display: none;
+  width: 100%;
+  .update-phone{
+    float: right;
+    margin-top: 12px;
+    background-color: #3acf87;
+    padding: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+  }
+  .content{
+    text-align: center;
+  }
+  .phone{
+    background-color: #fff;
+    display: inline;
+    margin-top: 2px;
+    width: 85%;
+  }
+  .error{
+    display: none;
+    padding-left: 18px;
+    color: red;
+  }
+
+  .success{
+    display: none;
+    padding-left: 18px;
+    color: #36C27E;
+  }
+}

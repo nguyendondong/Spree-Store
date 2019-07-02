@@ -1,0 +1,4 @@
+<%= collection_select(nil, params[:name], @districts,
+                            :id, :name,
+                            {:include_blank => true},
+                            {:class => 'required', :id => 'address-district'}) %>

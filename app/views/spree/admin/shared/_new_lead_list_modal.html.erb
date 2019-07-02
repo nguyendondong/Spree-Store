@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="modal fade in modal-warning" id="modalNewLeadList" role="dialog" aria-hidden="false">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" id ="name-lead">
+                <div class="modal-body">
+                    <p><%= Spree.t(:name_lead_list)%></p>
+                    <%= text_field_tag :name_lead_list, nil, :class => 'fullwidth' %>
+                    <div class="fullwidth" style="margin: 5px">
+                        <button type="button" id="create_new_lead_list" class="btn btn-primary"><%= Spree.t(:create) %></button> 
+                        <button type="button" id= "cancel-lead" class="btn btn-default" ><%= Spree.t(:cancel) %></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).on("click", "#cancel-lead",function(e) {
+    
+    $('#modalNewLeadList').modal('hide');
+    console.log("Hide success!");
+
+  })
+  </script>

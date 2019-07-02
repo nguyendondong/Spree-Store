@@ -1,0 +1,6 @@
+#return-button {
+	float: left;
+}
+.cart-subtotal .cart-total-label, .cart-total .cart-total-label{
+	padding-right: 50px;
+}

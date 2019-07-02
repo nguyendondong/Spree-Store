@@ -1,0 +1,97 @@
+<table class="table table-striped" id="line-items" data-hook="order_details">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th><%= Spree.t(:item) %></th>
+      <th><%= Spree.t(:price) %></th>
+      <th><%= Spree.t(:qty) %></th>
+      <th><%= Spree.t(:total) %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% total_qty = 0 %>
+    <% @order.line_items.each_with_index do |item, i| %>
+    <tr data-hook="order_details_line_item_row">
+      <th scope="row" class="text-center"><%= (i+1) %></th>
+      <td data-hook="order_item_image">
+        <%= link_to item.variant.product, class: "item_image" do %>
+          <% if item.variant.images.length == 0 %>
+            <%= small_image(item.variant.product) %>
+          <% else %>
+            <%= image_tag(item.variant.images.first.attachment.url(:small), onerror: "this.onerror=null;this.src='#{root_url.to_s}assets/no_image.png'") %>
+          <% end %>
+        <% end %>
+        <div data-hook="order_item_description">
+          <h4><%= item.variant.product.name %></h4>
+          <%#= truncated_product_description(item.variant.product) %>
+          <%= "(" + item.variant.options_text + ")" unless item.variant.option_values.empty? %>
+        </div>
+      </td>
+      <td data-hook="order_item_price" class="text-right">
+        <%= item.single_money.to_html %>
+      </td>
+      <td data-hook="order_item_qty" class="text-center">
+        <%= item.quantity %>
+      </td>
+      <td data-hook="order_item_total" class="text-right">
+        <%= item.display_amount.to_html %>
+      </td>
+    </tr>
+    <% total_qty = total_qty + item.quantity %>
+    <% end %>
+  </tbody>
+  <tfoot>
+   <% if @order.shipments.exists? %>
+      <% order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments| %>
+      <tr data-hook='shipment-row'>
+        <th colspan="3"><%= Spree.t(:shipping) %>: <%= name %></th>
+        <th></th>
+        <th class="text-right"><%= Spree::Money.new(shipments.sum(&:discounted_cost), currency: order.currency).to_html %></th>
+      </tr>
+      <% end %>
+    <% end %>
+
+     <% if order.all_adjustments.tax.exists? %>
+      <% order.all_adjustments.tax.group_by(&:label).each do |label, adjustments| %>
+        <tr data-hook="order_details_tax_adjustments">
+          <th colspan="3"><%= Spree.t(:tax) %>: <%= label %></th>
+          <th></th>
+          <th class="text-right"><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency) %></th>
+        </tr>
+      <% end %>
+    <% end %>
+
+
+    <tr id="order-total" data-hook="order_details_total">
+      <th colspan="3"><%= Spree.t(:order_total) %></th>
+      <th class="text-center"><%= total_qty %></th>
+      <th class="text-right"><%= @order.display_total.to_html %></th>
+    </tr>
+
+    <% if @order.line_item_adjustments.exists? %>
+      <% if order.all_adjustments.promotion.eligible.exists? %>
+          <% order.all_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+          <tr data-hook="order_details_price_adjustments">
+            <th colspan="3"><%= Spree.t(:promotion) %>: <%= label %></th>
+            <th></th>
+            <th class="text-right"><%= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency) %></th>
+          </tr>
+          <% end %>
+      <% end %>
+    <% end %>
+
+   
+
+   
+
+    <% @order.adjustments.eligible.each do |adjustment| %>
+    <% next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+      <tr data-hook="order_details_adjustments">
+        <th colspan="3"><%= adjustment.label %></th>
+        <th><%= adjustment.label %></th>
+        <th class="text-right"><%= adjustment.display_amount.to_html %></th>
+      </tr>
+    <% end %>
+  </tfoot>
+</table>

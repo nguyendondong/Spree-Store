@@ -1,0 +1,20 @@
+<% content_for :social_meta_data do %>
+  <% if current_store.social_image.present? %>
+  <meta property="og:image" content='<%= image_path current_store.social_image %>'>
+  <% end %>
+<% end %>
+<% content_for :cart_slider do %>
+    <%= render :partial => 'spree/shared/cart_slider' %>
+<% end %>
+
+<% content_for :banner do %>
+    <%= render :partial => 'spree/shared/banner' %>
+<% end %>
+
+<% content_for :product do %>
+    <%= render :partial => 'spree/shared/product', :locals => { :products => @products } %>
+<% end %>
+
+<% content_for :footer do %>
+    <%= render :partial => 'spree/shared/footer' %>
+<% end %>

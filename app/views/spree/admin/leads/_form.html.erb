@@ -1,0 +1,267 @@
+<%= form_for [:admin, @lead], :html => { :multipart => true } do |f| %>
+  <fieldset>
+    <legend align="center"><%= @lead.new_record? ? "New Lead" : "Edit Lead" %></legend>
+    <div id="form-lead">
+    <div class="col-md-6">
+    <%= f.field_container :name do %>
+      <%= f.label :name, Spree.t(:name) %>
+      <%= f.text_field :name, :class => 'fullwidth modal-pad', placeholder: Spree.t(:name_not_nil), :onkeyup => "onChange()" %>
+    <% end %>
+
+    <%= f.field_container :phone do %>
+      <%= f.label :phone, Spree.t(:phone) %>
+      <%= f.text_field :phone, :class => 'fullwidth modal-pad', placeholder: Spree.t(:phone_not_nil), :onkeyup => "onChange()" %>
+      <span id="spnPhoneStatus"></span>
+    <% end %>
+    <%= f.field_container :website do %>
+      <%= f.label :website, Spree.t(:website) %>
+      <%= f.text_field :website, :class => 'fullwidth modal-pad' %>
+    <% end %>
+    <%= f.field_container :company do %>
+      <%= f.label :company, Spree.t(:company) %>
+      <%= f.text_field :company, :class => 'fullwidth modal-pad' %>
+    <% end %>
+   
+    <%= f.field_container :zalo do %>
+      <%= f.label :zalo, Spree.t(:zalo) %>
+      <%= f.text_field :zalo, :class => 'fullwidth modal-pad ' %>
+    <% end %>
+
+    <%= f.field_container :fb_url do %>
+      <%= f.label :fb_url, Spree.t(:fb_url) %>
+      <%= f.text_field :fb_url, :class => 'fullwidth modal-pad' %>
+    <% end %>
+
+    <%= f.field_container :major do %>
+      <%= f.label :major, Spree.t(:major) %>
+      <%= f.text_field :major, :class => 'fullwidth modal-pad' %>
+    <% end %>
+    </div>
+    <div class="col-md-6">
+    <% country = Spree::Country.find_by_iso("VN") %>
+    <%= label_tag :note, Spree.t(:note) %>
+    <%= text_area_tag :note,'' ,:class => 'fullwidth', :style => "resize: none" %>
+    <%= f.field_container :state_id do %>
+      <%= f.label :city, Spree.t(:city), :class => "fullwidth" %>
+      <%= f.collection_select :state_id, country.states.sort, :id, :name, {:include_blank => true}, {:id => 'order_bill_address_attributes_state_id', :class => 'select2 fullwidth', :style => "display: #{country.states.empty? ? 'none' : 'block' };", :disabled => country.states.empty?} %>
+    <% end %>
+  
+    <% f.object.state = country.states.first unless f.object.state.present? %>
+    <%= f.field_container :state_id do %>
+      <%= f.label :district, Spree.t(:district), :class => "fullwidth" %>
+      <%= f.collection_select :district_id, f.object.state.districts.sort, :id, :name, {:include_blank => true}, {:id => 'order_bill_address_attributes_district_id',:class => 'select2 fullwidth', :style => "display: #{f.object.state.districts.empty? ? 'none' : 'block' };", :disabled => f.object.state.districts.empty?} %>
+    <% end %>
+    
+    <div class="five columns" style="margin-left: 0">
+    <%= f.field_container :lead_list_id do %>
+        <%= f.label :lead_list_id, Spree.t(:lead_list), :class => "fullwidth" %>
+        <%= f.collection_select :lead_list_id, Spree::LeadList.all.sort, :id, :name, {:include_blank => true}, :class => 'select2 fullwidth' %>
+    <% end %>
+    </div>
+
+    <div class=" two columns">
+      <div class="btn btn-primary" data-toggle="modal" data-target="#modalNewLeadList" style='margin-top: 31px; background: #3fcf87; border-color: #3fcf87'>
+        <%=Spree.t(:new_lead_list) %>
+      </div>
+    </div>
+
+    <div data-hook>
+      <fieldset class="no-border-bottom no-border-top fullwidth">
+        <div data-hook="add_product_name" class="fullwidth">
+          <%= label_tag :change_variant_id, Spree.t(:name_or_sku_product) %>
+          <%= hidden_field_tag :change_variant_id, "", :class => "variant_autocomplete fullwidth" %>
+        </div>
+      </fieldset>
+    </div>
+    <%= hidden_field_tag :lead_variant_id %>
+
+    <div id="products-chose">
+    <%= label_tag 'products-chose', Spree.t(:products_chose), :class => "fullwidth" %>
+    <% if !@lead.new_record? %>
+      <% @lead.products.each do |product| %>
+      <% image = product.images.first %>
+        <div class="product-site" id="product-site<%= product.id %>">
+          <img class="image-product-previews" src="/spree/products/<%= image.id %>/mini/<%= image.attachment_file_name %>">
+          <input type="hidden" id="variant_ids<%=product.id %>" value="<%= product.variants.present? ? product.variants.first.id : product.variants_including_master_ids.first %>" name="variant_ids[]">
+          <i class="fa fa-trash remove-this-product" data-id="<%= product.id %>"></i>
+        </div>
+      <% end %>
+    <% end %>
+    </div>
+    <div class = "clearfix"></div>
+
+    
+    <div class="control-group">
+    <%= f.label :Picture, Spree.t(:Picture), class: "control-label" %>
+    <div class="controls">
+      <%= file_field_tag "images[]", type: :file, multiple: true %>  
+    </div>
+    </div>
+    <div id="preview">
+    </div>
+    <div id="picture">
+      <% @lead.pictures.each do |p| %>
+        <div class="picture-site" id="picture-site<%= p.id %>">
+        <%= image_tag p.image.url(:med),:class =>"picture-lead-previews"  %>
+        <input type="hidden" id="Picture<%=p.id %>" value="<%= p.id %>" name="Picture[]">
+        <i class="fa2x  fa  fa-trash remove-this-picture" data-id="<%= p.id %>"></i>  
+      </div>
+      <% end %>
+      </div>
+      </div>  
+    <%= render :partial => "spree/admin/variants/autocomplete", :formats => :js %>
+    <%= render :partial => "spree/admin/variants/autocomplete_stock", :formats => :js %>
+    <%= render 'spree/admin/shared/new_lead_list_modal' %>
+    </div>
+    </div>
+    <div class = "clearfix"></div>
+    <div id="create-lead" class="align-center fullwidth" >
+       <%= f.submit :id =>"click-create-lead", :class =>'fa fa-refresh button' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= link_to_with_icon 'remove', Spree.t('actions.cancel'), admin_leads_path, :class => ' fa fa-remove button ' %>
+    </div>
+  </fieldset>
+<% end %>
+<script>
+$(document).ready(function() {
+  $('#lead_phone').blur(function(e) {
+      if (validatePhone('lead_phone')) {
+          $('#spnPhoneStatus').html('Valid');
+          $('#spnPhoneStatus').css('color', 'green');
+          $("#click-create-lead").prop("disabled", false);
+          $("#click-create-lead").css('background', '#3acf87');
+          $('#lead_phone').css('border', '1px solid #cee1f4')
+      }
+      else {
+          $('#spnPhoneStatus').html('Invalid');
+          $('#spnPhoneStatus').css('color', 'red');
+          $("#click-create-lead").prop("disabled", true);
+          $("#click-create-lead").css('background', '#10131170');
+          $('#lead_phone').css('border', '1px solid red');
+         
+      }
+  });
+});
+
+function validatePhone(lead_phone) {
+  var a = document.getElementById(lead_phone).value;
+  var filter = /^\d{10}$/;
+  if (filter.test(a)) {
+      return true;
+  }
+  else {
+      return false;
+  }
+}
+
+    function onChange() {
+      console.log("Changed")
+       /* if ($('#lead_phone').val() != '' &&  $('#lead_name').val() != '')
+        $('#create-lead input').show()
+      else
+        $('#create-lead input').hide() */
+    }
+  $(document).ready(function (){
+
+   /* if ($('#lead_phone').val() == '' &&  $('#lead_name').val() == '')
+      $('#create-lead input').hide() */
+
+
+    $('#create_new_lead_list').click(function (){
+        name = $('#name_lead_list').val()
+        $.ajax({  
+        type: "POST",
+        url: "/admin/lead_lists",
+        dataType: "JSON",
+        data: {lead_list: { name: name } } ,
+        success: function(data) {
+          console.log("Create success!!!")
+          $('#modalNewLeadList').modal('hide');
+          $('#lead_lead_list_id').append("<option value="+ data.id + ">" + data.name + "</option>")
+        }
+      });
+    })
+
+    $('#change_variant_id').change(function (){
+      if($('#variant_ids'+ $(this).val()).length == 0){
+        preview_image_product($(this).val())
+      }
+      else
+        console.log("Already exist")
+    })
+  })
+    $(document).on("click", ".remove-this-product",function(e) {
+    site = $(this).data('id');
+    $('#product-site'+site).remove();
+    console.log(site)
+    console.log("Remove success!");
+
+  })
+
+    $(document).on("click", ".remove-this-picture",function(e) {
+      site = $(this).data('id');
+      $.ajax({
+        type: 'DELETE',
+        url:  '/pictures/' + site,
+        data: {},
+        dataType: 'JSON',
+        contentType: 'JSON',
+        success: function(res) {
+          console.log("Success");
+          $('#picture-site'+site).remove();
+          console.log(site)
+          console.log("Remove success!");
+        },
+        error: function(res) {
+          console.log("Error");
+        }
+      })
+
+  })
+  function preview_image_product(id){
+    $.ajax({
+        type: "GET",
+        url: "/admin/variants/"+ id +"/get_info",
+        dataType: "JSON",
+        data: {},
+        success: function(data) {
+          $('#products-chose').append('<div class="product-site" id="product-site' + id + '"></div>')
+          $('#product-site' + id).append('<img class="image-product-previews" src="/spree/products/'+ data.id +'/mini/'+ data.attachment_file_name +'">')
+          $('#product-site' + id).append('<input type="hidden" id="variant_ids'+ id + '" value="'+ id + '" name="variant_ids[]">')
+          $('#product-site' + id).append('<i class="fa fa-trash remove-this-product" data-id="'+ id+ '"></i>')
+          console.log('Append success!');
+        },
+        errors: function(data){
+        console.log("Error!")
+      }
+      });
+  }
+  function previewImages() {
+
+  var $preview = $('#preview').empty();
+  if (this.files) $.each(this.files, readAndPreview);
+
+  function readAndPreview(i, file) {
+    
+    if (!/\.(jpe?g|png|gif)$/i.test(file.name)){
+      return alert(file.name +" is not an image");
+    } // else...
+    
+    var reader = new FileReader();
+
+    $(reader).on("load", function() {
+     
+      $preview.append($("<img/>", {src:this.result, height:100}));   
+    });
+
+    reader.readAsDataURL(file);
+    
+  }
+
+}
+
+$('#images_').on("change", previewImages);
+
+
+
+</script>

@@ -1,0 +1,26 @@
+.modal-warning{
+    background-color: #0000003d;
+        .modal-dialog{
+            top: 40%;
+        }
+        .modal-content{
+            background-color: white;
+            color: #424242;
+            font-weight: 700;
+        }
+        .modal-body{
+            p{
+                font-size: 15px;
+            }
+            div{
+                right: 0;
+                left: 0;
+                text-align: center;
+                .btn-primary{
+                    color: #ffffff;
+                    background-color: #3fcf87;
+                    border-color: #3fcf87;
+                }
+            }
+        }
+}

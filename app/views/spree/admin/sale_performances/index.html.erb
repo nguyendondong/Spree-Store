@@ -1,0 +1,129 @@
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:date_range) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for @search, :url => spree.admin_sale_performances_path  do |s| %>
+    <div class="date-range-filter field align-center">
+      <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+      <%= s.text_field :completed_at_gt, :class => 'datepicker datepicker-from', :value => datepicker_field_value(params[:q][:completed_at_gt]) %>
+
+      <span class="range-divider">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+      <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+      <%= s.text_field :completed_at_lt, :class => 'datepicker datepicker-to', :value => datepicker_field_value(params[:q][:completed_at_lt]) %>
+      
+    </div>
+
+    <div class="actions filter-actions">
+      <%= button Spree.t(:search), 'search'  %>
+    </div>
+  <% end %>
+
+<% end %>
+<style>
+    .layout_full{
+      margin-top: 5px;
+    }
+    #table-filter form{
+      display: flex;
+      align-items: center;
+    }
+    #table-filter form >.actions{
+      margin-top: 0;
+      margin-left: 10px;
+    }
+</style>
+
+<div ng-app="myApp" ng-controller="FilterByCell">
+<table class="admin-report" data-hook="sale-performance">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:email) %></th>
+      <th><%= Spree.t(:nickname) %></th>
+      <th><%= Spree.t(:total) %></th>
+      <th><%= Spree.t(:unprocessed) %></th>
+      <th><%= Spree.t("shipment_states.ready") %></th>
+      <th><%= Spree.t("shipment_states.shipped") %></th>
+      <th><%= Spree.t(:shipped_successfully) %></th>
+      <th><%= Spree.t("payment_states.paid") %></th>
+      <th><%= Spree.t(:returned) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sales.each do |sale| %>
+      <% total_count = @reports[sale.id][:total_count]%>
+      <% returned_count = @reports[sale.id][:returned_count]%>
+      <% paid_count = @reports[sale.id][:paid_count]%>
+      <% success_count = @reports[sale.id][:success_count]%>
+      <% unprocessed_count = @reports[sale.id][:unprocessed_count]%>
+      <% ready_count = @reports[sale.id][:ready_count]%>
+      <% shipped_count = @reports[sale.id][:shipped_count]%>
+      <tr>
+        <td><%= sale.email %></td>
+        <td><%= sale.nickname %></td>
+        <td>
+          <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>" data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{total_count} DH (#{@reports[sale.id][:total_revenue]})" %></a>
+        </td>
+        <td>
+          <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>" shipment_state_eq= 'pending' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{unprocessed_count} DH (#{@reports[sale.id][:unprocessed_revenue]}) - #{'%.f' % (unprocessed_count.to_f/total_count*100)}%" %></a>
+        </td>
+        <td>
+          <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>"  shipment_state_eq= 'ready' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{ready_count} DH (#{@reports[sale.id][:ready_revenue]}) - #{'%.f' % (ready_count.to_f/total_count*100)}%" %></a>
+        </td>
+        <td> 
+          <a href="#" class="filter-by-cell"  approver_id_eq="<%= sale.id%>"  shipment_state_eq= 'shipped' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{shipped_count} DH (#{@reports[sale.id][:shipped_revenue]}) - #{'%.f' % (shipped_count.to_f/total_count*100)}%" %></a>
+        </td>
+        <td>
+           <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>"  shipment_state_eq= 'balance_due' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{success_count} DH (#{@reports[sale.id][:success_revenue]}) - #{'%.f' % (success_count.to_f/total_count*100)}%" %> </a>
+        </td>
+        <td>
+          <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>"  payment_state_eq= 'shipped_successfully' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{paid_count} DH (#{Spree::Money.new(@reports[sale.id][:paid_revenue], { currency: Spree::Config[:currency] })}) - #{'%.f' % (paid_count.to_f/total_count*100)}%" %> </a>
+        </td>
+        <td>
+        <a href="#" class="filter-by-cell" approver_id_eq="<%= sale.id%>"  state_eq= 'returned' data-toggle="modal" data-target="#myModal" ng-click="getOrders($event)"> <%= "#{returned_count} DH (#{Spree::Money.new(@reports[sale.id][:returned_revenue], { currency: Spree::Config[:currency] })}) - #{'%.f' % (returned_count.to_f/total_count*100)}%" %> </a>
+        </td>
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"> List Orders</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <thead>
+            <tr> 
+              <th> Hoàn tất lúc  </th>
+              <th> Mã đơn hàng </th> 
+              <th> Tổng tiền </th>
+            </tr>
+          </thead>
+          <tbody id="body-table-orders">
+            <tr class="state-complete" ng-repeat="item in orders">
+              <td> {{item.completed_at.substring(8,10)}} / {{item.completed_at.substring(5,7)}} / {{item.completed_at.substring(0,4)}} </td>
+              <td> <a href="/admin/orders/{{item.number}}/edit"> {{item.number}} </a>  </td>
+              <td> {{item.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render :partial => 'spree/admin/shared/filter', :formats => :js%>
+</div>
+

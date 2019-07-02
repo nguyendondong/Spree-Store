@@ -1,0 +1,21 @@
+.container { 
+	position: relative; width: 1200px; margin: 0 auto; padding: 0; 
+}
+/* Base Grid */
+.container .one.column,
+.container .one.columns                     { width: 55px;  }
+.container .two.columns                     { width: 130px; }
+.container .three.columns                   { width: 205px; }
+.container .four.columns                    { width: 280px; }
+.container .five.columns                    { width: 355px; }
+.container .six.columns                     { width: 425px; }
+.container .seven.columns                   { width: 500px; }
+.container .eight.columns                   { width: 575px; }
+.container .nine.columns                    { width: 650px; }
+.container .ten.columns                     { width: 725px; }
+.container .eleven.columns                  { width: 805px; }
+.container .twelve.columns                  { width: 880px; }
+.container .thirteen.columns                { width: 955px; }
+.container .fourteen.columns                { width: 1030px; }
+.container .fifteen.columns                 { width: 1105px; }
+.container .sixteen.columns                 { width: 1180px; }

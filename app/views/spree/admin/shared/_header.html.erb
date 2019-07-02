@@ -1,0 +1,57 @@
+<div class="container-fluid right-header">
+  <nav class="navbar navbar-default">
+    <div>
+      <ul class="nav navbar-nav navbar-right">
+       <% unless  (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('blogger')) || (spree_current_user.respond_to?(:has_spree_role?) && spree_current_user.has_spree_role?('user')) %>
+        <li> <a class="dropdown-toggle" role="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false"><i href="/notifications/update_notification" class="fas fa-bell"><sup
+                class="number"><%= Notification.where(seen: "false").count %></sup></i>
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <h5>Notification <a href="/notifications/update_notification" class="read_all">Read all</a></h5>
+            <div class="info_notification">
+              <%  Notification.order('created_at DESC').limit(10).each do |notification| %>             
+              <% if notification.seen == false %>
+              <p><a href='<%= "/admin/orders/#{notification.targetable.try(:number)}/edit" %>'>
+                  <%= notification.message.html_safe %>
+                  <span>lúc <%= notification.created_at.strftime("%H:%M:%S") %></span></a>
+              </p>
+              <% else  %>
+              <p><a href='<%= "/admin/orders/#{notification.targetable.try(:number)}/edit" %>' style="color: black;">
+                  <%= notification.message.html_safe %>
+                  <span>lúc <%= notification.created_at.strftime("%H:%M:%S") %></span></a>
+              </p>
+              <% end %>
+              <% end %>
+              <%= link_to 'See all', admin_notifications_path %>
+            </div>
+          </div>
+        </li>
+        <% end %>
+
+        <li class="dropdown">
+          <a data-hook="user-logged-in-as" class="dropbtn"><i class="fa fa-user" aria-hidden="true"></i></a>
+          <div class="dropdown-content">
+            <div data-hook="user-account-link" class='fa fa-user'><a href="/users/1/edit"> Tài khoản</a></div><br>
+            <div data-hook="user-logout-link" class='fa fa-sign-out'><a href="/admin/logout"> Đăng xuất</a></div><br>
+            <div data-hook="store-frontend-link" class='fa fa-external-link'>
+              <a href="/" target="_blank"> Quay lại cửa hàng</a>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+  </nav>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('.fa-bell').on('click', function () {
+      $('.number').text('0');
+    });
+  })
+</script>

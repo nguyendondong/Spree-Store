@@ -1,0 +1,62 @@
+#content-header {
+	padding: 0;
+}
+.pagination .page {
+	padding: 10px 16px;
+}
+a {
+	border-bottom: 0px;
+	text-decoration: none;
+	color: black;
+	&:hover {
+		text-decoration: none;
+	}
+}
+table > td > a {
+	border-bottom: 0px;
+}
+
+#new_product,
+#edit_user {
+	.filter-actions {
+		margin-bottom: 0 !important;
+		span {
+			margin-right: 12px;
+		}
+	}
+}
+.modal-backdrop {
+  position: inherit !important;
+ }
+
+.toggle{
+	display: none;
+}
+#show-hide{
+	color:white;
+}
+
+#print-order-address{
+	margin: 0 20px;
+}
+
+form {
+
+    .billing-row,
+    .shipping-row {
+        input {
+            width: 280px;
+        }
+    }
+
+    .billing-row {
+        height: 52px;
+    }
+    
+    #shipping {
+        .field.shipping-row:nth-child(9) {
+            margin-top: 30px;
+        }
+    }
+}
+
